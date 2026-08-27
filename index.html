@@ -449,10 +449,11 @@ const NICHES = [
   }
 ];
 
-// Top-level tab strip = just the niches. Each niche's panel contains its
-// own Competitor Account Tracker section (see panelTemplate) — there's no
-// separate "Competitors" menu tab.
-const TOPTABS = NICHES;
+// Top-level tab strip = the niches PLUS one extra "Random" tab. The
+// Random tab isn't a niche — it has no Daily Log or Account Tracker,
+// just a simple upload -> AI caption + hashtags helper for anything.
+const RANDOM_TAB = { key:"random", label:"Random", emoji:"🎲" };
+const TOPTABS = [...NICHES, RANDOM_TAB];
 
 // Every account-tracker instance (a niche's own Account Tracker, and each
 // niche's Competitor Account Tracker) shares the same logic/markup. This
@@ -536,6 +537,58 @@ async function callGeminiForCaption(base64Data, mimeType, nicheStyleName){
     if(!parsed[p.key]) parsed[p.key] = { title:"", description:"", hashtags:[] };
     if(!Array.isArray(parsed[p.key].hashtags)) parsed[p.key].hashtags = [];
   });
+  return parsed;
+}
+
+/* ============================================================
+   RANDOM TAB — a single, niche-free caption + hashtags for
+   whatever image/video is uploaded. Uses the same /api/generate
+   backend endpoint, just with a simpler prompt/schema.
+   ============================================================ */
+function buildRandomResponseSchema(){
+  return {
+    type:"OBJECT",
+    properties:{
+      caption:{ type:"STRING" },
+      hashtags:{ type:"ARRAY", items:{ type:"STRING" } }
+    },
+    required:["caption","hashtags"]
+  };
+}
+function buildRandomPrompt(){
+  return `You are a social media assistant. Look carefully at the attached image and write ONE short, catchy caption (1-3 sentences) that accurately describes what is actually shown, in a natural, engaging tone suited for a general social media post. Do not assume any particular niche or topic — base it only on what's visible.
+
+Also provide 8-12 relevant hashtags based on what's visible in the image, mixing broad and specific tags, all lowercase, no duplicates, and WITHOUT the "#" symbol (just the word, e.g. "sunset" not "#sunset").
+
+Return ONLY the JSON object matching the schema: {"caption": "...", "hashtags": ["...", "..."]}.`;
+}
+async function callGeminiForRandomCaption(base64Data, mimeType){
+  const response = await fetch("/api/generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      base64Data,
+      mimeType,
+      prompt: buildRandomPrompt(),
+      responseSchema: buildRandomResponseSchema()
+    })
+  });
+
+  if(!response.ok){
+    const j = await response.json().catch(()=>({}));
+    throw new Error(j?.error || `Server error (${response.status})`);
+  }
+
+  const data = await response.json();
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if(!text) throw new Error("Gemini returned an empty response.");
+
+  let parsed;
+  try{ parsed = JSON.parse(text); }
+  catch(e){ throw new Error("Could not parse Gemini's response as JSON."); }
+
+  if(typeof parsed.caption !== "string") parsed.caption = "";
+  if(!Array.isArray(parsed.hashtags)) parsed.hashtags = [];
   return parsed;
 }
 
@@ -687,6 +740,15 @@ NICHES.forEach(n => {
   };
 });
 
+// Random tab state — no logs/accounts, just a single upload -> caption+hashtags flow.
+state.random = {
+  media: null,
+  result: null,
+  loading: false,
+  error: null,
+  lastAction: null
+};
+
 /* ---------- Supabase-backed storage: daily logs ---------- */
 function logRowToEntry(row){
   return { id: row.id, date: row.entry_date, note: row.note };
@@ -791,8 +853,144 @@ function renderTabstrip(){
    ============================================================ */
 function renderPanels(){
   const container = document.getElementById("panels");
-  container.innerHTML = NICHES.map(n => panelTemplate(n)).join("");
+  container.innerHTML = NICHES.map(n => panelTemplate(n)).join("") + randomPanelTemplate();
   NICHES.forEach(n => wirePanel(n));
+  wireRandomPanel();
+}
+
+/* ============================================================
+   Render: Random tab panel — upload any image/video, get one
+   AI-generated caption + hashtags back. No Daily Log, no
+   Account Tracker here; just the upload -> generate flow.
+   ============================================================ */
+function randomPanelTemplate(){
+  const key = "random";
+  const visible = activeNiche === key;
+  return `
+  <section class="niche-panel" id="panel-${key}" data-visible="${visible}" role="tabpanel" aria-labelledby="tab-${key}">
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="section-title">🎲 Random Post Helper</div>
+          <div class="section-sub">যেকোনো ছবি বা ভিডিও আপলোড করুন — AI নিজে বুঝে একটা caption আর কিছু hashtag বানিয়ে দেবে, কোনো নির্দিষ্ট niche ছাড়াই।</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding-top:0;">
+
+        <label class="upload-zone" id="dropzone-${key}" for="fileinput-${key}">
+          <div class="up-icon">⬆</div>
+          <div class="up-text">Click or drop an image or video</div>
+          <div class="up-sub">JPG, PNG, MP4, MOV — a still frame is used for video</div>
+          <input type="file" id="fileinput-${key}" accept="image/*,video/*">
+        </label>
+
+        <div id="previewrow-${key}" class="preview-row" style="display:none;">
+          <img class="preview-thumb" id="previewimg-${key}" alt="Selected media preview">
+          <div class="preview-meta">
+            <div class="preview-name" id="previewname-${key}"></div>
+            <div class="preview-type" id="previewtype-${key}"></div>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="clearmedia-${key}">Remove</button>
+        </div>
+
+        <div class="gen-row">
+          <button class="btn btn-gold" id="generate-${key}" disabled>✦ Generate caption</button>
+        </div>
+
+        <div id="statebox-${key}"></div>
+
+        <div id="resultswrap-${key}" style="display:none;">
+          <div class="field">
+            <label for="caption-${key}">Caption</label>
+            <textarea id="caption-${key}" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label for="tags-${key}">Hashtags</label>
+            <textarea id="tags-${key}" rows="2"></textarea>
+          </div>
+          <div class="copy-row">
+            <button class="btn btn-gold btn-sm" id="copyall-${key}">📋 Copy caption + hashtags</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>`;
+}
+
+function wireRandomPanel(){
+  const key = "random";
+
+  const fileInput = document.getElementById(`fileinput-${key}`);
+  const dropzone = document.getElementById(`dropzone-${key}`);
+  fileInput.addEventListener("change", (e)=>{
+    const file = e.target.files && e.target.files[0];
+    if(file) handleFile(key, file);
+  });
+  ["dragover","dragenter"].forEach(ev => dropzone.addEventListener(ev, (e)=>{
+    e.preventDefault(); dropzone.classList.add("drag");
+  }));
+  ["dragleave","drop"].forEach(ev => dropzone.addEventListener(ev, (e)=>{
+    e.preventDefault(); dropzone.classList.remove("drag");
+  }));
+  dropzone.addEventListener("drop", (e)=>{
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    if(file) handleFile(key, file);
+  });
+
+  document.getElementById(`clearmedia-${key}`).addEventListener("click", ()=>{
+    const s = state[key];
+    s.media = null; s.result = null; s.error = null;
+    document.getElementById(`previewrow-${key}`).style.display = "none";
+    document.getElementById(`resultswrap-${key}`).style.display = "none";
+    document.getElementById(`generate-${key}`).disabled = true;
+    fileInput.value = "";
+    renderStateBox(key);
+  });
+
+  document.getElementById(`generate-${key}`).addEventListener("click", ()=> runGenerateRandom());
+
+  document.getElementById(`copyall-${key}`).addEventListener("click", async ()=>{
+    const caption = document.getElementById(`caption-${key}`).value.trim();
+    const tags = document.getElementById(`tags-${key}`).value.trim();
+    const block = [caption, "", tags].join("\n");
+    await copyText(block);
+    showToast("Caption copied");
+  });
+}
+
+async function runGenerateRandom(){
+  const key = "random";
+  const s = state[key];
+  if(!s.media) return;
+
+  s.lastAction = () => runGenerateRandom();
+  s.loading = true; s.error = null;
+  renderStateBox(key);
+  document.getElementById(`generate-${key}`).disabled = true;
+
+  try{
+    const result = await callGeminiForRandomCaption(s.media.base64, s.media.mimeType);
+    s.result = result;
+    s.loading = false;
+    renderStateBox(key);
+    renderRandomResult();
+  }catch(e){
+    s.loading = false;
+    s.error = e.message || "Something went wrong generating the caption.";
+    renderStateBox(key);
+  }finally{
+    document.getElementById(`generate-${key}`).disabled = false;
+  }
+}
+
+function renderRandomResult(){
+  const key = "random";
+  const s = state[key];
+  document.getElementById(`resultswrap-${key}`).style.display = "block";
+  document.getElementById(`caption-${key}`).value = s.result?.caption || "";
+  const tagText = (s.result?.hashtags || []).map(h => "#" + h).join(" ");
+  document.getElementById(`tags-${key}`).value = tagText;
 }
 
 function panelTemplate(n){

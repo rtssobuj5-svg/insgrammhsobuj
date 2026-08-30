@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2A2620">
+<link rel="manifest" href="/manifest.json">
 <title>Growth Ledger — 100-Day Growth &amp; $1,000 Command Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,6 +49,32 @@
   --shadow-card: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px -8px rgba(0,0,0,.5);
 }
 
+/* ---------- Light theme (toggled via <html data-theme="light">) ---------- */
+:root[data-theme="light"]{
+  --bg: #F5F0E6;
+  --bg-1: #EDE6D6;
+  --bg-2: #E4DCC8;
+  --bg-3: #D9CFB8;
+  --border: #C9BC9E;
+  --border-soft: #D9CFB8;
+  --ink: #2A2620;
+  --ink-dim: #5C5344;
+  --ink-faint: #8B8071;
+  --gold: #8A7431;
+  --gold-bright: #6B5A22;
+  --gold-dim: #A88F3F;
+  --danger: #A8402F;
+  --danger-bg: #F3DCD5;
+  --success: #4C6A32;
+
+  --fishing: #2E627A;
+  --fishing-soft: rgba(46,98,122,.10);
+  --terrier: #965328;
+  --terrier-soft: rgba(150,83,40,.10);
+  --cows: #4C6A32;
+  --cows-soft: rgba(76,106,50,.10);
+}
+
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
 body{
@@ -80,6 +108,7 @@ a{color:var(--gold-bright);}
   margin-bottom:26px;
 }
 .wordmark{display:flex; align-items:baseline; gap:10px;}
+.topbar-actions{ display:flex; align-items:center; gap:10px; }
 .wordmark .mark{
   font-family:var(--font-display); font-style:italic; font-weight:600;
   font-size:26px; letter-spacing:.2px; color:var(--ink);
@@ -156,6 +185,35 @@ a{color:var(--gold-bright);}
 /* ---------- daily log ---------- */
 .log-form{ display:grid; grid-template-columns:150px 1fr 120px; gap:10px; margin-bottom:16px;}
 @media (max-width:640px){ .log-form{ grid-template-columns:1fr; } }
+
+.filter-row{ display:flex; align-items:flex-end; gap:10px; flex-wrap:wrap; margin:14px 0; }
+.filter-row > div{ min-width:150px; }
+.filter-row input[type="date"]{ margin-bottom:0; }
+
+.challenge-startform{ display:grid; grid-template-columns:180px 1fr; gap:10px; margin-bottom:6px; align-items:end; }
+@media (max-width:640px){ .challenge-startform{ grid-template-columns:1fr; } }
+
+.challenge-entryform{ display:grid; grid-template-columns:120px repeat(5, 1fr); gap:10px; margin-bottom:4px; }
+@media (max-width:760px){ .challenge-entryform{ grid-template-columns:1fr 1fr 1fr; } }
+@media (max-width:420px){ .challenge-entryform{ grid-template-columns:1fr 1fr; } }
+
+.progress-track{ width:100%; height:10px; border-radius:999px; background:var(--bg-3); overflow:hidden; margin:14px 0 4px; }
+.progress-fill{ height:100%; background:linear-gradient(90deg, var(--gold-dim), var(--gold-bright)); border-radius:999px; transition:width .3s ease; }
+
+.challenge-badges{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+.challenge-badge{
+  background:var(--bg-2); border:1px solid var(--border-soft); border-radius:var(--radius-md);
+  padding:10px 14px; min-width:104px; flex:1 1 104px;
+}
+.challenge-badge .num{ font-family:var(--font-display); font-weight:700; font-size:20px; color:var(--gold-bright); line-height:1.1; }
+.challenge-badge .lbl{ font-size:10.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; margin-top:3px; }
+
+.target-pill{
+  display:inline-flex; align-items:center; padding:3px 9px; border-radius:999px;
+  font-family:var(--font-mono); font-size:10.5px; font-weight:600; white-space:nowrap;
+}
+.target-pill.hit{ background:rgba(124,154,93,.16); color:var(--success); }
+.target-pill.miss{ background:rgba(193,88,74,.14); color:var(--danger); }
 label{ display:block; font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin-bottom:6px; }
 input[type="text"], input[type="date"], input[type="number"], input[type="url"], textarea, select{
   width:100%; background:var(--bg-2); border:1px solid var(--border);
@@ -221,6 +279,10 @@ textarea{ resize:vertical; min-height:56px; font-family:var(--font-body); line-h
 .upload-zone input[type="file"]{ display:none; }
 
 .preview-row{ display:flex; align-items:center; gap:14px; margin-top:14px; }
+.batch-nav{
+  display:flex; align-items:center; justify-content:center; gap:14px;
+  margin-top:12px; font-size:12.5px; color:var(--ink-dim); font-family:var(--font-mono);
+}
 .preview-thumb{
   width:74px; height:74px; border-radius:var(--radius-sm); object-fit:cover;
   border:1px solid var(--border); background:var(--bg-2); flex-shrink:0;
@@ -243,6 +305,13 @@ textarea{ resize:vertical; min-height:56px; font-family:var(--font-body); line-h
   animation:spin .7s linear infinite; flex-shrink:0;
 }
 @keyframes spin{ to{ transform:rotate(360deg);} }
+.loader3d-wrap{
+  width:64px; height:64px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+}
+.loader3d-wrap canvas{ display:block; }
+.follower-chart-wrap{ position:relative; width:100%; height:200px; }
+.follower-chart-wrap canvas{ width:100% !important; height:100% !important; }
 
 /* platform stamp tabs */
 .platform-tabs{ display:flex; gap:8px; margin-top:20px; flex-wrap:wrap; }
@@ -287,6 +356,14 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
 /* ---------- account tracker ---------- */
 .acct-form{ display:grid; grid-template-columns:140px 1.4fr 1fr 110px; gap:10px; align-items:end; }
 @media (max-width:640px){ .acct-form{ grid-template-columns:1fr; } }
+
+.bulk-import{ margin-top:12px; }
+.bulk-import summary{
+  cursor:pointer; font-size:12.5px; color:var(--ink-dim); font-weight:600;
+  padding:4px 0; user-select:none;
+}
+.bulk-import summary:hover{ color:var(--gold-bright); }
+.bulk-import textarea{ font-family:var(--font-mono); font-size:12.5px; }
 .acct-stats{
   display:flex; align-items:center; justify-content:space-between; gap:12px;
   margin:16px 0 12px; flex-wrap:wrap;
@@ -388,6 +465,10 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
       <span class="mark">Growth Ledger</span>
       <span class="sub">100-Day &amp; $1,000</span>
     </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" id="installbtn" style="display:none;">⬇ Install App</button>
+      <button class="icon-btn" id="themetoggle" title="Toggle light/dark theme" aria-label="Toggle theme">🌙</button>
+    </div>
   </div>
 
   <div class="tabstrip" role="tablist" aria-label="Niche tabs" id="tabstrip"></div>
@@ -399,6 +480,8 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
 (function(){
 "use strict";
@@ -413,6 +496,104 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
 const SUPABASE_URL = "https://kdcrgkgdkrfonhpqnnwe.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_Pj30BwhK_Ux0TwCZWr8CvA_dQ26rGQS";
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ============================================================
+   Light/dark theme toggle — persisted per device via localStorage.
+   ============================================================ */
+function getTheme(){
+  try{ return localStorage.getItem("theme") || "dark"; }catch(e){ return "dark"; }
+}
+function applyTheme(t){
+  document.documentElement.setAttribute("data-theme", t);
+  try{ localStorage.setItem("theme", t); }catch(e){}
+  const btn = document.getElementById("themetoggle");
+  if(btn) btn.textContent = t === "light" ? "☀️" : "🌙";
+}
+applyTheme(getTheme());
+document.getElementById("themetoggle")?.addEventListener("click", ()=>{
+  applyTheme(getTheme() === "light" ? "dark" : "light");
+});
+
+/* ============================================================
+   PWA install prompt — Chrome/Edge/Android fire "beforeinstallprompt"
+   when the site is installable (needs a linked manifest.json + icons
+   on the deployment; this code is a harmless no-op otherwise).
+   ============================================================ */
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", (e)=>{
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = document.getElementById("installbtn");
+  if(btn) btn.style.display = "inline-flex";
+});
+document.getElementById("installbtn")?.addEventListener("click", async ()=>{
+  if(!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  document.getElementById("installbtn").style.display = "none";
+});
+window.addEventListener("appinstalled", ()=>{
+  const btn = document.getElementById("installbtn");
+  if(btn) btn.style.display = "none";
+  deferredInstallPrompt = null;
+});
+
+/* ============================================================
+   Daily reminder — opt-in browser Notification if the tab is open
+   and today's 100-day entry hasn't been logged yet. This only fires
+   while the page is loaded (no service worker / push server), so
+   it's a soft nudge, not a true background push notification.
+   ============================================================ */
+function getRemindersEnabled(){
+  try{ return localStorage.getItem("remindersEnabled") === "1"; }catch(e){ return false; }
+}
+function setRemindersEnabled(v){
+  try{ localStorage.setItem("remindersEnabled", v ? "1" : "0"); }catch(e){}
+}
+function maybeShowDailyReminder(){
+  if(!getRemindersEnabled()) return;
+  if(typeof Notification === "undefined" || Notification.permission !== "granted") return;
+
+  const today = todayISO();
+  let lastShown = null;
+  try{ lastShown = localStorage.getItem("lastReminderDate"); }catch(e){}
+  if(lastShown === today) return; // already reminded today
+
+  const start = state.challenge.startDate;
+  const day = start ? dayNumberFor(today, start) : null;
+  const hasLoggedToday = state.challenge.entries.some(e => e.date === today);
+
+  if(day !== null && day >= 1 && day <= 100 && !hasLoggedToday){
+    try{
+      new Notification("Growth Ledger", {
+        body: `Day ${day} of 100 — you haven't logged today's progress yet.`,
+        icon: "/icon-192.png"
+      });
+      localStorage.setItem("lastReminderDate", today);
+    }catch(e){ console.error("Notification failed:", e); }
+  }
+}
+
+/* ============================================================
+   CSV export — used by every "Export CSV" button across the app.
+   Builds a CSV client-side and triggers a browser download; no
+   server round-trip, no extra library needed.
+   ============================================================ */
+function exportCSV(filename, headers, rows){
+  const esc = (v)=>{
+    const s = String(v ?? "");
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+  const lines = [headers.map(esc).join(",")].concat(rows.map(r => r.map(esc).join(",")));
+  const csv = "\uFEFF" + lines.join("\r\n"); // BOM so Excel opens UTF-8 correctly
+  const blob = new Blob([csv], { type:"text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
 
 /* ============================================================
    CONFIG — Gemini calls now go through our own backend endpoint
@@ -521,7 +702,8 @@ const HASHTAG_SETS = {
 // Random tab isn't a niche — it has no Daily Log or Account Tracker,
 // just a simple upload -> AI caption + hashtags helper for anything.
 const RANDOM_TAB = { key:"random", label:"Random", emoji:"🎲" };
-const TOPTABS = [...NICHES, RANDOM_TAB];
+const CHALLENGE_TAB = { key:"challenge", label:"100-Day", emoji:"🎯" };
+const TOPTABS = [...NICHES, RANDOM_TAB, CHALLENGE_TAB];
 
 // Every account-tracker instance (a niche's own Account Tracker, and each
 // niche's Competitor Account Tracker) shares the same logic/markup. This
@@ -778,6 +960,36 @@ function creditLineFor(username){
   return `This image/video belongs to @${username}. If you'd like it edited or removed, please DM me.`;
 }
 
+/* ---------- Hashtag-set local prefs: auto-rotate toggle + usage counts ----------
+   These are per-device conveniences (not shared data), so localStorage is
+   enough — no need to round-trip through Supabase for them. ---------- */
+function getAutoRotate(nicheKey){
+  try{ return localStorage.getItem(`autoRotate_${nicheKey}`) === "1"; }catch(e){ return false; }
+}
+function setAutoRotate(nicheKey, val){
+  try{ localStorage.setItem(`autoRotate_${nicheKey}`, val ? "1" : "0"); }catch(e){}
+}
+function getHashtagUsage(nicheKey){
+  try{
+    const raw = localStorage.getItem(`hashtagUsage_${nicheKey}`);
+    return raw ? JSON.parse(raw) : {};
+  }catch(e){ return {}; }
+}
+function incrementHashtagUsage(nicheKey, setNum){
+  const usage = getHashtagUsage(nicheKey);
+  usage[setNum] = (usage[setNum] || 0) + 1;
+  try{ localStorage.setItem(`hashtagUsage_${nicheKey}`, JSON.stringify(usage)); }catch(e){}
+  return usage;
+}
+function nextHashtagSet(nicheKey){
+  const current = state[nicheKey]?.hashtagSet || 0;
+  return current >= 16 ? 1 : current + 1;
+}
+function platformUsesPresetSet(nicheKey, p){
+  const s = state[nicheKey];
+  return !!(s.hashtagSet && (p.key === "instagram" || s.applyAllHashtagSet));
+}
+
 /* ============================================================
    Per-niche state — logs/accounts start empty and are hydrated
    from Supabase right after first render (see hydrateAllData()).
@@ -795,8 +1007,15 @@ NICHES.forEach(n => {
     accounts: [],
     acctSort: "date_desc",
     acctFilterUsername: null,
-    hashtagSet: null,          // null = AI-generated hashtags; 1-16 = curated set index (Instagram)
-    applyAllHashtagSet: false  // if true, the chosen set also overrides FB/FG/X/Pinterest hashtags
+    hashtagSet: null,             // null = AI-generated hashtags; 1-16 = curated set index (Instagram)
+    applyAllHashtagSet: false,    // if true, the chosen set also overrides FB/FG/X/Pinterest hashtags
+    autoRotateHashtagSet: getAutoRotate(n.key), // if true, advance to the next set after each generate
+    followers: [],                // follower-count snapshots: { id, date, count }
+    postPerf: [],                 // per-post performance rows: { id, date, hashtagSet, link, likes, comments, shares, reach }
+    logDateFrom: null,
+    logDateTo: null,
+    batchQueue: [],                // multi-file upload: File objects waiting to be stepped through
+    batchPos: 0                    // 0-based index into batchQueue of the currently loaded file
   };
 
   // Each niche also gets its own independent Competitor Account Tracker
@@ -818,6 +1037,43 @@ state.random = {
   error: null,
   lastAction: null,
   creditName: ""   // simple free-text author/credit name; blank -> "Unknown"
+};
+
+/* ============================================================
+   100-Day Challenge tab state
+   - Phase 1 (Day 1-7):  16 posts/day
+   - Phase 2 (Day 8-100): 2 reels + 2 posts + 1 story/day
+   - Also tracks daily follow/unfollow counts toward the overall
+     100-day / $1000 goal. Start date is a local per-device
+     setting (localStorage); entries live in Supabase.
+   ============================================================ */
+function challengeTargetForDay(dayNum){
+  if(dayNum >= 1 && dayNum <= 7){
+    return { posts:16, reels:0, stories:0, phaseLabel:"Phase 1 — Day 1–7", targetLabel:"16 posts today" };
+  }
+  return { posts:2, reels:2, stories:1, phaseLabel:"Phase 2 — Day 8–100", targetLabel:"2 reels + 2 posts + 1 story today" };
+}
+function getChallengeStartDate(){
+  try{ return localStorage.getItem("challengeStartDate") || ""; }catch(e){ return ""; }
+}
+function setChallengeStartDate(v){
+  try{ localStorage.setItem("challengeStartDate", v); }catch(e){}
+}
+function dayNumberFor(dateISO, startISO){
+  if(!startISO) return null;
+  const start = new Date(startISO + "T00:00:00");
+  const d = new Date(dateISO + "T00:00:00");
+  if(isNaN(start) || isNaN(d)) return null;
+  return Math.round((d - start) / 86400000) + 1;
+}
+
+state.challenge = {
+  startDate: getChallengeStartDate(),
+  entries: [],       // { id, date, posts, reels, stories, follows, unfollows }
+  earnings: [],       // { id, date, amount, note } — toward the $1,000 goal
+  loading: false,
+  error: null,
+  lastAction: null
 };
 
 /* ---------- Supabase-backed storage: daily logs ---------- */
@@ -888,22 +1144,229 @@ async function deleteAccountFromDB(id){
   if(error) throw error;
 }
 
+/* ---------- Supabase-backed storage: 100-day challenge entries ----------
+   Table: challenge_entries (id, entry_date, posts, reels, stories, follows, unfollows)
+   Run this SQL once in the Supabase SQL editor to create it:
+
+   create table challenge_entries (
+     id bigint generated always as identity primary key,
+     entry_date date not null,
+     posts int not null default 0,
+     reels int not null default 0,
+     stories int not null default 0,
+     follows int not null default 0,
+     unfollows int not null default 0,
+     created_at timestamptz not null default now()
+   );
+   alter table challenge_entries enable row level security;
+   create policy "public read" on challenge_entries for select using (true);
+   create policy "public write" on challenge_entries for insert with check (true);
+   create policy "public delete" on challenge_entries for delete using (true);
+------------------------------------------------------------------------- */
+function challengeRowToEntry(row){
+  return { id:row.id, date:row.entry_date, posts:row.posts||0, reels:row.reels||0, stories:row.stories||0, follows:row.follows||0, unfollows:row.unfollows||0 };
+}
+async function loadChallengeEntriesFromDB(){
+  const { data, error } = await db
+    .from("challenge_entries")
+    .select("*")
+    .order("entry_date", { ascending:false })
+    .order("id", { ascending:false });
+  if(error){ reportDbError("loadChallengeEntriesFromDB", error); return []; }
+  return (data || []).map(challengeRowToEntry);
+}
+async function addChallengeEntryToDB(entry){
+  const { data, error } = await db
+    .from("challenge_entries")
+    .insert({
+      entry_date: entry.date,
+      posts: entry.posts, reels: entry.reels, stories: entry.stories,
+      follows: entry.follows, unfollows: entry.unfollows
+    })
+    .select()
+    .single();
+  if(error) throw error;
+  return challengeRowToEntry(data);
+}
+async function deleteChallengeEntryFromDB(id){
+  const { error } = await db.from("challenge_entries").delete().eq("id", id);
+  if(error) throw error;
+}
+
+/* ---------- Supabase-backed storage: earnings toward the $1,000 goal ----------
+   Table: earnings (id, entry_date, amount, note)
+   SQL to run once in the Supabase SQL editor:
+
+   create table earnings (
+     id bigint generated always as identity primary key,
+     entry_date date not null,
+     amount numeric not null default 0,
+     note text,
+     created_at timestamptz not null default now()
+   );
+   alter table earnings enable row level security;
+   create policy "public read" on earnings for select using (true);
+   create policy "public write" on earnings for insert with check (true);
+   create policy "public delete" on earnings for delete using (true);
+------------------------------------------------------------------------- */
+function earningRowToEntry(row){
+  return { id:row.id, date:row.entry_date, amount:Number(row.amount)||0, note:row.note||"" };
+}
+async function loadEarningsFromDB(){
+  const { data, error } = await db
+    .from("earnings")
+    .select("*")
+    .order("entry_date", { ascending:false })
+    .order("id", { ascending:false });
+  if(error){ reportDbError("loadEarningsFromDB", error); return []; }
+  return (data || []).map(earningRowToEntry);
+}
+async function addEarningToDB(entry){
+  const { data, error } = await db
+    .from("earnings")
+    .insert({ entry_date: entry.date, amount: entry.amount, note: entry.note || null })
+    .select()
+    .single();
+  if(error) throw error;
+  return earningRowToEntry(data);
+}
+async function deleteEarningFromDB(id){
+  const { error } = await db.from("earnings").delete().eq("id", id);
+  if(error) throw error;
+}
+
+/* ---------- Supabase-backed storage: follower-count snapshots ----------
+   Table: followers (id, niche_key, entry_date, count)
+   SQL to run once in the Supabase SQL editor:
+
+   create table followers (
+     id bigint generated always as identity primary key,
+     niche_key text not null,
+     entry_date date not null,
+     count int not null default 0,
+     created_at timestamptz not null default now()
+   );
+   alter table followers enable row level security;
+   create policy "public read" on followers for select using (true);
+   create policy "public write" on followers for insert with check (true);
+   create policy "public delete" on followers for delete using (true);
+------------------------------------------------------------------------- */
+function followerRowToEntry(row){
+  return { id:row.id, date:row.entry_date, count:row.count||0 };
+}
+async function loadFollowersFromDB(nicheKey){
+  const { data, error } = await db
+    .from("followers")
+    .select("*")
+    .eq("niche_key", nicheKey)
+    .order("entry_date", { ascending:true })
+    .order("id", { ascending:true });
+  if(error){ reportDbError("loadFollowersFromDB", error); return []; }
+  return (data || []).map(followerRowToEntry);
+}
+async function addFollowerToDB(nicheKey, date, count){
+  const { data, error } = await db
+    .from("followers")
+    .insert({ niche_key: nicheKey, entry_date: date, count })
+    .select()
+    .single();
+  if(error) throw error;
+  return followerRowToEntry(data);
+}
+async function deleteFollowerFromDB(id){
+  const { error } = await db.from("followers").delete().eq("id", id);
+  if(error) throw error;
+}
+
+/* ---------- Supabase-backed storage: hashtag-set post performance ----------
+   Table: post_performance (id, niche_key, entry_date, hashtag_set, post_link,
+   likes, comments, shares, reach) — mirrors the "Tracking" + "Set Performance
+   Summary" sheets from the hashtag-set workbooks: log each post's numbers,
+   see which set performs best on average.
+   SQL to run once in the Supabase SQL editor:
+
+   create table post_performance (
+     id bigint generated always as identity primary key,
+     niche_key text not null,
+     entry_date date not null,
+     hashtag_set int,
+     post_link text,
+     likes int not null default 0,
+     comments int not null default 0,
+     shares int not null default 0,
+     reach int not null default 0,
+     created_at timestamptz not null default now()
+   );
+   alter table post_performance enable row level security;
+   create policy "public read" on post_performance for select using (true);
+   create policy "public write" on post_performance for insert with check (true);
+   create policy "public delete" on post_performance for delete using (true);
+------------------------------------------------------------------------- */
+function engagementScore(e){
+  return e.likes + e.comments*2 + e.shares*3;
+}
+function perfRowToEntry(row){
+  return {
+    id:row.id, date:row.entry_date, hashtagSet:row.hashtag_set || null,
+    link:row.post_link || "", likes:row.likes||0, comments:row.comments||0,
+    shares:row.shares||0, reach:row.reach||0
+  };
+}
+async function loadPostPerformanceFromDB(nicheKey){
+  const { data, error } = await db
+    .from("post_performance")
+    .select("*")
+    .eq("niche_key", nicheKey)
+    .order("entry_date", { ascending:false })
+    .order("id", { ascending:false });
+  if(error){ reportDbError("loadPostPerformanceFromDB", error); return []; }
+  return (data || []).map(perfRowToEntry);
+}
+async function addPostPerformanceToDB(nicheKey, entry){
+  const { data, error } = await db
+    .from("post_performance")
+    .insert({
+      niche_key: nicheKey, entry_date: entry.date, hashtag_set: entry.hashtagSet,
+      post_link: entry.link || null, likes: entry.likes, comments: entry.comments,
+      shares: entry.shares, reach: entry.reach
+    })
+    .select()
+    .single();
+  if(error) throw error;
+  return perfRowToEntry(data);
+}
+async function deletePostPerformanceFromDB(id){
+  const { error } = await db.from("post_performance").delete().eq("id", id);
+  if(error) throw error;
+}
+
 /* ---------- Hydrate everything from Supabase after first render ---------- */
 async function hydrateAllData(){
   for(const n of NICHES){
-    const [logs, accounts] = await Promise.all([
+    const [logs, accounts, followers, perf] = await Promise.all([
       loadLogsFromDB(n.key),
-      loadAccountsFromDB(n.key)
+      loadAccountsFromDB(n.key),
+      loadFollowersFromDB(n.key),
+      loadPostPerformanceFromDB(n.key)
     ]);
     state[n.key].logs = logs;
     state[n.key].accounts = accounts;
+    state[n.key].followers = followers;
+    state[n.key].postPerf = perf;
     renderLogTable(n.key);
     renderAccountList(n.key);
+    renderFollowerChart(n.key);
+    renderFollowerTable(n.key);
+    renderPostPerfAll(n.key);
 
     const compKey = competitorKeyFor(n.key);
     state[compKey].accounts = await loadAccountsFromDB(compKey);
     renderAccountList(compKey);
   }
+
+  state.challenge.entries = await loadChallengeEntriesFromDB();
+  state.challenge.earnings = await loadEarningsFromDB();
+  renderChallengeAll();
 }
 
 /* ============================================================
@@ -933,9 +1396,11 @@ function renderTabstrip(){
    ============================================================ */
 function renderPanels(){
   const container = document.getElementById("panels");
-  container.innerHTML = NICHES.map(n => panelTemplate(n)).join("") + randomPanelTemplate();
+  container.innerHTML = NICHES.map(n => panelTemplate(n)).join("") + randomPanelTemplate() + challengePanelTemplate();
   NICHES.forEach(n => wirePanel(n));
   wireRandomPanel();
+  wireChallengePanel();
+  renderChallengeAll();
 }
 
 /* ============================================================
@@ -960,8 +1425,8 @@ function randomPanelTemplate(){
         <label class="upload-zone" id="dropzone-${key}" for="fileinput-${key}">
           <div class="up-icon">⬆</div>
           <div class="up-text">Click or drop an image or video</div>
-          <div class="up-sub">JPG, PNG, MP4, MOV — a still frame is used for video</div>
-          <input type="file" id="fileinput-${key}" accept="image/*,video/*">
+          <div class="up-sub">JPG, PNG, MP4, MOV — a still frame is used for video. Select multiple to step through them one by one.</div>
+          <input type="file" id="fileinput-${key}" accept="image/*,video/*" multiple>
         </label>
 
         <div id="previewrow-${key}" class="preview-row" style="display:none;">
@@ -971,6 +1436,12 @@ function randomPanelTemplate(){
             <div class="preview-type" id="previewtype-${key}"></div>
           </div>
           <button class="btn btn-ghost btn-sm" id="clearmedia-${key}">Remove</button>
+        </div>
+
+        <div class="batch-nav" id="batchnav-${key}" style="display:none;">
+          <button class="btn btn-ghost btn-sm" id="batchprev-${key}">◀ Prev</button>
+          <span id="batchlabel-${key}"></span>
+          <button class="btn btn-ghost btn-sm" id="batchnext-${key}">Next ▶</button>
         </div>
 
         <div class="gen-row">
@@ -1007,26 +1478,23 @@ function wireRandomPanel(){
 
   const fileInput = document.getElementById(`fileinput-${key}`);
   const dropzone = document.getElementById(`dropzone-${key}`);
-  fileInput.addEventListener("change", (e)=>{
-    const file = e.target.files && e.target.files[0];
-    if(file) handleFile(key, file);
-  });
+  fileInput.addEventListener("change", (e)=> handleFileSelection(key, e.target.files));
   ["dragover","dragenter"].forEach(ev => dropzone.addEventListener(ev, (e)=>{
     e.preventDefault(); dropzone.classList.add("drag");
   }));
   ["dragleave","drop"].forEach(ev => dropzone.addEventListener(ev, (e)=>{
     e.preventDefault(); dropzone.classList.remove("drag");
   }));
-  dropzone.addEventListener("drop", (e)=>{
-    const file = e.dataTransfer.files && e.dataTransfer.files[0];
-    if(file) handleFile(key, file);
-  });
+  dropzone.addEventListener("drop", (e)=> handleFileSelection(key, e.dataTransfer.files));
+  wireBatchNav(key);
 
   document.getElementById(`clearmedia-${key}`).addEventListener("click", ()=>{
     const s = state[key];
     s.media = null; s.result = null; s.error = null;
+    s.batchQueue = []; s.batchPos = 0;
     document.getElementById(`previewrow-${key}`).style.display = "none";
     document.getElementById(`resultswrap-${key}`).style.display = "none";
+    document.getElementById(`batchnav-${key}`).style.display = "none";
     document.getElementById(`generate-${key}`).disabled = true;
     fileInput.value = "";
     renderStateBox(key);
@@ -1083,6 +1551,424 @@ function renderRandomResult(){
   document.getElementById(`tags-${key}`).value = tagText;
 }
 
+/* ============================================================
+   100-Day Challenge tab — Phase 1 (Day 1-7): 16 posts/day.
+   Phase 2 (Day 8-100): 2 reels + 2 posts + 1 story/day.
+   Also logs daily follow/unfollow counts. Start date lives in
+   localStorage (a per-device setting); entries sync via Supabase.
+   ============================================================ */
+function addDaysISO(iso, days){
+  const d = new Date(iso + "T00:00:00");
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0,10);
+}
+
+function computeChallengeStats(){
+  const s = state.challenge;
+  const start = s.startDate;
+  const todayDay = start ? dayNumberFor(todayISO(), start) : null;
+
+  const byDate = {};
+  s.entries.forEach(e=>{
+    if(!byDate[e.date]) byDate[e.date] = { posts:0, reels:0, stories:0, follows:0, unfollows:0 };
+    byDate[e.date].posts += e.posts;
+    byDate[e.date].reels += e.reels;
+    byDate[e.date].stories += e.stories;
+    byDate[e.date].follows += e.follows;
+    byDate[e.date].unfollows += e.unfollows;
+  });
+
+  let totalPosts=0, totalReels=0, totalStories=0, totalFollows=0, totalUnfollows=0;
+  Object.values(byDate).forEach(d=>{
+    totalPosts+=d.posts; totalReels+=d.reels; totalStories+=d.stories;
+    totalFollows+=d.follows; totalUnfollows+=d.unfollows;
+  });
+
+  let streak = 0;
+  if(start){
+    const maxCheck = todayDay ? Math.max(0, Math.min(todayDay, 100)) : 0;
+    for(let d=1; d<=maxCheck; d++){
+      const dateISO = addDaysISO(start, d-1);
+      const rec = byDate[dateISO];
+      const target = challengeTargetForDay(d);
+      const met = rec && rec.posts>=target.posts && rec.reels>=target.reels && rec.stories>=target.stories;
+      if(met) streak++; else break;
+    }
+  }
+
+  return {
+    todayDay, totalPosts, totalReels, totalStories, totalFollows, totalUnfollows,
+    netFollows: totalFollows - totalUnfollows,
+    daysLogged: Object.keys(byDate).length,
+    streak, byDate
+  };
+}
+
+function renderChallengeSummary(){
+  const el = document.getElementById("challenge-summary");
+  if(!el) return;
+  const s = state.challenge;
+  const stats = computeChallengeStats();
+
+  if(!s.startDate){
+    el.innerHTML = `<div class="section-sub" style="margin-top:12px;">Set a start date above to begin tracking Day 1 of 100.</div>`;
+    return;
+  }
+
+  const day = stats.todayDay;
+  const dayClamped = (day === null) ? null : Math.max(1, Math.min(day, 100));
+  const pct = dayClamped ? Math.round((dayClamped/100)*100) : 0;
+
+  let statusLine = "";
+  if(day !== null){
+    if(day < 1) statusLine = `Challenge starts in ${1-day} day(s).`;
+    else if(day > 100) statusLine = `🎉 100-day challenge complete!`;
+    else {
+      const target = challengeTargetForDay(day);
+      statusLine = `Today is <strong>Day ${day} of 100</strong> — ${escapeHtml(target.phaseLabel)}`;
+    }
+  }
+
+  el.innerHTML = `
+    ${statusLine ? `<div class="section-sub" style="margin-top:12px; color:var(--ink);">${statusLine}</div>` : ""}
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%;"></div></div>
+    <div class="challenge-badges">
+      <div class="challenge-badge"><div class="num">${stats.streak}</div><div class="lbl">Day streak 🔥</div></div>
+      <div class="challenge-badge"><div class="num">${stats.totalPosts}</div><div class="lbl">Total posts</div></div>
+      <div class="challenge-badge"><div class="num">${stats.totalReels}</div><div class="lbl">Total reels</div></div>
+      <div class="challenge-badge"><div class="num">${stats.totalStories}</div><div class="lbl">Total stories</div></div>
+      <div class="challenge-badge"><div class="num">${stats.totalFollows}</div><div class="lbl">Total follows</div></div>
+      <div class="challenge-badge"><div class="num">${stats.totalUnfollows}</div><div class="lbl">Total unfollows</div></div>
+      <div class="challenge-badge"><div class="num">${stats.netFollows>=0?"+":""}${stats.netFollows}</div><div class="lbl">Net follows</div></div>
+    </div>
+  `;
+}
+
+function renderChallengeTodayTarget(){
+  const el = document.getElementById("challenge-todaytarget");
+  if(!el) return;
+  const s = state.challenge;
+  if(!s.startDate){ el.textContent = "Set your start date first."; return; }
+  const day = dayNumberFor(todayISO(), s.startDate);
+  if(day === null || day < 1){ el.textContent = "Challenge hasn't started yet."; return; }
+  if(day > 100){ el.textContent = "🎉 100 days complete!"; return; }
+  const t = challengeTargetForDay(day);
+  el.textContent = `Day ${day} of 100 — ${t.targetLabel}`;
+}
+
+function renderChallengeTable(){
+  const tbody = document.getElementById("challenge-tbody");
+  const empty = document.getElementById("challenge-empty");
+  if(!tbody) return;
+  const s = state.challenge;
+  const entries = [...s.entries].sort((a,b)=> b.date.localeCompare(a.date) || b.id - a.id);
+
+  if(entries.length === 0){
+    tbody.innerHTML = "";
+    if(empty) empty.style.display = "block";
+    return;
+  }
+  if(empty) empty.style.display = "none";
+
+  tbody.innerHTML = entries.map(e=>{
+    const day = s.startDate ? dayNumberFor(e.date, s.startDate) : null;
+    const target = day ? challengeTargetForDay(day) : null;
+    const met = target && e.posts>=target.posts && e.reels>=target.reels && e.stories>=target.stories;
+    const targetPill = target
+      ? `<span class="target-pill ${met?'hit':'miss'}">${met?'✓ met':'✗ short'}</span>`
+      : `<span style="color:var(--ink-faint); font-size:11.5px;">—</span>`;
+    return `
+      <tr>
+        <td class="no">${day ?? "—"}</td>
+        <td class="date">${escapeHtml(formatDate(e.date))}</td>
+        <td>${e.posts}</td>
+        <td>${e.reels}</td>
+        <td>${e.stories}</td>
+        <td>${e.follows}</td>
+        <td>${e.unfollows}</td>
+        <td>${targetPill}</td>
+        <td><button class="btn btn-ghost btn-sm" data-delchallenge="${e.id}" title="Delete" style="padding:4px 8px;">✕</button></td>
+      </tr>`;
+  }).join("");
+
+  tbody.querySelectorAll("[data-delchallenge]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = parseInt(btn.getAttribute("data-delchallenge"), 10);
+      try{
+        await deleteChallengeEntryFromDB(id);
+        state.challenge.entries = state.challenge.entries.filter(x=>x.id!==id);
+        renderChallengeAll();
+        showToast("Entry deleted");
+      }catch(e){
+        showToast("Couldn't delete entry");
+        console.error(e);
+      }
+    });
+  });
+}
+
+function renderChallengeAll(){
+  renderChallengeSummary();
+  renderChallengeTodayTarget();
+  renderChallengeTable();
+  renderEarningsSummary();
+  renderEarningsTable();
+}
+
+const GOAL_AMOUNT = 1000;
+function formatMoney(n){
+  return "$" + (Math.round(n * 100) / 100).toLocaleString(undefined, { minimumFractionDigits:0, maximumFractionDigits:2 });
+}
+function renderEarningsSummary(){
+  const el = document.getElementById("earnings-summary");
+  if(!el) return;
+  const total = state.challenge.earnings.reduce((sum, e)=> sum + e.amount, 0);
+  const pct = Math.max(0, Math.min(100, Math.round((total / GOAL_AMOUNT) * 100)));
+  const remaining = Math.max(0, GOAL_AMOUNT - total);
+  el.innerHTML = `
+    <div class="section-sub" style="margin-top:2px; color:var(--ink);">
+      <strong>${formatMoney(total)}</strong> earned of your <strong>${formatMoney(GOAL_AMOUNT)}</strong> goal
+      ${remaining > 0 ? ` — ${formatMoney(remaining)} to go` : " — 🎉 goal reached!"}
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%;"></div></div>
+  `;
+}
+function renderEarningsTable(){
+  const tbody = document.getElementById("earnings-tbody");
+  const empty = document.getElementById("earnings-empty");
+  if(!tbody) return;
+  const entries = [...state.challenge.earnings].sort((a,b)=> b.date.localeCompare(a.date) || b.id - a.id);
+
+  if(entries.length === 0){
+    tbody.innerHTML = "";
+    if(empty) empty.style.display = "block";
+    return;
+  }
+  if(empty) empty.style.display = "none";
+
+  tbody.innerHTML = entries.map(e => `
+    <tr>
+      <td class="date">${escapeHtml(formatDate(e.date))}</td>
+      <td>${formatMoney(e.amount)}</td>
+      <td>${escapeHtml(e.note || "—")}</td>
+      <td><button class="btn btn-ghost btn-sm" data-delearning="${e.id}" title="Delete" style="padding:4px 8px;">✕</button></td>
+    </tr>
+  `).join("");
+
+  tbody.querySelectorAll("[data-delearning]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = parseInt(btn.getAttribute("data-delearning"), 10);
+      try{
+        await deleteEarningFromDB(id);
+        state.challenge.earnings = state.challenge.earnings.filter(x=>x.id!==id);
+        renderEarningsSummary();
+        renderEarningsTable();
+        showToast("Entry deleted");
+      }catch(e){
+        showToast("Couldn't delete entry");
+        console.error(e);
+      }
+    });
+  });
+}
+
+function challengePanelTemplate(){
+  const key = "challenge";
+  const visible = activeNiche === key;
+  const s = state.challenge;
+  return `
+  <section class="niche-panel" id="panel-${key}" data-visible="${visible}" role="tabpanel" aria-labelledby="tab-${key}">
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="section-title"><span class="ledger-no">Goal</span> 100-Day Challenge</div>
+          <div class="section-sub">Phase 1 (Day 1–7): 16 posts/day · Phase 2 (Day 8–100): 2 reels + 2 posts + 1 story/day — toward your $1,000 goal.</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding-top:0;">
+        <div class="challenge-startform">
+          <div>
+            <label for="challenge-startdate">Start date</label>
+            <input type="date" id="challenge-startdate" value="${escapeHtml(s.startDate)}">
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button class="btn btn-gold" id="challenge-savestart" style="width:100%; justify-content:center;">Save start date</button>
+          </div>
+        </div>
+        <label style="display:flex; align-items:center; gap:8px; margin-top:10px; font-size:12.5px; color:var(--ink-dim); text-transform:none; font-weight:500;">
+          <input type="checkbox" id="remindertoggle" ${getRemindersEnabled() ? "checked" : ""} style="width:auto;">
+          🔔 Remind me here if I haven't logged today (only while this tab is open)
+        </label>
+        <div id="challenge-summary"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="section-title"><span class="ledger-no">Log</span> Today's Progress</div>
+          <div class="section-sub" id="challenge-todaytarget"></div>
+        </div>
+      </div>
+      <div class="card-body" style="padding-top:0;">
+        <div class="challenge-entryform">
+          <div><label for="challenge-date">Date</label><input type="date" id="challenge-date" value="${todayISO()}"></div>
+          <div><label for="challenge-posts">Posts</label><input type="number" id="challenge-posts" min="0" value="0"></div>
+          <div><label for="challenge-reels">Reels</label><input type="number" id="challenge-reels" min="0" value="0"></div>
+          <div><label for="challenge-stories">Stories</label><input type="number" id="challenge-stories" min="0" value="0"></div>
+          <div><label for="challenge-follows">Follows</label><input type="number" id="challenge-follows" min="0" value="0"></div>
+          <div><label for="challenge-unfollows">Unfollows</label><input type="number" id="challenge-unfollows" min="0" value="0"></div>
+        </div>
+        <div class="gen-row">
+          <button class="btn btn-gold" id="challenge-addentry">+ Add today's entry</button>
+        </div>
+
+        <div class="filter-row" style="margin:14px 0 0;">
+          <button class="btn btn-ghost btn-sm" id="challenge-export" style="margin-left:auto;">⬇ Export CSV</button>
+        </div>
+        <table class="log-table" style="margin-top:8px;">
+          <thead><tr>
+            <th style="width:46px;">Day</th><th style="width:96px;">Date</th>
+            <th>Posts</th><th>Reels</th><th>Stories</th><th>Follows</th><th>Unfollows</th>
+            <th style="width:70px;">Target</th><th style="width:30px;"></th>
+          </tr></thead>
+          <tbody id="challenge-tbody"></tbody>
+        </table>
+        <div id="challenge-empty" class="log-empty" style="display:none;">No entries yet — set your start date and add today's numbers above.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="section-title"><span class="ledger-no">$</span> Earnings — $1,000 Goal</div>
+          <div class="section-sub">Log whatever comes in from this hustle, however small, and watch it stack up.</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding-top:0;">
+        <div id="earnings-summary"></div>
+
+        <div class="challenge-entryform" style="grid-template-columns:130px 120px 1fr; margin-top:16px;">
+          <div><label for="earnings-date">Date</label><input type="date" id="earnings-date" value="${todayISO()}"></div>
+          <div><label for="earnings-amount">Amount ($)</label><input type="number" id="earnings-amount" min="0" step="0.01" value="0"></div>
+          <div><label for="earnings-note">Note (optional)</label><input type="text" id="earnings-note" placeholder="e.g. brand deal, affiliate payout"></div>
+        </div>
+        <div class="gen-row">
+          <button class="btn btn-gold" id="earnings-add">+ Add earning</button>
+        </div>
+
+        <div class="filter-row" style="margin:14px 0 0;">
+          <button class="btn btn-ghost btn-sm" id="earnings-export" style="margin-left:auto;">⬇ Export CSV</button>
+        </div>
+        <table class="log-table" style="margin-top:8px;">
+          <thead><tr><th style="width:96px;">Date</th><th style="width:90px;">Amount</th><th>Note</th><th style="width:30px;"></th></tr></thead>
+          <tbody id="earnings-tbody"></tbody>
+        </table>
+        <div id="earnings-empty" class="log-empty" style="display:none;">No earnings logged yet.</div>
+      </div>
+    </div>
+
+  </section>`;
+}
+
+function wireChallengePanel(){
+  document.getElementById("challenge-savestart")?.addEventListener("click", ()=>{
+    const val = document.getElementById("challenge-startdate").value;
+    if(!val){ showToast("Pick a start date first"); return; }
+    state.challenge.startDate = val;
+    setChallengeStartDate(val);
+    renderChallengeAll();
+    showToast("Start date saved");
+  });
+
+  document.getElementById("remindertoggle")?.addEventListener("change", async (e)=>{
+    if(e.target.checked){
+      if(typeof Notification === "undefined"){
+        showToast("Notifications aren't supported in this browser");
+        e.target.checked = false;
+        return;
+      }
+      const perm = await Notification.requestPermission();
+      if(perm !== "granted"){
+        showToast("Notification permission was not granted");
+        e.target.checked = false;
+        return;
+      }
+      setRemindersEnabled(true);
+      showToast("Reminder on — keep this tab open");
+      maybeShowDailyReminder();
+    }else{
+      setRemindersEnabled(false);
+    }
+  });
+
+  document.getElementById("challenge-addentry")?.addEventListener("click", async ()=>{
+    const date = document.getElementById("challenge-date").value || todayISO();
+    const posts = parseInt(document.getElementById("challenge-posts").value, 10) || 0;
+    const reels = parseInt(document.getElementById("challenge-reels").value, 10) || 0;
+    const stories = parseInt(document.getElementById("challenge-stories").value, 10) || 0;
+    const follows = parseInt(document.getElementById("challenge-follows").value, 10) || 0;
+    const unfollows = parseInt(document.getElementById("challenge-unfollows").value, 10) || 0;
+
+    const btn = document.getElementById("challenge-addentry");
+    btn.disabled = true;
+    try{
+      const entry = await addChallengeEntryToDB({ date, posts, reels, stories, follows, unfollows });
+      state.challenge.entries.push(entry);
+      renderChallengeAll();
+      showToast("Entry added");
+      ["challenge-posts","challenge-reels","challenge-stories","challenge-follows","challenge-unfollows"].forEach(id=>{
+        const inp = document.getElementById(id);
+        if(inp) inp.value = 0;
+      });
+    }catch(e){
+      showToast("Couldn't save entry — check Supabase table setup");
+      console.error(e);
+    }finally{
+      btn.disabled = false;
+    }
+  });
+
+  document.getElementById("earnings-add")?.addEventListener("click", async ()=>{
+    const date = document.getElementById("earnings-date").value || todayISO();
+    const amount = parseFloat(document.getElementById("earnings-amount").value) || 0;
+    const note = document.getElementById("earnings-note").value.trim();
+    if(amount <= 0){ showToast("Enter an amount greater than 0"); return; }
+
+    const btn = document.getElementById("earnings-add");
+    btn.disabled = true;
+    try{
+      const entry = await addEarningToDB({ date, amount, note });
+      state.challenge.earnings.push(entry);
+      renderEarningsSummary();
+      renderEarningsTable();
+      showToast("Earning added");
+      document.getElementById("earnings-amount").value = 0;
+      document.getElementById("earnings-note").value = "";
+    }catch(e){
+      showToast("Couldn't save earning — check Supabase table setup");
+      console.error(e);
+    }finally{
+      btn.disabled = false;
+    }
+  });
+
+  document.getElementById("challenge-export")?.addEventListener("click", ()=>{
+    const s = state.challenge;
+    const sorted = [...s.entries].sort((a,b)=> b.date.localeCompare(a.date));
+    exportCSV("100-day-challenge-log.csv",
+      ["Day","Date","Posts","Reels","Stories","Follows","Unfollows"],
+      sorted.map(e=>[s.startDate ? (dayNumberFor(e.date, s.startDate) ?? "") : "", formatDate(e.date), e.posts, e.reels, e.stories, e.follows, e.unfollows])
+    );
+  });
+
+  document.getElementById("earnings-export")?.addEventListener("click", ()=>{
+    const sorted = [...state.challenge.earnings].sort((a,b)=> b.date.localeCompare(a.date));
+    exportCSV("earnings.csv", ["Date","Amount","Note"], sorted.map(e=>[formatDate(e.date), e.amount, e.note || ""]));
+  });
+}
+
 function panelTemplate(n){
   const s = state[n.key];
   const visible = n.key === activeNiche;
@@ -1114,6 +2000,13 @@ function panelTemplate(n){
           </div>
         </div>
 
+        <div class="filter-row">
+          <div><label for="logfilterfrom-${n.key}" style="margin-bottom:3px;">From</label><input type="date" id="logfilterfrom-${n.key}"></div>
+          <div><label for="logfilterto-${n.key}" style="margin-bottom:3px;">To</label><input type="date" id="logfilterto-${n.key}"></div>
+          <button class="btn btn-ghost btn-sm" id="logfilterclear-${n.key}">✕ Clear</button>
+          <button class="btn btn-ghost btn-sm" id="logexport-${n.key}" style="margin-left:auto;">⬇ Export CSV</button>
+        </div>
+
         <table class="log-table">
           <thead><tr><th style="width:56px;">No.</th><th style="width:110px;">Date</th><th>Note</th><th style="width:40px;"></th></tr></thead>
           <tbody id="logbody-${n.key}"></tbody>
@@ -1137,8 +2030,8 @@ function panelTemplate(n){
         <label class="upload-zone" id="dropzone-${n.key}" for="fileinput-${n.key}">
           <div class="up-icon">⬆</div>
           <div class="up-text">Click or drop an image or video</div>
-          <div class="up-sub">JPG, PNG, MP4, MOV — a still frame is used for video</div>
-          <input type="file" id="fileinput-${n.key}" accept="image/*,video/*">
+          <div class="up-sub">JPG, PNG, MP4, MOV — a still frame is used for video. Select multiple to step through them one by one.</div>
+          <input type="file" id="fileinput-${n.key}" accept="image/*,video/*" multiple>
         </label>
 
         <div id="previewrow-${n.key}" class="preview-row" style="display:none;">
@@ -1148,6 +2041,12 @@ function panelTemplate(n){
             <div class="preview-type" id="previewtype-${n.key}"></div>
           </div>
           <button class="btn btn-ghost btn-sm" id="clearmedia-${n.key}">Remove</button>
+        </div>
+
+        <div class="batch-nav" id="batchnav-${n.key}" style="display:none;">
+          <button class="btn btn-ghost btn-sm" id="batchprev-${n.key}">◀ Prev</button>
+          <span id="batchlabel-${n.key}"></span>
+          <button class="btn btn-ghost btn-sm" id="batchnext-${n.key}">Next ▶</button>
         </div>
 
         <div class="gen-row">
@@ -1172,6 +2071,100 @@ function panelTemplate(n){
           <button class="btn btn-ghost btn-sm" id="creditcopy-${n.key}">📋 Copy credit line</button>
         </div>
 
+      </div>
+    </div>
+
+    <!-- ===================== 2.5 FOLLOWER GROWTH ===================== -->
+    <div class="card">
+      <button class="helper-toggle" id="followertoggle-${n.key}" aria-expanded="false" aria-controls="followerbody-${n.key}">
+        <div class="section-title">📈 Follower Growth</div>
+        <span class="chev">▶</span>
+      </button>
+      <div class="helper-body" id="followerbody-${n.key}" data-open="false">
+        <div class="section-sub" style="margin-bottom:14px;">
+          Log your follower count every so often (weekly is plenty) to watch ${escapeHtml(n.label)} growth over time.
+        </div>
+
+        <div class="follower-chart-wrap">
+          <canvas id="followerchart-${n.key}"></canvas>
+          <div id="followerchart-empty-${n.key}" class="log-empty" style="display:none;">Add a couple of snapshots to see your growth chart.</div>
+        </div>
+
+        <div class="challenge-entryform" style="grid-template-columns:150px 150px; margin-top:16px;">
+          <div><label for="followerdate-${n.key}">Date</label><input type="date" id="followerdate-${n.key}" value="${todayISO()}"></div>
+          <div><label for="followercount-${n.key}">Followers</label><input type="number" id="followercount-${n.key}" min="0" placeholder="e.g. 1240"></div>
+        </div>
+        <div class="gen-row">
+          <button class="btn btn-gold" id="followeradd-${n.key}">+ Add snapshot</button>
+        </div>
+
+        <table class="log-table" style="margin-top:16px;">
+          <thead><tr><th style="width:110px;">Date</th><th>Followers</th><th style="width:30px;"></th></tr></thead>
+          <tbody id="followertbody-${n.key}"></tbody>
+        </table>
+        <div class="copy-row" style="margin-top:8px;">
+          <button class="btn btn-ghost btn-sm" id="followerexport-${n.key}">⬇ Export CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 2.6 SET PERFORMANCE TRACKER ===================== -->
+    <div class="card">
+      <button class="helper-toggle" id="perftoggle-${n.key}" aria-expanded="false" aria-controls="perfbody-${n.key}">
+        <div class="section-title">📊 Set Performance Tracker</div>
+        <span class="chev">▶</span>
+      </button>
+      <div class="helper-body" id="perfbody-${n.key}" data-open="false">
+        <div class="section-sub" style="margin-bottom:14px;">
+          Log each post's numbers to see which hashtag set actually performs — same idea as the workbook's 7-day / 16-set tracking sheet (Phase 1: 16 posts/day for the first 7 days). Engagement Score = Likes + Comments×2 + Shares×3.
+        </div>
+
+        <div class="challenge-entryform" style="grid-template-columns:120px 100px 1fr; margin-bottom:0;">
+          <div><label for="perfdate-${n.key}">Date</label><input type="date" id="perfdate-${n.key}" value="${todayISO()}"></div>
+          <div>
+            <label for="perfset-${n.key}">Set used</label>
+            <select id="perfset-${n.key}">
+              <option value="">—</option>
+              ${Array.from({length:16}, (_,i)=>i+1).map(num => `<option value="${num}">Set ${num}</option>`).join("")}
+            </select>
+          </div>
+          <div><label for="perflink-${n.key}">Post link / caption</label><input type="text" id="perflink-${n.key}" placeholder="https://instagram.com/p/..."></div>
+        </div>
+        <div class="challenge-entryform" style="grid-template-columns:repeat(4,1fr); margin-top:10px;">
+          <div><label for="perflikes-${n.key}">Likes</label><input type="number" id="perflikes-${n.key}" min="0" value="0"></div>
+          <div><label for="perfcomments-${n.key}">Comments</label><input type="number" id="perfcomments-${n.key}" min="0" value="0"></div>
+          <div><label for="perfshares-${n.key}">Shares</label><input type="number" id="perfshares-${n.key}" min="0" value="0"></div>
+          <div><label for="perfreach-${n.key}">Reach/Views</label><input type="number" id="perfreach-${n.key}" min="0" value="0"></div>
+        </div>
+        <div class="gen-row">
+          <button class="btn btn-gold" id="perfadd-${n.key}">+ Log post performance</button>
+        </div>
+
+        <div class="filter-row" style="margin-top:18px;">
+          <div class="section-title" style="font-size:14px; margin-bottom:0;">Posting log</div>
+          <button class="btn btn-ghost btn-sm" id="perfexport-${n.key}" style="margin-left:auto;">⬇ Export CSV</button>
+        </div>
+        <table class="log-table" style="margin-top:8px;">
+          <thead><tr>
+            <th style="width:96px;">Date</th><th style="width:56px;">Set</th><th>Link/Caption</th>
+            <th>Likes</th><th>Comm.</th><th>Shares</th><th>Reach</th><th>Score</th><th style="width:30px;"></th>
+          </tr></thead>
+          <tbody id="perftbody-${n.key}"></tbody>
+        </table>
+        <div id="perfempty-${n.key}" class="log-empty" style="display:none;">No posts logged yet — add your first one above.</div>
+
+        <hr class="divider">
+
+        <div class="section-title" style="font-size:14px; margin-bottom:10px;">Set Performance Summary</div>
+        <div style="overflow-x:auto;">
+          <table class="log-table" id="perfsummary-${n.key}" style="min-width:600px;">
+            <thead><tr>
+              <th>Set</th><th>Times used</th><th>Avg likes</th><th>Avg comm.</th><th>Avg shares</th><th>Avg reach</th><th>Avg score</th><th style="width:50px;">Rank</th>
+            </tr></thead>
+            <tbody id="perfsummarybody-${n.key}"></tbody>
+          </table>
+        </div>
+        <div id="perfsummaryempty-${n.key}" class="log-empty" style="display:none;">Log a few posts above to see which set performs best.</div>
       </div>
     </div>
 
@@ -1235,6 +2228,17 @@ function accountTrackerBodyTemplate(key, opts){
           </div>
         </div>
 
+        <details class="bulk-import">
+          <summary>📋 Bulk add — paste multiple links at once</summary>
+          <div style="margin-top:10px;">
+            <label for="acctbulk-${key}">One profile link (or @username) per line</label>
+            <textarea id="acctbulk-${key}" rows="4" placeholder="https://instagram.com/user1&#10;https://instagram.com/user2&#10;@user3"></textarea>
+            <div class="copy-row" style="margin-top:8px;">
+              <button class="btn btn-gold btn-sm" id="acctbulkadd-${key}">+ Add all</button>
+            </div>
+          </div>
+        </details>
+
         <hr class="divider" style="margin:18px 0;">
 
         <div class="section-title" style="font-size:14px; margin-bottom:4px;">👤 Usernames</div>
@@ -1257,6 +2261,7 @@ function accountTrackerBodyTemplate(key, opts){
               <option value="username_desc">Username Z–A</option>
             </select>
           </div>
+          <button class="btn btn-ghost btn-sm" id="acctexport-${key}" style="margin-left:auto;">⬇ Export CSV</button>
         </div>
 
         <div class="acct-filter-bar" id="acctfilterbar-${key}" style="display:none;">
@@ -1296,11 +2301,117 @@ function wirePanel(n){
     }
   });
 
+  // ---- daily log: date-range filter + CSV export ----
+  document.getElementById(`logfilterfrom-${key}`).addEventListener("change", (e)=>{
+    s.logDateFrom = e.target.value || null;
+    renderLogTable(key);
+  });
+  document.getElementById(`logfilterto-${key}`).addEventListener("change", (e)=>{
+    s.logDateTo = e.target.value || null;
+    renderLogTable(key);
+  });
+  document.getElementById(`logfilterclear-${key}`).addEventListener("click", ()=>{
+    s.logDateFrom = null; s.logDateTo = null;
+    document.getElementById(`logfilterfrom-${key}`).value = "";
+    document.getElementById(`logfilterto-${key}`).value = "";
+    renderLogTable(key);
+  });
+  document.getElementById(`logexport-${key}`).addEventListener("click", ()=>{
+    const filtered = s.logs.filter(e =>
+      (!s.logDateFrom || e.date >= s.logDateFrom) &&
+      (!s.logDateTo || e.date <= s.logDateTo)
+    );
+    exportCSV(`${key}-daily-log.csv`, ["Date","Note"], filtered.map(e=>[formatDate(e.date), e.note]));
+  });
+
   // ---- account tracker ----
   wireAccountTracker(key);
 
   // ---- competitor account tracker (separate list, below this niche's account tracker) ----
   wireAccountTracker(competitorKeyFor(key));
+
+  // ---- follower growth ----
+  renderFollowerChart(key);
+  renderFollowerTable(key);
+  const followerToggleBtn = document.getElementById(`followertoggle-${key}`);
+  followerToggleBtn.addEventListener("click", ()=>{
+    const body = document.getElementById(`followerbody-${key}`);
+    const open = body.getAttribute("data-open") === "true";
+    body.setAttribute("data-open", String(!open));
+    followerToggleBtn.setAttribute("aria-expanded", String(!open));
+    if(!open) renderFollowerChart(key); // canvas was hidden — Chart.js needs a redraw once visible
+  });
+  document.getElementById(`followeradd-${key}`).addEventListener("click", async ()=>{
+    const date = document.getElementById(`followerdate-${key}`).value || todayISO();
+    const count = parseInt(document.getElementById(`followercount-${key}`).value, 10);
+    if(!Number.isFinite(count) || count < 0){ showToast("Enter a follower count"); return; }
+
+    const btn = document.getElementById(`followeradd-${key}`);
+    btn.disabled = true;
+    try{
+      const entry = await addFollowerToDB(key, date, count);
+      s.followers.push(entry);
+      renderFollowerChart(key);
+      renderFollowerTable(key);
+      showToast("Snapshot added");
+      document.getElementById(`followercount-${key}`).value = "";
+    }catch(e){
+      showToast("Couldn't save snapshot — check Supabase table setup");
+      console.error(e);
+    }finally{
+      btn.disabled = false;
+    }
+  });
+  document.getElementById(`followerexport-${key}`).addEventListener("click", ()=>{
+    const sorted = [...s.followers].sort((a,b)=> a.date.localeCompare(b.date));
+    exportCSV(`${key}-followers.csv`, ["Date","Followers"], sorted.map(e=>[formatDate(e.date), e.count]));
+  });
+
+  // ---- set performance tracker ----
+  renderPostPerfAll(key);
+  const perfToggleBtn = document.getElementById(`perftoggle-${key}`);
+  perfToggleBtn.addEventListener("click", ()=>{
+    const body = document.getElementById(`perfbody-${key}`);
+    const open = body.getAttribute("data-open") === "true";
+    body.setAttribute("data-open", String(!open));
+    perfToggleBtn.setAttribute("aria-expanded", String(!open));
+  });
+  document.getElementById(`perfadd-${key}`).addEventListener("click", async ()=>{
+    const date = document.getElementById(`perfdate-${key}`).value || todayISO();
+    const setVal = document.getElementById(`perfset-${key}`).value;
+    const hashtagSet = setVal ? parseInt(setVal, 10) : null;
+    const link = document.getElementById(`perflink-${key}`).value.trim();
+    const likes = parseInt(document.getElementById(`perflikes-${key}`).value, 10) || 0;
+    const comments = parseInt(document.getElementById(`perfcomments-${key}`).value, 10) || 0;
+    const shares = parseInt(document.getElementById(`perfshares-${key}`).value, 10) || 0;
+    const reach = parseInt(document.getElementById(`perfreach-${key}`).value, 10) || 0;
+
+    const btn = document.getElementById(`perfadd-${key}`);
+    btn.disabled = true;
+    try{
+      const entry = await addPostPerformanceToDB(key, { date, hashtagSet, link, likes, comments, shares, reach });
+      s.postPerf.push(entry);
+      renderPostPerfAll(key);
+      showToast("Post logged");
+      ["perflink","perflikes","perfcomments","perfshares","perfreach"].forEach(prefix=>{
+        const el = document.getElementById(`${prefix}-${key}`);
+        if(el) el.value = prefix === "perflink" ? "" : 0;
+      });
+      document.getElementById(`perfset-${key}`).value = "";
+    }catch(e){
+      showToast("Couldn't save entry — check Supabase table setup");
+      console.error(e);
+    }finally{
+      btn.disabled = false;
+    }
+  });
+  document.getElementById(`perfexport-${key}`).addEventListener("click", ()=>{
+    const sorted = [...s.postPerf].sort((a,b)=> b.date.localeCompare(a.date));
+    exportCSV(`${key}-set-performance.csv`,
+      ["Date","Set","Link","Likes","Comments","Shares","Reach","Engagement Score"],
+      sorted.map(e=>[formatDate(e.date), e.hashtagSet||"", e.link, e.likes, e.comments, e.shares, e.reach, engagementScore(e)])
+    );
+  });
 
   // ---- helper collapse ----
   const toggleBtn = document.getElementById(`helpertoggle-${key}`);
@@ -1314,25 +2425,22 @@ function wirePanel(n){
   // ---- file upload ----
   const fileInput = document.getElementById(`fileinput-${key}`);
   const dropzone = document.getElementById(`dropzone-${key}`);
-  fileInput.addEventListener("change", (e)=>{
-    const file = e.target.files && e.target.files[0];
-    if(file) handleFile(key, file);
-  });
+  fileInput.addEventListener("change", (e)=> handleFileSelection(key, e.target.files));
   ["dragover","dragenter"].forEach(ev => dropzone.addEventListener(ev, (e)=>{
     e.preventDefault(); dropzone.classList.add("drag");
   }));
   ["dragleave","drop"].forEach(ev => dropzone.addEventListener(ev, (e)=>{
     e.preventDefault(); dropzone.classList.remove("drag");
   }));
-  dropzone.addEventListener("drop", (e)=>{
-    const file = e.dataTransfer.files && e.dataTransfer.files[0];
-    if(file) handleFile(key, file);
-  });
+  dropzone.addEventListener("drop", (e)=> handleFileSelection(key, e.dataTransfer.files));
+  wireBatchNav(key);
 
   document.getElementById(`clearmedia-${key}`).addEventListener("click", ()=>{
     s.media = null; s.result = null; s.error = null;
+    s.batchQueue = []; s.batchPos = 0;
     document.getElementById(`previewrow-${key}`).style.display = "none";
     document.getElementById(`resultswrap-${key}`).style.display = "none";
+    document.getElementById(`batchnav-${key}`).style.display = "none";
     document.getElementById(`generate-${key}`).disabled = true;
     fileInput.value = "";
     renderStateBox(key);
@@ -1359,14 +2467,21 @@ function renderLogTable(nicheKey){
   const s = state[nicheKey];
   const body = document.getElementById(`logbody-${nicheKey}`);
   const empty = document.getElementById(`logempty-${nicheKey}`);
-  if(!s.logs.length){
+
+  const filtered = s.logs.filter(e =>
+    (!s.logDateFrom || e.date >= s.logDateFrom) &&
+    (!s.logDateTo || e.date <= s.logDateTo)
+  );
+
+  if(!filtered.length){
     body.innerHTML = "";
     empty.style.display = "block";
+    empty.textContent = s.logs.length ? "No entries in that date range." : "No entries logged yet — add your first one above.";
     return;
   }
   empty.style.display = "none";
-  const total = s.logs.length;
-  body.innerHTML = s.logs.map((entry, idx) => `
+  const total = filtered.length;
+  body.innerHTML = filtered.map((entry, idx) => `
     <tr>
       <td class="no">No. ${pad3(total - idx)}</td>
       <td class="date">${escapeHtml(formatDate(entry.date))}</td>
@@ -1385,6 +2500,193 @@ function renderLogTable(nicheKey){
       }catch(e){
         showToast("ডিলিট করা যায়নি");
         btn.disabled = false;
+      }
+    });
+  });
+}
+
+/* ============================================================
+   Set Performance Tracker — per-post numbers + per-set averages,
+   mirroring the workbook's Tracking + Set Performance Summary tabs.
+   ============================================================ */
+function renderPostPerfTable(nicheKey){
+  const s = state[nicheKey];
+  const body = document.getElementById(`perftbody-${nicheKey}`);
+  const empty = document.getElementById(`perfempty-${nicheKey}`);
+  if(!body) return;
+  const sorted = [...s.postPerf].sort((a,b)=> b.date.localeCompare(a.date) || b.id - a.id);
+
+  if(!sorted.length){
+    body.innerHTML = "";
+    if(empty) empty.style.display = "block";
+    return;
+  }
+  if(empty) empty.style.display = "none";
+
+  body.innerHTML = sorted.map(e => `
+    <tr>
+      <td class="date">${escapeHtml(formatDate(e.date))}</td>
+      <td>${e.hashtagSet ? "Set " + e.hashtagSet : "—"}</td>
+      <td style="max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(e.link)}">${escapeHtml(e.link) || "—"}</td>
+      <td>${e.likes}</td><td>${e.comments}</td><td>${e.shares}</td><td>${e.reach}</td>
+      <td><strong>${engagementScore(e)}</strong></td>
+      <td><button class="btn btn-ghost btn-sm" data-delperf="${e.id}" title="Delete" style="padding:4px 8px;">✕</button></td>
+    </tr>
+  `).join("");
+
+  body.querySelectorAll("[data-delperf]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = parseInt(btn.getAttribute("data-delperf"), 10);
+      try{
+        await deletePostPerformanceFromDB(id);
+        s.postPerf = s.postPerf.filter(x=>x.id!==id);
+        renderPostPerfAll(nicheKey);
+        showToast("Entry deleted");
+      }catch(e){
+        showToast("Couldn't delete entry");
+        console.error(e);
+      }
+    });
+  });
+}
+function renderPostPerfSummary(nicheKey){
+  const s = state[nicheKey];
+  const body = document.getElementById(`perfsummarybody-${nicheKey}`);
+  const empty = document.getElementById(`perfsummaryempty-${nicheKey}`);
+  if(!body) return;
+
+  const bySet = {};
+  s.postPerf.forEach(e=>{
+    if(!e.hashtagSet) return;
+    if(!bySet[e.hashtagSet]) bySet[e.hashtagSet] = [];
+    bySet[e.hashtagSet].push(e);
+  });
+
+  const rows = Object.keys(bySet).map(setNum=>{
+    const entries = bySet[setNum];
+    const n = entries.length;
+    const avg = (fn) => entries.reduce((sum,e)=> sum + fn(e), 0) / n;
+    return {
+      set: parseInt(setNum,10), timesUsed:n,
+      avgLikes: avg(e=>e.likes), avgComments: avg(e=>e.comments),
+      avgShares: avg(e=>e.shares), avgReach: avg(e=>e.reach),
+      avgScore: avg(engagementScore)
+    };
+  }).sort((a,b)=> b.avgScore - a.avgScore);
+
+  if(!rows.length){
+    body.innerHTML = "";
+    if(empty) empty.style.display = "block";
+    return;
+  }
+  if(empty) empty.style.display = "none";
+
+  body.innerHTML = rows.map((r, idx) => `
+    <tr ${idx===0 ? 'style="color:var(--gold-bright);"' : ''}>
+      <td>Set ${r.set}</td>
+      <td>${r.timesUsed}</td>
+      <td>${r.avgLikes.toFixed(1)}</td>
+      <td>${r.avgComments.toFixed(1)}</td>
+      <td>${r.avgShares.toFixed(1)}</td>
+      <td>${r.avgReach.toFixed(1)}</td>
+      <td><strong>${r.avgScore.toFixed(1)}</strong></td>
+      <td>${idx===0 ? "🏆 #1" : "#"+(idx+1)}</td>
+    </tr>
+  `).join("");
+}
+function renderPostPerfAll(nicheKey){
+  renderPostPerfTable(nicheKey);
+  renderPostPerfSummary(nicheKey);
+}
+
+
+/* ============================================================
+   Follower Growth — per-niche follower-count snapshots + a
+   Chart.js line chart. Falls back to just the table if Chart.js
+   didn't load or there's fewer than 2 points to plot.
+   ============================================================ */
+function hexColor(num){
+  return "#" + num.toString(16).padStart(6, "0");
+}
+const followerCharts = {};
+function renderFollowerChart(nicheKey){
+  const canvas = document.getElementById(`followerchart-${nicheKey}`);
+  const emptyEl = document.getElementById(`followerchart-empty-${nicheKey}`);
+  if(!canvas) return;
+  const s = state[nicheKey];
+  const sorted = [...s.followers].sort((a,b)=> a.date.localeCompare(b.date));
+
+  if(followerCharts[nicheKey]){
+    try{ followerCharts[nicheKey].destroy(); }catch(e){}
+    delete followerCharts[nicheKey];
+  }
+
+  if(sorted.length < 2 || typeof Chart === "undefined"){
+    canvas.style.display = "none";
+    if(emptyEl) emptyEl.style.display = "block";
+    return;
+  }
+  canvas.style.display = "block";
+  if(emptyEl) emptyEl.style.display = "none";
+
+  const accent = hexColor(ACCENT_HEX[nicheKey] ?? 0xC7A544);
+  try{
+    followerCharts[nicheKey] = new Chart(canvas.getContext("2d"), {
+      type: "line",
+      data: {
+        labels: sorted.map(e => formatDate(e.date)),
+        datasets: [{
+          label: "Followers",
+          data: sorted.map(e => e.count),
+          borderColor: accent,
+          backgroundColor: accent + "33",
+          tension: 0.3,
+          fill: true,
+          pointRadius: 3,
+          pointBackgroundColor: accent
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display:false } },
+        scales: {
+          x: { grid:{ display:false }, ticks:{ color:"#8B8175", font:{ size:10 } } },
+          y: { grid:{ color:"rgba(255,255,255,.06)" }, ticks:{ color:"#8B8175", font:{ size:10 } } }
+        }
+      }
+    });
+  }catch(e){
+    console.error("Follower chart failed:", e);
+    canvas.style.display = "none";
+    if(emptyEl) emptyEl.style.display = "block";
+  }
+}
+function renderFollowerTable(nicheKey){
+  const tbody = document.getElementById(`followertbody-${nicheKey}`);
+  if(!tbody) return;
+  const s = state[nicheKey];
+  const sorted = [...s.followers].sort((a,b)=> b.date.localeCompare(a.date) || b.id - a.id);
+  tbody.innerHTML = sorted.map(e => `
+    <tr>
+      <td class="date">${escapeHtml(formatDate(e.date))}</td>
+      <td>${e.count.toLocaleString()}</td>
+      <td><button class="btn btn-ghost btn-sm" data-delfollower="${e.id}" title="Delete" style="padding:4px 8px;">✕</button></td>
+    </tr>
+  `).join("");
+
+  tbody.querySelectorAll("[data-delfollower]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = parseInt(btn.getAttribute("data-delfollower"), 10);
+      try{
+        await deleteFollowerFromDB(id);
+        s.followers = s.followers.filter(x=>x.id!==id);
+        renderFollowerChart(nicheKey);
+        renderFollowerTable(nicheKey);
+        showToast("Snapshot deleted");
+      }catch(e){
+        showToast("Couldn't delete snapshot");
+        console.error(e);
       }
     });
   });
@@ -1463,6 +2765,44 @@ function wireAccountTracker(nicheKey){
     unameQuickBtn.addEventListener("click", quickAddUsername);
     unameQuickInput.addEventListener("keydown", (e)=>{
       if(e.key === "Enter"){ e.preventDefault(); quickAddUsername(); }
+    });
+  }
+
+  // ---- bulk add: paste multiple links/usernames, one per line ----
+  const bulkBtn = document.getElementById(`acctbulkadd-${nicheKey}`);
+  if(bulkBtn){
+    bulkBtn.addEventListener("click", async ()=>{
+      const textarea = document.getElementById(`acctbulk-${nicheKey}`);
+      const lines = textarea.value.split("\n").map(l => l.trim()).filter(Boolean);
+      if(!lines.length){ textarea.focus(); return; }
+
+      bulkBtn.disabled = true;
+      let added = 0, skipped = 0;
+      for(const line of lines){
+        const username = parseUsernameFromUrl(line);
+        if(!username){ skipped++; continue; }
+        const link = /^https?:\/\//i.test(line) ? line : "";
+        try{
+          const entry = await addAccountToDB(nicheKey, todayISO(), link, username);
+          state[nicheKey].accounts.unshift(entry);
+          added++;
+        }catch(e){
+          skipped++;
+        }
+      }
+      renderAccountList(nicheKey);
+      textarea.value = "";
+      bulkBtn.disabled = false;
+      showToast(`${added} added${skipped ? `, ${skipped} skipped` : ""}`);
+    });
+  }
+
+  // ---- export this list as CSV ----
+  const exportBtn = document.getElementById(`acctexport-${nicheKey}`);
+  if(exportBtn){
+    exportBtn.addEventListener("click", ()=>{
+      const list = getSortedAccounts(nicheKey);
+      exportCSV(`${nicheKey}-accounts.csv`, ["Date","Username","Link"], list.map(a=>[formatDate(a.date), a.username, a.link || ""]));
     });
   }
 
@@ -1685,6 +3025,46 @@ function renderAccountList(nicheKey){
 /* ============================================================
    Media handling
    ============================================================ */
+/* ============================================================
+   Multi-file batch upload — select several files at once and step
+   through them one at a time. Each file still runs through the
+   exact same single-file handleFile()/generate flow; this just adds
+   a thin Prev/Next navigation layer on top so nothing about the
+   existing generate/copy/hashtag behavior changes per file.
+   ============================================================ */
+function handleFileSelection(key, fileList){
+  const files = Array.from(fileList || []);
+  if(!files.length) return;
+  state[key].batchQueue = files;
+  state[key].batchPos = 0;
+  loadBatchItem(key, 0);
+}
+function loadBatchItem(key, idx){
+  const s = state[key];
+  if(!s.batchQueue.length) return;
+  idx = Math.max(0, Math.min(idx, s.batchQueue.length - 1));
+  s.batchPos = idx;
+  handleFile(key, s.batchQueue[idx]);
+  updateBatchNav(key);
+}
+function updateBatchNav(key){
+  const s = state[key];
+  const nav = document.getElementById(`batchnav-${key}`);
+  if(!nav) return;
+  if(s.batchQueue.length > 1){
+    nav.style.display = "flex";
+    document.getElementById(`batchlabel-${key}`).textContent = `Photo ${s.batchPos + 1} of ${s.batchQueue.length}`;
+    document.getElementById(`batchprev-${key}`).disabled = s.batchPos === 0;
+    document.getElementById(`batchnext-${key}`).disabled = s.batchPos === s.batchQueue.length - 1;
+  }else{
+    nav.style.display = "none";
+  }
+}
+function wireBatchNav(key){
+  document.getElementById(`batchprev-${key}`)?.addEventListener("click", ()=> loadBatchItem(key, state[key].batchPos - 1));
+  document.getElementById(`batchnext-${key}`)?.addEventListener("click", ()=> loadBatchItem(key, state[key].batchPos + 1));
+}
+
 async function handleFile(nicheKey, file){
   const s = state[nicheKey];
   s.result = null; s.error = null;
@@ -1749,6 +3129,9 @@ async function runGenerate(nicheKey){
     const result = await callGeminiForCaption(s.media.base64, s.media.mimeType, n.styleName);
     s.result = result;
     s.activePlatform = PLATFORMS[0].key;
+    if(s.autoRotateHashtagSet){
+      s.hashtagSet = nextHashtagSet(nicheKey);
+    }
     s.loading = false;
     renderStateBox(nicheKey);
     renderResults(nicheKey);
@@ -1761,19 +3144,95 @@ async function runGenerate(nicheKey){
   }
 }
 
+/* ============================================================
+   Three.js loading animation — a small rotating wireframe shown
+   while captions are being generated / a video frame is being
+   read. Falls back to the plain CSS spinner if Three.js/WebGL
+   isn't available, so nothing breaks offline.
+   ============================================================ */
+const ACCENT_HEX = { fishing:0x4E90A8, terrier:0xC97C4A, cows:0x7C9A52, random:0xC7A544 };
+const loaderDisposers = {};
+function disposeLoader(key){
+  if(loaderDisposers[key]){
+    try{ loaderDisposers[key](); }catch(e){}
+    delete loaderDisposers[key];
+  }
+}
+function mount3DLoader(key, containerEl){
+  disposeLoader(key);
+  if(!containerEl || typeof THREE === "undefined") return; // keep the CSS spinner fallback
+  try{
+    const width = containerEl.clientWidth || 160;
+    const height = 64;
+    const accent = ACCENT_HEX[key] ?? 0xC7A544;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, width/height, 0.1, 100);
+    camera.position.z = 3.3;
+
+    const renderer = new THREE.WebGLRenderer({ alpha:true, antialias:true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    const geo = new THREE.IcosahedronGeometry(0.85, 0);
+    const mat = new THREE.MeshBasicMaterial({ color:accent, wireframe:true, transparent:true, opacity:.9 });
+    const mesh = new THREE.Mesh(geo, mat);
+    scene.add(mesh);
+
+    const dotGeo = new THREE.BufferGeometry();
+    const dotCount = 40;
+    const positions = new Float32Array(dotCount*3);
+    for(let i=0;i<dotCount;i++){
+      const r = 1.6 + Math.random()*0.4;
+      const t = Math.random()*Math.PI*2, p = Math.acos((Math.random()*2)-1);
+      positions[i*3]   = r*Math.sin(p)*Math.cos(t);
+      positions[i*3+1] = r*Math.sin(p)*Math.sin(t);
+      positions[i*3+2] = r*Math.cos(p);
+    }
+    dotGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    const dotMat = new THREE.PointsMaterial({ color:accent, size:0.035, transparent:true, opacity:.6 });
+    const points = new THREE.Points(dotGeo, dotMat);
+    scene.add(points);
+
+    containerEl.innerHTML = "";
+    containerEl.appendChild(renderer.domElement);
+
+    let raf;
+    (function animate(){
+      mesh.rotation.x += 0.013;
+      mesh.rotation.y += 0.019;
+      points.rotation.y -= 0.004;
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(animate);
+    })();
+
+    loaderDisposers[key] = function(){
+      cancelAnimationFrame(raf);
+      renderer.dispose();
+      geo.dispose(); mat.dispose();
+      dotGeo.dispose(); dotMat.dispose();
+    };
+  }catch(e){
+    console.error("3D loader failed, using fallback spinner:", e);
+  }
+}
+
 function renderStateBox(nicheKey, opts){
   const s = state[nicheKey];
   const box = document.getElementById(`statebox-${nicheKey}`);
   opts = opts || {};
 
   if(opts.extracting){
-    box.innerHTML = `<div class="state-box"><div class="spinner"></div> Reading video frame…</div>`;
+    box.innerHTML = `<div class="state-box"><div class="loader3d-wrap" id="loader3d-${nicheKey}"><div class="spinner"></div></div> Reading video frame…</div>`;
+    mount3DLoader(nicheKey, document.getElementById(`loader3d-${nicheKey}`));
     return;
   }
   if(s.loading){
-    box.innerHTML = `<div class="state-box"><div class="spinner"></div> Generating…</div>`;
+    box.innerHTML = `<div class="state-box"><div class="loader3d-wrap" id="loader3d-${nicheKey}"><div class="spinner"></div></div> Generating…</div>`;
+    mount3DLoader(nicheKey, document.getElementById(`loader3d-${nicheKey}`));
     return;
   }
+  disposeLoader(nicheKey);
   if(s.error){
     box.innerHTML = `<div class="state-box error">
       <span style="flex:1;">⚠ ${escapeHtml(s.error)}</span>
@@ -1818,8 +3277,7 @@ function renderResults(nicheKey){
 function hashtagsForPlatform(nicheKey, p){
   const s = state[nicheKey];
   const data = s.result?.[p.key] || { title:"", description:"", hashtags:[] };
-  const usesPreset = s.hashtagSet && (p.key === "instagram" || s.applyAllHashtagSet);
-  if(usesPreset){
+  if(platformUsesPresetSet(nicheKey, p)){
     const setTags = (HASHTAG_SETS[nicheKey] && HASHTAG_SETS[nicheKey][s.hashtagSet - 1]) || [];
     const tagLine = setTags.map(h => "#" + h).join(" ");
     return tagLine + `\n${s.hashtagSet}/16`;
@@ -1837,15 +3295,23 @@ function platformPanelTemplate(nicheKey, p){
   const data = s.result?.[p.key] || { title:"", description:"", hashtags:[] };
   const visible = p.key === s.activePlatform;
   const hashtagText = hashtagsForPlatform(nicheKey, p);
+  const usage = getHashtagUsage(nicheKey);
 
   const hashtagSetPicker = p.key === "instagram" ? `
     <div class="field">
       <div class="field-head"><label for="hashtagset-${nicheKey}" style="margin-bottom:0;">Hashtag set</label></div>
-      <select id="hashtagset-${nicheKey}">
+      <select id="hashtagset-${nicheKey}" ${s.autoRotateHashtagSet ? "disabled" : ""}>
         <option value="ai" ${!s.hashtagSet ? "selected" : ""}>AI generated (default)</option>
-        ${Array.from({length:16}, (_,i)=>i+1).map(n => `<option value="${n}" ${s.hashtagSet===n ? "selected" : ""}>Set ${n}</option>`).join("")}
+        ${Array.from({length:16}, (_,i)=>i+1).map(n => {
+          const cnt = usage[n] || 0;
+          return `<option value="${n}" ${s.hashtagSet===n ? "selected" : ""}>Set ${n}${cnt ? ` — used ${cnt}×` : ""}</option>`;
+        }).join("")}
       </select>
       <label style="display:flex; align-items:center; gap:7px; margin-top:9px; font-size:12.5px; color:var(--ink-dim); text-transform:none; font-weight:500; letter-spacing:normal;">
+        <input type="checkbox" id="hashtagautorotate-${nicheKey}" ${s.autoRotateHashtagSet ? "checked" : ""} style="width:auto;">
+        Auto-rotate sets on each generate (1 → 16 → 1…)
+      </label>
+      <label style="display:flex; align-items:center; gap:7px; margin-top:7px; font-size:12.5px; color:var(--ink-dim); text-transform:none; font-weight:500; letter-spacing:normal;">
         <input type="checkbox" id="hashtagsetall-${nicheKey}" ${s.applyAllHashtagSet ? "checked" : ""} style="width:auto;">
         Apply this set to all platforms
       </label>
@@ -1910,6 +3376,10 @@ function wirePlatformPanel(nicheKey, p){
     btn.addEventListener("click", async ()=>{
       const block = buildPlatformCopyBlock(nicheKey, p);
       await copyText(block);
+      if(platformUsesPresetSet(nicheKey, p)){
+        incrementHashtagUsage(nicheKey, state[nicheKey].hashtagSet);
+        renderResults(nicheKey); // refresh the "used Nx" counts shown in the dropdown
+      }
       showToast(`${p.label} caption copied`);
     });
   }
@@ -1917,12 +3387,21 @@ function wirePlatformPanel(nicheKey, p){
   if(p.key === "instagram"){
     const sel = document.getElementById(`hashtagset-${nicheKey}`);
     const allChk = document.getElementById(`hashtagsetall-${nicheKey}`);
+    const autoChk = document.getElementById(`hashtagautorotate-${nicheKey}`);
     sel?.addEventListener("change", ()=>{
       state[nicheKey].hashtagSet = sel.value === "ai" ? null : parseInt(sel.value, 10);
       renderResults(nicheKey);
     });
     allChk?.addEventListener("change", ()=>{
       state[nicheKey].applyAllHashtagSet = allChk.checked;
+      renderResults(nicheKey);
+    });
+    autoChk?.addEventListener("change", ()=>{
+      state[nicheKey].autoRotateHashtagSet = autoChk.checked;
+      setAutoRotate(nicheKey, autoChk.checked);
+      if(autoChk.checked && !state[nicheKey].hashtagSet){
+        state[nicheKey].hashtagSet = 1; // seed it so the first generate has something to show
+      }
       renderResults(nicheKey);
     });
   }
@@ -1952,7 +3431,7 @@ function renderCreditLine(nicheKey){
    ============================================================ */
 renderTabstrip();
 renderPanels();
-hydrateAllData();
+hydrateAllData().then(()=> maybeShowDailyReminder());
 
 })();
 </script>

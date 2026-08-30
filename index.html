@@ -433,21 +433,89 @@ const NICHES = [
     key:"fishing", label:"Fishing", emoji:"🎣",
     styleName:"fishing / angling",
     logNoun:"catch",
-    logPlaceholder:"e.g. 4lb largemouth bass, topwater lure, sunrise session at the lake"
+    logPlaceholder:"e.g. 4lb largemouth bass, topwater lure, sunrise session at the lake",
+    followHandle:"fishaholic.society"
   },
   {
     key:"terrier", label:"Terrier", emoji:"🐕",
     styleName:"terrier / dog content",
     logNoun:"moment",
-    logPlaceholder:"e.g. backyard zoomies after the groomer, new squeaky toy debut"
+    logPlaceholder:"e.g. backyard zoomies after the groomer, new squeaky toy debut",
+    followHandle:"bostonterrierloversociety"
   },
   {
     key:"cows", label:"Cows", emoji:"🐄",
     styleName:"farm / cattle content",
     logNoun:"update",
-    logPlaceholder:"e.g. new calf born in the north pasture, morning feed round"
+    logPlaceholder:"e.g. new calf born in the north pasture, morning feed round",
+    followHandle:"cowlovers.forever"
   }
 ];
+
+/* ============================================================
+   HASHTAG_SETS — 16 curated sets x 22 hashtags per niche,
+   pulled from the hashtag-research workbooks. Used to power the
+   Instagram-panel hashtag-set dropdown (overrides the AI hashtags
+   for that platform, and for all platforms when "apply to all"
+   is checked). A trailing "N/16" marker is appended to the copied
+   hashtag block so posts can be tracked back to the set used.
+   ============================================================ */
+const HASHTAG_SETS = {
+  cows: [
+    ["farm", "countrygirl", "jersey", "wildwest", "aglife", "anguscattle", "regenerativefarming", "happycow", "agriculturallife", "cowsofig", "outbackaustralia", "cowsarecute", "australiangrown", "ausag", "cowsgomoo", "farmlifeisthebestlife", "milkingtime", "farmingpics", "farmlifeaustralia", "brahmanbull", "farmlifefarmwife", "dairydoc"],
+    ["farmlife", "farmhouse", "ranch", "cowsofinstagram", "sustainablefarming", "brangus", "holycow", "cowcat", "americanfarmers", "milkcows", "farmher", "cutecows", "farmstays", "backyardfarming", "brownswiss", "milkproducts", "australianbeef", "brahmancattle", "regionalliving", "stationlife", "cowgram", "brahmansofinstagram"],
+    ["countrylife", "harvest", "westernstyle", "homesteading", "longhorn", "pasture", "cowboylife", "babycow", "limousin", "britishfarming", "guernsey", "cowlovers", "farmlifestyle", "ayrshire", "cowcats", "beautifulcow", "outbackliving", "cattlemarket", "farmlifeforever", "thankafarmer", "taggingcalves", "cattlestation"],
+    ["farming", "farmersmarket", "ranchlife", "calves", "farminglife", "farmerslife", "highlandcattle", "cowdog", "feedlot", "texaslonghorns", "scottishhighlandcattle", "organicmilk", "farmliving", "babyhighlandcow", "cowsmilkisforbabycows", "cowboycountry", "smallscalefarming", "cattleequipment", "cowcuteness", "countrytowns", "simbrah", "supportaussiefarmers"],
+    ["organic", "cowboy", "dairyfarming", "calf", "dairyfarmer", "farmtotable", "cowhorse", "cowlover", "cattlemen", "australianagriculture", "cowskull", "cowshed", "buycanadian", "cowcountry", "cowhiderug", "cowpainting", "cutecowsofinstagram", "ilikecows", "bullcalf", "cowscowscows", "redbrahman", "cowsaregentle"],
+    ["beef", "rodeo", "westernfashion", "organicfarming", "brahman", "jerseycows", "cowstagram", "dairylife", "cowtok", "lovecows", "guzera", "highlandcowsofinstagram", "highlandcoo", "milkcow", "beefmaster", "cowboygear", "highlandcalf", "cattleofinstagram", "simangus", "cattlecalf", "cattlework", "chiangus"],
+    ["agriculture", "wagyu", "angus", "livestock", "farmlifebestlife", "australianmade", "cowboystyle", "happycows", "eatbeef", "cowlife", "cowgirllife", "rodeotok", "babycalf", "ruralaustralia", "undeniablydairy", "angusbull", "cowgirllifestyle", "cattleman", "cattlecountry", "cattlechute", "allthingsagriculture", "nebraskacattlemen"],
+    ["cheese", "countryliving", "dairy", "hereford", "farmfamily", "holstein", "cattlefarm", "livestockfarming", "jerseycow", "australianfarmers", "fluffycows", "instacow", "moocow", "hairycoos", "cattlelife", "stockshowlife", "cowskulls", "lifeontheland", "coosday", "aussiefarm", "nswfarmers", "brahmansofaustralia"],
+    ["milk", "cows", "cattle", "beefcattle", "ranching", "cowlove", "farmfam", "familyfarming", "agtech", "simmental", "charolais", "cowart", "teamdairy", "cowghee", "cowphotos", "cattlefarmer", "cowsfordays", "biodynamicfarming", "cowslife", "cowloversforever", "backbritishfarming", "vicfarmers"],
+    ["farmer", "wisconsin", "farmfresh", "agribusiness", "hobbyfarm", "showcattle", "dairyproducts", "redangus", "bushlife", "babycows", "dairycow", "cowboylifestyle", "cowparsley", "cowsmilk", "cowsarefriendsnotfood", "minicows", "beefcattlefarmer", "farmlifelove", "salebarnlife", "beefcow", "farmliferocks", "supportingaussiefarmers"],
+    ["countrymusic", "butter", "homestead", "bulls", "agri", "farmwork", "farminguk", "cowsmakemehappy", "cowsofinsta", "farmerstrong", "bovine", "instacows", "cowskin", "minicow", "cowfarm", "highlandcowlove", "farmlifephotography", "yourdailydoseofcows", "familycow", "redbrangus", "cowsarepeaceful", "milkingshorthorn"],
+    ["farmers", "bull", "farmgirl", "rurallife", "grassfed", "dairyfarmers", "rawmilk", "dairycows", "cowselfie", "workingranch", "cutecow", "canadianfarmers", "highland_cattle", "cowshow", "cowshit", "cowgirlsofinstagram", "cowloversofinstagram", "cutestcows", "aussiefarmer", "ranchy", "cowsrule", "cowdailypicture"],
+    ["texas", "barn", "nelore", "dairyfarm", "dairymilk", "countrykids", "familyfarm", "cattleranch", "ilovecows", "cowsarecool", "cowboyart", "herefordcattle", "cattlefarming", "scottishhighland", "longhorncattle", "cowboytattoo", "cutehighlandcows", "petcow", "ruralwomen", "agmorethanever", "cowloversfc", "maineanjou"],
+    ["cow", "tractor", "farmanimals", "westernlifestyle", "cowboyup", "dairyindustry", "agronomy", "highlandcows", "cowappreciationday", "ranchtok", "cowmilk", "cattlerancher", "nzfarming", "cattlewomen", "farmingaustralia", "cowpony", "cowfacepose", "instadairyfarm", "cowofinsta", "studcattle", "charbray", "brahmanheifer"],
+    ["rural", "westernwear", "moo", "highlandcow", "farmingcommunity", "fieldwork", "pastureraised", "heifer", "farmpride", "australianfarming", "cowseverywhere", "puremilk", "milkingcows", "holsteincows", "farmingphotography", "cowgirlvibes", "gelbvieh", "santagertrudis", "cowoftheday", "thankafarmerforyournextmeal", "ranchpony", "outbackstationlife"],
+    ["western", "countryside", "farmersofinstagram", "smallfarm", "instafarm", "farmtok", "texaslonghorn", "cattledrive", "shorthorn", "agritech", "coos", "aussieag", "agricultureaustralia", "scottishhighlandcows", "farmingphotos", "cowboyway", "guernseycow", "milkingthecow", "cowfacts", "farmmanagement", "bullhauler", "limflex"],
+  ],
+  fishing: [
+    ["fishing", "saltwater", "spearfishing", "fishingday", "mirrorcarp", "steelhead", "perchfishing", "lakefishing", "anglers", "walleyefishing", "surffishing", "fishingspot", "troutflies", "euronymphing", "fallfishing", "berkleyfishing", "fishingline", "fishingismyhustle", "browntroutfishing", "fishingwa", "fishinggame", "happyfishing"],
+    ["fish", "fishingislife", "browntrout", "bigbass", "flyfishingaddict", "fishingpicoftheday", "salmonfishing", "predatorfishing", "fishinglovers", "kayakbassfishing", "fishingvideos", "fishinguk", "daiwafishing", "bassfishin", "floatfishing", "takeakidfishing", "spearfishing_reviews", "rodandreel", "flyfishinglifestyle", "6thsensefishing", "foxfishing", "ikanguppymurah"],
+    ["flyfishing", "troutfishing", "rainbowtrout", "carpangling", "pesqueesolte", "thetugisthedrug", "fishinglure", "inshorefishing", "brooktrout", "fishingbuddy", "crankbait", "gofishing", "bankfishing", "googansquad", "seabassfishing", "flyrod", "carpfishing_club", "fishingdog", "fishingpier", "hukfishing", "redfishing", "caddis"],
+    ["fishinglife", "bigfish", "perch", "fishinglures", "offshorefishing", "peacockbass", "carpwatch", "orvis", "lunker", "ultralightfishing", "wildtrout", "grayling", "texasfishing", "spearfishing_international", "flyfishingadventures", "fishingcanada", "matchfishing", "fishingkayak", "flyfishinggear", "fishingusa", "icefishingnation", "yakfishing"],
+    ["bassfishing", "freshwater", "sportfishing", "gonefishing", "carphunter", "tucunare", "carpfishinguk", "fishingaustralia", "bassfishingnation", "anglerapproved", "esox", "feederfishing", "pennfishing", "snookfishing", "striperfishing", "fishingrods", "carpfishinglife", "fishingismylife", "fishinggames", "wisconsinfishing", "flwfishing", "bassfishinglife"],
+    ["catchandrelease", "fishon", "lurefishing", "troutbum", "lures", "basspro", "dryfly", "fishinggirls", "anglerlife", "crappiefishing", "rockfishing", "fishingreels", "13fishing", "oceanfishing", "hobiefishing", "fishingaddicts", "njfishing", "fishpondusa", "baitfishing", "flyfishingjunky", "michiganfishing", "funfishing"],
+    ["shimano", "fishingaddict", "fishing\ud83c\udfa3", "bait", "blackbass", "flyfishingnation", "flytyingjunkie", "rippinlips", "fishingreel", "tunafishing", "winterfishing", "dryflyfishing", "spinfishing", "fishingcharter", "streamerfishing", "fishingmemes", "fishingfamily", "cortlandline", "coarsefishing", "visionflyfishing", "spearfishing_worldwide", "flytyingart"],
+    ["carp", "daiwa", "icefishing", "riverfishing", "fishermen", "floridafishing", "keepemwet", "fishingguide", "fishingpole", "fishingapparel", "baitcaster", "biggamefishing", "spinningfishing", "creekfishing", "troutonthefly", "tarponfishing", "fishingadventure", "bivvylife", "flyfishingart", "dryflies", "troutflyfishing", "topendnt"],
+    ["carpfishing", "saltwaterfishing", "pikefishing", "fishinglifestyle", "fishinggear", "instafishing", "crappie", "fishing\ud83d\udc1f", "nightfishing", "troutporn", "gofish", "instagramfishing", "fishingvideo", "sightfishing", "urbanfishing", "catchandcook", "fishingflorida", "stripedbassfishing", "fishingisfun", "lkwfans", "paflyfishing", "pikeflyfishing"],
+    ["spinning", "flytying", "redfish", "flyfishingjunkie", "thatscarpy", "flyfishinglife", "instacarp", "jig", "flytyingaddict", "fishingcharters", "saltwaterflyfishing", "panfish", "letsgofishing", "flytyingporn", "fishingnet", "westinfishing", "fishingcommunity", "fishingbuddies", "browntroutflyfishing", "huntingandfishing", "bassfishingislife", "fishingpassion"],
+    ["trout", "angling", "largemouth", "freshwaterfishing", "fishingrod", "onthefly", "boilies", "lovefishing", "seafishing", "fishingclub", "flatsfishing", "fishingisacontactsport", "muskyfishing", "steelheadfishing", "beachfishing", "troutcandy", "fishingbait", "lowrancefishing", "flytyingphotography", "panfishing", "snapperfishing", "jiggingfishing"],
+    ["fisherman", "carplife", "fishingtime", "walleye", "bigcarp", "fishingtackle", "stripedbass", "flyfishingphotography", "boatfishing", "ilovefishing", "sharkfishing", "fishingadventures", "smallmouthbassfishing", "carpfishingitalia", "dirtfishing", "carpfishinggermany", "fishingforlife", "muskiefishing", "swimbaitfishing", "sturgeonfishing", "boiliesfishing", "bayfishing"],
+    ["angler", "kayakfishing", "lure", "snook", "shimanofishing", "bassmaster", "korda", "catfishing", "fishingseason", "zanderfishing", "tugisthedrug", "fishinglove", "shorefishing", "sageflyfish", "tournamentfishing", "marlinfishing", "troutofinsta", "fishingshirt", "ontariofishing", "fishinglodge", "supfishing", "fishingart"],
+    ["pike", "fishingdaily", "smallmouthbass", "fishin", "smallmouth", "flyfish", "fishingboats", "pondfishing", "fishingvillage", "orvisflyfishing", "charterfishing", "fishingtips", "fishingtournament", "flyfishingonly", "fishingisdope", "fishingtrips", "fishingbc", "okumafishing", "fishingworld", "microjig", "canalfishing", "pafishing"],
+    ["fishingtrip", "tightlines", "carpangler", "commoncarp", "topwater", "simmsfishing", "fishinggirl", "fishingphotography", "bluegill", "bassfishingismylife", "jigfishing", "baitcasting", "nymphing", "lewsfishing", "carpfishingfrance", "fishingteam", "fishingontario", "simmsflyfishing", "pierfishing", "ukcarpfishing", "chubfishing", "hardwaterfishing"],
+    ["largemouthbass", "instafish", "fishingboat", "fishingfun", "tarpon", "deepseafishing", "largemouthbassfishing", "carpyshots", "topwaterfishing", "bowfishing", "fishingpics", "streetfishing", "commercialfishing", "flytyingnation", "blackbassfishing", "kidsfishing", "nymphfishing", "fishingnz", "ukfishing", "nofishingnolife", "texasbassfishing", "socalfishing"],
+  ],
+  terrier: [
+    ["dogsofinstagram", "doggo", "adoption", "bigdog", "fosterdog", "doggolife", "muttsofinstagram", "dogaccessories", "petparents", "dogwalks", "bostonterrierworld", "dogphotoshoot", "canadiandogs", "happyhound", "bostonbull", "dogtraveler", "bostonterrierfan", "snootboop", "happybostonterrier", "pupperoni", "snortydog", "doglifebalance"],
+    ["dog", "doglovers", "rescuedogs", "newpuppy", "seniordog", "adorabledog", "doggylove", "squishyfacecrew", "dogofinstagram", "gotchaday", "bostonterriernation", "floofer", "emotionalsupportdog", "doggycuddles", "bostonterrieroverload", "whatismydogdoing", "bostiesofinstagram", "chewtoy", "chocolatebostonterrier", "goodestgirl", "akcbreed", "weeklyfluff"],
+    ["dogs", "puppylove", "bostonterriersofinstagram", "dogadventures", "bostonterrierlife", "dogsofuk", "furball", "dogsofworld", "bostonterriersofig", "instapuppy", "bostonterrierdog", "dogkisses", "dogswim", "tailwagging", "bostonterrierfamily", "wetnosewednesday", "dogjoy", "dogboarding", "bostonterrierslove", "bostonterrierpup", "bostonterrierbabies", "bostonterrierboy"],
+    ["puppy", "cutedogs", "petlovers", "bostonterriers", "bostie", "pupper", "furbabylove", "fluffydog", "bostonterrierlovers", "dogcuddles", "terrierlove", "campingwithdogs", "tinydogsofinstagram", "puppypower", "dogloversfamily", "dogbeachday", "therapypup", "dogownersofinstagram", "bostonterrierbrindle", "dogunderbite", "underbitedog", "bostonterrierpride"],
+    ["dogstagram", "rescuedog", "animallovers", "dogcare", "dogpics", "dogdaysofsummer", "pawprints", "dogadoption", "dogsofcanada", "hikingwithdogs", "dogdaddy", "showdog", "floofy", "smallbreeddog", "dogtrainingtips", "purebreddog", "bostonterriersrock", "dogenthusiast", "bostonterrierheart", "dogcharity", "bostonterrierpuppylife", "bostonterriersforlife"],
+    ["petsofinstagram", "furbaby", "dogtraining", "petphotography", "dogparent", "petparent", "dogsrule", "puppyplay", "bostonterrierofinstagram", "smalldogsofinstagram", "rescueisthebestbreed", "mlem", "dogcollar", "doghike", "rescueismyfavoritebreed", "companiondog", "bostonbullterrier", "obsessedwithmydog", "bostonterrierpuppylove", "instapuppylove", "bostonterriersenior", "bostonterrierloversclub"],
+    ["dogoftheday", "dogsofig", "instadogs", "smalldog", "goodgirl", "bostonterriersforever", "goodboys", "puppyfun", "dogbehavior", "blep", "rescuepup", "dogbandana", "bostonterriersrule", "dogpool", "snugglepup", "dogharness", "fosteringsaveslives", "goodestboy", "bostonterriermama", "ibostonterrier", "bostonterriergirl", "bostonterriersdaily"],
+    ["pets", "puppylife", "foster", "babydog", "puppygram", "dogslife", "dogsofaustralia", "furchild", "animalsanctuary", "dogtoys", "pawsup", "petinfluencer", "bostonterrierclub", "dogsdoingthings", "playfulpup", "dogtoy", "pawsitivelyadorable", "dogsarepeople2", "bostonterrierbreed", "bostonterrier_feature", "bostonterriersmile", "bostonterriersnore"],
+    ["instadog", "adoptdontshop", "lovemydog", "bostonterrierlove", "dogmomlife", "dogportrait", "familydog", "dogwalker", "mixedbreed", "doginfluencer", "doggyworld", "dogchristmas", "bostielove", "lapdog", "doglifeisthebestlife", "doggydaycare", "caninecutie", "dogsmile", "puppypersonality", "blackandwhitebostonterrier", "canineedcompanion", "nonsportinggroup"],
+    ["doglife", "doggy", "goodboy", "dogcommunity", "puppyoftheday", "dogsarelove", "dogbeach", "ukdogs", "puppykisses", "halloweendog", "puppyhugs", "doglifestyle", "americangentleman", "boof", "puppyparadise", "dogsitting", "doggydate", "dogsandpuppies", "doggysoulmate", "bostonterrierbaby", "dogadventurestogether", "dogbreedstandard"],
+    ["puppiesofinstagram", "ilovemydog", "puppydog", "dogfriendly", "dogfashion", "tinydog", "petphotographer", "dogtravel", "puppyadventures", "aspca", "doggydays", "instapup", "bostonterriermoments", "dogbed", "doggysnuggles", "dogaddict", "doggylaughs", "bostonterriermix", "dogadventuretime", "bestboydog", "compactdog", "dogsofthemonth"],
+    ["dogmom", "bostonterrier", "dogphotography", "puppyeyes", "adopted", "dogparents", "nationaldogday", "dogbirthday", "puppysmiles", "bostonterriercult", "doggyadventures", "humanesociety", "bostonsofinstagram", "dogtreat", "puppymagic", "mydogismybestfriend", "doggydreams", "tuxedodog", "dogmodeling", "doglifegoals", "conformationshow", "bostonterriervideo"],
+    ["pet", "petstagram", "rescuedogsofinstagram", "mansbestfriend", "nonprofit", "dogtreats", "bostonterrierpuppy", "floof", "fureverfamily", "terriersofinstagram", "puppypaws", "bostonterrierforever", "dogplaydate", "dogobsessed", "cutecanine", "dogfeature", "flatfaceddog", "dogadventuring", "dogbowtie", "petcharity", "bestgirldog", "bostonterriergifts"],
+    ["rescue", "happydog", "dogpark", "dogmum", "shelterdogs", "dogsarethebest", "dogsarefamily", "dogshow", "furlove", "bostonterrierpuppies", "pawsandlove", "bostonterrierpics", "dogphotographylovers", "dogsnow", "allthingsdogs", "bostonterriercommunity", "dogfriendlytravel", "dogwalkerlife", "squeakytoy", "bandofbostons", "dailydoseofdogs", "puppylovepost"],
+    ["doglover", "dogdad", "adoptadog", "adoptapet", "shelterdog", "foreverhome", "zoomies", "sploot", "dogsdaily", "bostonterriergram", "dogplay", "bostonterrierlover", "adoptables", "battersea", "brachycephalic", "brindlebostonterrier", "muddypaws", "instabostonterrier", "dogculture", "bostonterrierdad", "bostonterriersofficial", "bostonterrierpupper"],
+    ["dogsofinsta", "cutedog", "animalrescue", "animalwelfare", "furryfamily", "rescuedismyfavoritebreed", "dogmodel", "dogcostume", "aussiedogs", "bostonterriermom", "travelwithdogs", "caninecompanion", "cuddlebuddy", "bostonterrieraddict", "apartmentdog", "redbostonterrier", "akcdog", "sealbostonterrier", "dogbeachlife", "bostonterrieradventures", "bostonterrierart", "bostonterriereyes"],
+  ],
+};
 
 // Top-level tab strip = the niches PLUS one extra "Random" tab. The
 // Random tab isn't a niche — it has no Daily Log or Account Tracker,
@@ -726,7 +794,9 @@ NICHES.forEach(n => {
     lastAction:null,      // fn to retry
     accounts: [],
     acctSort: "date_desc",
-    acctFilterUsername: null
+    acctFilterUsername: null,
+    hashtagSet: null,          // null = AI-generated hashtags; 1-16 = curated set index (Instagram)
+    applyAllHashtagSet: false  // if true, the chosen set also overrides FB/FG/X/Pinterest hashtags
   };
 
   // Each niche also gets its own independent Competitor Account Tracker
@@ -746,10 +816,20 @@ state.random = {
   result: null,
   loading: false,
   error: null,
-  lastAction: null
+  lastAction: null,
+  creditName: ""   // simple free-text author/credit name; blank -> "Unknown"
 };
 
 /* ---------- Supabase-backed storage: daily logs ---------- */
+let dbErrorToastShown = false;
+function reportDbError(where, error){
+  const msg = (error && (error.message || error.error_description || error.hint)) || JSON.stringify(error);
+  console.error(`[${where}] Supabase error:`, msg, error);
+  if(!dbErrorToastShown){
+    dbErrorToastShown = true;
+    showToast("Couldn't load saved data from Supabase — check table/RLS setup (see console for details)");
+  }
+}
 function logRowToEntry(row){
   return { id: row.id, date: row.entry_date, note: row.note };
 }
@@ -760,7 +840,7 @@ async function loadLogsFromDB(nicheKey){
     .eq("niche_key", nicheKey)
     .order("entry_date", { ascending:false })
     .order("id", { ascending:false });
-  if(error){ console.error(error); return []; }
+  if(error){ reportDbError("loadLogsFromDB", error); return []; }
   return (data || []).map(logRowToEntry);
 }
 async function addLogToDB(nicheKey, date, note){
@@ -787,7 +867,7 @@ async function loadAccountsFromDB(trackerKey){
     .select("*")
     .eq("tracker_key", trackerKey)
     .order("id", { ascending:false });
-  if(error){ console.error(error); return []; }
+  if(error){ reportDbError("loadAccountsFromDB", error); return []; }
   return (data || []).map(accountRowToEntry);
 }
 async function addAccountToDB(trackerKey, date, link, username){
@@ -905,6 +985,10 @@ function randomPanelTemplate(){
             <textarea id="caption-${key}" rows="3"></textarea>
           </div>
           <div class="field">
+            <label for="creditname-${key}">Credit (author name, optional)</label>
+            <input type="text" id="creditname-${key}" placeholder="Leave blank for Unknown" value="${escapeHtml(state.random.creditName || "")}">
+          </div>
+          <div class="field">
             <label for="tags-${key}">Hashtags</label>
             <textarea id="tags-${key}" rows="2"></textarea>
           </div>
@@ -950,10 +1034,16 @@ function wireRandomPanel(){
 
   document.getElementById(`generate-${key}`).addEventListener("click", ()=> runGenerateRandom());
 
+  document.getElementById(`creditname-${key}`)?.addEventListener("input", (e)=>{
+    state[key].creditName = e.target.value;
+  });
+
   document.getElementById(`copyall-${key}`).addEventListener("click", async ()=>{
     const caption = document.getElementById(`caption-${key}`).value.trim();
     const tags = document.getElementById(`tags-${key}`).value.trim();
-    const block = [caption, "", tags].join("\n");
+    const creditName = (document.getElementById(`creditname-${key}`).value || "").trim();
+    const creditText = creditName ? `@${creditName}` : "Unknown";
+    const block = [caption, "", `Credit - (${creditText})`, "", tags].join("\n");
     await copyText(block);
     showToast("Caption copied");
   });
@@ -1721,11 +1811,45 @@ function renderResults(nicheKey){
   PLATFORMS.forEach(p => wirePlatformPanel(nicheKey, p));
 }
 
+/* Returns the hashtag textarea's display text for a given platform panel.
+   Instagram (and any platform when "apply to all" is on) uses the chosen
+   curated set (with a trailing N/16 tracking marker) instead of the
+   AI-generated hashtags. */
+function hashtagsForPlatform(nicheKey, p){
+  const s = state[nicheKey];
+  const data = s.result?.[p.key] || { title:"", description:"", hashtags:[] };
+  const usesPreset = s.hashtagSet && (p.key === "instagram" || s.applyAllHashtagSet);
+  if(usesPreset){
+    const setTags = (HASHTAG_SETS[nicheKey] && HASHTAG_SETS[nicheKey][s.hashtagSet - 1]) || [];
+    const tagLine = setTags.map(h => "#" + h).join(" ");
+    return tagLine + `\n${s.hashtagSet}/16`;
+  }
+  return data.hashtags.map(h => "#" + h).join(" ");
+}
+
+function currentCreditUsername(nicheKey){
+  const urlInput = document.getElementById(`crediturl-${nicheKey}`);
+  return urlInput ? parseUsernameFromUrl(urlInput.value) : "";
+}
+
 function platformPanelTemplate(nicheKey, p){
   const s = state[nicheKey];
   const data = s.result?.[p.key] || { title:"", description:"", hashtags:[] };
   const visible = p.key === s.activePlatform;
-  const hashtagText = data.hashtags.map(h => "#" + h).join(" ");
+  const hashtagText = hashtagsForPlatform(nicheKey, p);
+
+  const hashtagSetPicker = p.key === "instagram" ? `
+    <div class="field">
+      <div class="field-head"><label for="hashtagset-${nicheKey}" style="margin-bottom:0;">Hashtag set</label></div>
+      <select id="hashtagset-${nicheKey}">
+        <option value="ai" ${!s.hashtagSet ? "selected" : ""}>AI generated (default)</option>
+        ${Array.from({length:16}, (_,i)=>i+1).map(n => `<option value="${n}" ${s.hashtagSet===n ? "selected" : ""}>Set ${n}</option>`).join("")}
+      </select>
+      <label style="display:flex; align-items:center; gap:7px; margin-top:9px; font-size:12.5px; color:var(--ink-dim); text-transform:none; font-weight:500; letter-spacing:normal;">
+        <input type="checkbox" id="hashtagsetall-${nicheKey}" ${s.applyAllHashtagSet ? "checked" : ""} style="width:auto;">
+        Apply this set to all platforms
+      </label>
+    </div>` : "";
 
   return `
   <div class="platform-panel" data-visible="${visible}" data-platform-panel="${p.key}">
@@ -1741,6 +1865,8 @@ function platformPanelTemplate(nicheKey, p){
       <textarea id="desc-${nicheKey}-${p.key}" rows="3">${escapeHtml(data.description)}</textarea>
     </div>
 
+    ${hashtagSetPicker}
+
     <div class="field">
       <label for="tags-${nicheKey}-${p.key}">Hashtags</label>
       <textarea id="tags-${nicheKey}-${p.key}" rows="2">${escapeHtml(hashtagText)}</textarea>
@@ -1752,17 +1878,54 @@ function platformPanelTemplate(nicheKey, p){
   </div>`;
 }
 
+/* Builds the final copy-paste block: Caption -> Follow us x3 -> Credit ->
+   disclaimer -> hashtags (with tracking marker, if a curated set is used). */
+function buildPlatformCopyBlock(nicheKey, p){
+  const n = NICHES.find(x => x.key === nicheKey);
+  const title = document.getElementById(`title-${nicheKey}-${p.key}`).value.trim();
+  const desc = document.getElementById(`desc-${nicheKey}-${p.key}`).value.trim();
+  const tags = document.getElementById(`tags-${nicheKey}-${p.key}`).value.trim();
+  const username = currentCreditUsername(nicheKey);
+  const creditText = username ? `@${username}` : "Unknown";
+  const caption = [title, desc].filter(Boolean).join("\n\n");
+
+  return [
+    caption,
+    `Follow us : @${n.followHandle}`,
+    `Follow us : @${n.followHandle}`,
+    `Follow us : @${n.followHandle}`,
+    ".",
+    `Credit - (${creditText})`,
+    ".",
+    "All credits go to the rightful owner.",
+    "Message or comment for edit/removal",
+    "",
+    tags
+  ].join("\n");
+}
+
 function wirePlatformPanel(nicheKey, p){
   const btn = document.querySelector(`#platformpanels-${nicheKey} [data-copyall="${p.key}"]`);
-  if(!btn) return;
-  btn.addEventListener("click", async ()=>{
-    const title = document.getElementById(`title-${nicheKey}-${p.key}`).value.trim();
-    const desc = document.getElementById(`desc-${nicheKey}-${p.key}`).value.trim();
-    const tags = document.getElementById(`tags-${nicheKey}-${p.key}`).value.trim();
-    const block = [title, "", desc, "", tags].join("\n");
-    await copyText(block);
-    showToast(`${p.label} caption copied`);
-  });
+  if(btn){
+    btn.addEventListener("click", async ()=>{
+      const block = buildPlatformCopyBlock(nicheKey, p);
+      await copyText(block);
+      showToast(`${p.label} caption copied`);
+    });
+  }
+
+  if(p.key === "instagram"){
+    const sel = document.getElementById(`hashtagset-${nicheKey}`);
+    const allChk = document.getElementById(`hashtagsetall-${nicheKey}`);
+    sel?.addEventListener("change", ()=>{
+      state[nicheKey].hashtagSet = sel.value === "ai" ? null : parseInt(sel.value, 10);
+      renderResults(nicheKey);
+    });
+    allChk?.addEventListener("change", ()=>{
+      state[nicheKey].applyAllHashtagSet = allChk.checked;
+      renderResults(nicheKey);
+    });
+  }
 }
 
 /* ============================================================

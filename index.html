@@ -616,7 +616,7 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
     <div class="pin-error" id="pinerror" style="display:none;"></div>
     <button class="btn btn-gold" id="pinsubmit" style="width:100%; justify-content:center; margin-top:14px;">Unlock</button>
     <div class="pin-hint" id="pinhint" style="display:none;">
-      Forgot your PIN? <button class="linklike" id="pinreset">Reset it</button> — this only clears the lock on this device, your saved data isn't affected.
+      Forgot your PIN? <button class="linklike" id="pinreset">Reset it</button> — this removes the PIN for every device; your saved data isn't affected.
     </div>
   </div>
 </div>
@@ -718,26 +718,43 @@ function maybeShowDailyReminder(){
 }
 
 /* ============================================================
-   PIN lock — a device-local UI gate, not real authentication.
-   IMPORTANT: this only hides the app's interface behind a PIN
-   entered in this browser; it does NOT restrict who can read or
-   write your Supabase tables directly (that's controlled by your
-   Supabase Row Level Security policies, which currently allow
-   public access with just the anon key — the same as before this
-   feature). Anyone who has your Supabase URL + anon key could
-   still hit the API directly, PIN or no PIN. This is a soft privacy
-   screen for casual snooping on a shared device, not real security.
+   PIN lock — a shared PIN synced via Supabase, so the same PIN
+   works on every device (not just the one it was set on).
+   IMPORTANT — read this: this still only hides the app's UI. It
+   does NOT restrict who can read or write your Supabase tables
+   directly — that's controlled entirely by your Supabase Row
+   Level Security policies, which currently allow public
+   read/write/delete with just the anon key. Anyone who has your
+   Supabase URL + anon key (visible in this page's source) can
+   still hit the API directly and add/edit/delete data, PIN or no
+   PIN — the PIN never touches that. Only the PIN's hash (not the
+   PIN itself) is stored, so someone browsing your Supabase table
+   directly can't just read your PIN off the screen — but this
+   remains a privacy screen against casual snooping, not real
+   access control. Real protection against a stranger with the
+   link deleting your data requires Supabase Auth (login) with
+   RLS policies restricted to signed-in requests — a bigger change
+   this doesn't include; ask if you'd like that built next.
    ============================================================ */
-function getSavedPin(){
-  try{ return localStorage.getItem("appPin"); }catch(e){ return null; }
+async function hashPin(pin){
+  const enc = new TextEncoder().encode("growth-ledger-" + pin);
+  const buf = await crypto.subtle.digest("SHA-256", enc);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
 }
-function setSavedPin(pin){
-  try{ localStorage.setItem("appPin", pin); }catch(e){}
+async function loadPinHash(){
+  const { data, error } = await db.from("app_settings").select("pin_hash").eq("id", 1).maybeSingle();
+  if(error){ console.error("loadPinHash failed:", error); return null; }
+  return data ? data.pin_hash : null;
 }
-function clearSavedPin(){
-  try{ localStorage.removeItem("appPin"); }catch(e){}
+async function savePinHash(hash){
+  const { error } = await db.from("app_settings").upsert({ id:1, pin_hash: hash, updated_at: new Date().toISOString() }, { onConflict:"id" });
+  if(error) throw error;
 }
-function initPinLock(){
+async function clearPinHash(){
+  const { error } = await db.from("app_settings").delete().eq("id", 1);
+  if(error) throw error;
+}
+async function initPinLock(){
   const overlay = document.getElementById("pinoverlay");
   const input = document.getElementById("pininput");
   const sub = document.getElementById("pinsub");
@@ -747,11 +764,23 @@ function initPinLock(){
   const resetBtn = document.getElementById("pinreset");
   const topbarLockBtn = document.getElementById("lockbtn");
 
-  let mode = getSavedPin() ? "unlock" : "setup";
+  overlay.style.display = "flex";
+  sub.textContent = "Checking…";
+  submitBtn.disabled = true;
+
+  let currentHash = null;
+  try{
+    currentHash = await loadPinHash();
+  }catch(e){
+    console.error("Could not check PIN status:", e);
+  }
+  submitBtn.disabled = false;
+
+  let mode = currentHash ? "unlock" : "setup";
   let firstPin = null;
 
   function refreshTopbarLockBtn(){
-    if(topbarLockBtn) topbarLockBtn.style.display = getSavedPin() ? "flex" : "none";
+    if(topbarLockBtn) topbarLockBtn.style.display = currentHash ? "flex" : "none";
   }
 
   function paint(){
@@ -759,7 +788,7 @@ function initPinLock(){
     input.value = "";
     hint.style.display = mode === "unlock" ? "block" : "none";
     if(mode === "setup"){
-      sub.textContent = "Choose a 4-digit PIN to lock this app on this device.";
+      sub.textContent = "Choose a 4-digit PIN — this will be asked on every device from now on.";
       submitBtn.textContent = "Continue";
     }else if(mode === "confirm"){
       sub.textContent = "Enter the same PIN again to confirm.";
@@ -778,7 +807,7 @@ function initPinLock(){
     input.focus();
   }
 
-  function submit(){
+  async function submit(){
     const val = input.value.trim();
     if(!/^\d{4}$/.test(val)){
       showError("Enter a 4-digit PIN");
@@ -796,12 +825,25 @@ function initPinLock(){
         setTimeout(paint, 1000);
         return;
       }
-      setSavedPin(val);
-      overlay.style.display = "none";
-      refreshTopbarLockBtn();
-      showToast("PIN set for this device");
+      submitBtn.disabled = true;
+      try{
+        const hash = await hashPin(val);
+        await savePinHash(hash);
+        currentHash = hash;
+        overlay.style.display = "none";
+        refreshTopbarLockBtn();
+        showToast("PIN set — same PIN will work on any device");
+      }catch(e){
+        showError("Couldn't save PIN — check your connection");
+        console.error(e);
+      }finally{
+        submitBtn.disabled = false;
+      }
     }else{
-      if(val === getSavedPin()){
+      submitBtn.disabled = true;
+      const hash = await hashPin(val);
+      submitBtn.disabled = false;
+      if(hash === currentHash){
         overlay.style.display = "none";
       }else{
         showError("Incorrect PIN");
@@ -811,13 +853,19 @@ function initPinLock(){
 
   submitBtn.addEventListener("click", submit);
   input.addEventListener("keydown", (e)=>{ if(e.key === "Enter") submit(); });
-  resetBtn.addEventListener("click", ()=>{
-    if(confirm("This clears the PIN saved on this device only — your Supabase data is untouched. Continue?")){
-      clearSavedPin();
-      mode = "setup";
-      firstPin = null;
-      paint();
-      refreshTopbarLockBtn();
+  resetBtn.addEventListener("click", async ()=>{
+    if(confirm("This removes the PIN for every device — anyone with the link will need to set a new one. Your saved data isn't affected. Continue?")){
+      try{
+        await clearPinHash();
+        currentHash = null;
+        mode = "setup";
+        firstPin = null;
+        paint();
+        refreshTopbarLockBtn();
+      }catch(e){
+        showToast("Couldn't reset PIN — check your connection");
+        console.error(e);
+      }
     }
   });
   topbarLockBtn?.addEventListener("click", ()=>{
@@ -827,7 +875,6 @@ function initPinLock(){
   });
 
   refreshTopbarLockBtn();
-  overlay.style.display = "flex";
   paint();
 }
 

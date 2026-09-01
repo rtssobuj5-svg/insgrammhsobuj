@@ -105,10 +105,10 @@ a{color:var(--gold-bright);}
 
 .topbar{
   display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:26px;
+  margin-bottom:26px; flex-wrap:wrap; gap:10px 14px;
 }
 .wordmark{display:flex; align-items:baseline; gap:10px;}
-.topbar-actions{ display:flex; align-items:center; gap:10px; }
+.topbar-actions{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .wordmark .mark{
   font-family:var(--font-display); font-style:italic; font-weight:600;
   font-size:26px; letter-spacing:.2px; color:var(--ink);
@@ -214,6 +214,29 @@ a{color:var(--gold-bright);}
 }
 .target-pill.hit{ background:rgba(124,154,93,.16); color:var(--success); }
 .target-pill.miss{ background:rgba(193,88,74,.14); color:var(--danger); }
+
+.milestone-row{ display:flex; flex-wrap:wrap; gap:10px; }
+.milestone-chip{
+  padding:8px 14px; border-radius:999px; font-size:12.5px; font-weight:600;
+  background:var(--bg-2); border:1px solid var(--border-soft); color:var(--ink-faint);
+  opacity:.5; transition:.2s ease;
+}
+.milestone-chip.achieved{
+  background:rgba(232,201,101,.14); border-color:var(--gold-dim); color:var(--gold-bright); opacity:1;
+}
+.overview-niche-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; }
+@media (max-width:720px){ .overview-niche-grid{ grid-template-columns:1fr; } }
+.overview-niche-card{
+  background:var(--bg-2); border:1px solid var(--border-soft); border-radius:var(--radius-md); padding:16px;
+}
+.overview-niche-head{ font-family:var(--font-display); font-weight:600; font-size:15px; margin-bottom:10px; color:var(--ink); }
+.overview-niche-stat{
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:12.5px; padding:7px 0; border-top:1px solid var(--border-soft);
+}
+.overview-niche-stat:first-of-type{ border-top:none; }
+.overview-niche-stat span{ color:var(--ink-faint); }
+.overview-niche-stat strong{ color:var(--ink); font-family:var(--font-mono); font-weight:600; }
 label{ display:block; font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin-bottom:6px; }
 input[type="text"], input[type="date"], input[type="number"], input[type="url"], textarea, select{
   width:100%; background:var(--bg-2); border:1px solid var(--border);
@@ -252,6 +275,39 @@ textarea{ resize:vertical; min-height:56px; font-family:var(--font-body); line-h
 .log-table td.no{ font-family:var(--font-mono); color:var(--gold-dim); white-space:nowrap; }
 .log-table td.date{ font-family:var(--font-mono); color:var(--ink-dim); white-space:nowrap; }
 .log-empty{ padding:18px 4px; color:var(--ink-faint); font-size:13px; font-style:italic; }
+
+.edit-input{
+  width:100%; min-width:70px; padding:5px 7px; font-size:12.5px;
+  background:var(--bg-3); border:1px solid var(--gold-dim); border-radius:var(--radius-sm);
+  color:var(--ink); margin-bottom:0;
+}
+.edit-actions{ white-space:nowrap; display:flex; gap:4px; }
+
+.idea-form{ display:flex; gap:10px; margin-bottom:14px; }
+.idea-form input{ flex:1; margin-bottom:0; }
+@media (max-width:560px){ .idea-form{ flex-direction:column; } }
+.idea-list{ display:flex; flex-direction:column; gap:8px; }
+.idea-row{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  background:var(--bg-2); border:1px solid var(--border-soft); border-radius:var(--radius-sm);
+  padding:10px 12px; font-size:13px;
+}
+.idea-row-editing{ align-items:stretch; }
+.idea-row-editing .edit-input{ flex:1; }
+.idea-text{ flex:1; color:var(--ink); }
+
+.caption-list{ display:flex; flex-direction:column; gap:10px; }
+.caption-card{
+  background:var(--bg-2); border:1px solid var(--border-soft); border-radius:var(--radius-md); padding:12px 14px;
+}
+.caption-card-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.caption-platform{
+  font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--gold-dim); font-weight:700;
+}
+.caption-title{ font-weight:600; font-size:13.5px; color:var(--ink); margin-bottom:3px; }
+.caption-desc{ font-size:12.5px; color:var(--ink-dim); margin-bottom:5px; white-space:pre-wrap; }
+.caption-tags{ font-size:11.5px; color:var(--gold-dim); font-family:var(--font-mono); word-break:break-word; }
 
 /* ---------- collapsible AI helper ---------- */
 .helper-toggle{
@@ -418,6 +474,9 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
   transition:.15s ease;
 }
 .acct-row[data-done="true"]{ opacity:.55; background:transparent; border-style:dashed; }
+.acct-row-editing{ flex-direction:column; align-items:stretch; gap:10px; }
+.acct-edit-form{ display:grid; grid-template-columns:130px 1fr 1fr; gap:8px; }
+@media (max-width:560px){ .acct-edit-form{ grid-template-columns:1fr; } }
 .acct-row-main{ flex:1; min-width:0; }
 .acct-row-top{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .acct-username{ font-family:var(--font-mono); font-weight:600; font-size:13.5px; color:var(--ink); }
@@ -451,6 +510,20 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
 }
 .toast[data-show="true"]{ opacity:1; transform:translateX(-50%) translateY(0); }
 
+.undo-toast{
+  position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(12px);
+  background:var(--bg-2); border:1px solid var(--gold-dim); color:var(--ink);
+  padding:10px 12px 10px 18px; border-radius:999px; font-size:13px; font-weight:600;
+  box-shadow:var(--shadow-card); opacity:0; pointer-events:none; transition:.2s ease; z-index:60;
+  display:flex; align-items:center; gap:12px;
+}
+.undo-toast[data-show="true"]{ opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+.undo-toast button{
+  background:var(--gold); color:#1C1814; border:none; border-radius:999px;
+  padding:6px 14px; font-size:12.5px; font-weight:700; cursor:pointer;
+}
+.undo-toast button:hover{ background:var(--gold-bright); }
+
 .modal-overlay{
   position:fixed; inset:0; background:rgba(20,17,13,.6); z-index:200;
   display:flex; align-items:center; justify-content:center; padding:20px;
@@ -465,6 +538,29 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
 #copypreview-text{
   flex:1; min-height:220px; font-family:var(--font-mono); font-size:12.5px;
   resize:vertical; white-space:pre-wrap;
+}
+
+.pin-overlay{
+  position:fixed; inset:0; background:var(--bg); z-index:300;
+  display:flex; align-items:center; justify-content:center; padding:20px;
+}
+.pin-box{
+  width:100%; max-width:340px; text-align:center;
+  background:var(--bg-1); border:1px solid var(--border); border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-card); padding:32px 26px;
+}
+.pin-title{ font-family:var(--font-display); font-weight:700; font-size:22px; color:var(--gold-bright); margin-bottom:6px; }
+.pin-sub{ font-size:13px; color:var(--ink-dim); margin-bottom:20px; line-height:1.5; }
+.pin-input{
+  width:100%; text-align:center; letter-spacing:14px; font-size:26px; font-family:var(--font-mono);
+  padding:12px; background:var(--bg-3); border:1px solid var(--border); border-radius:var(--radius-md);
+  color:var(--ink); margin-bottom:0;
+}
+.pin-error{ color:var(--danger); font-size:12.5px; margin-top:10px; }
+.pin-hint{ margin-top:18px; font-size:11.5px; color:var(--ink-faint); line-height:1.6; }
+.linklike{
+  background:none; border:none; color:var(--gold-bright); text-decoration:underline;
+  cursor:pointer; font-size:inherit; padding:0;
 }
 
 .hint{ font-size:11.5px; color:var(--ink-faint); margin-top:6px; line-height:1.5;}
@@ -482,6 +578,8 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
       <span class="sub">100-Day &amp; $1,000</span>
     </div>
     <div class="topbar-actions">
+      <button class="icon-btn" id="lockbtn" title="Lock app" aria-label="Lock app" style="display:none;">🔒</button>
+      <button class="btn btn-ghost btn-sm" id="backupbtn">💾 Backup</button>
       <button class="btn btn-ghost btn-sm" id="installbtn" style="display:none;">⬇ Install App</button>
       <button class="icon-btn" id="themetoggle" title="Toggle light/dark theme" aria-label="Toggle theme">🌙</button>
     </div>
@@ -495,6 +593,11 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
 
 <div class="toast" id="toast"></div>
 
+<div class="undo-toast" id="undotoast">
+  <span id="undotoast-msg"></span>
+  <button id="undotoast-btn">Undo</button>
+</div>
+
 <div class="modal-overlay" id="copypreview-overlay" style="display:none;">
   <div class="modal-box">
     <div class="modal-head">
@@ -502,6 +605,19 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
       <button class="icon-btn" id="copypreview-close" aria-label="Close preview">✕</button>
     </div>
     <textarea id="copypreview-text" readonly rows="10"></textarea>
+  </div>
+</div>
+
+<div class="pin-overlay" id="pinoverlay" style="display:none;">
+  <div class="pin-box">
+    <div class="pin-title">🔒 Growth Ledger</div>
+    <div class="pin-sub" id="pinsub">Enter your PIN</div>
+    <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" id="pininput" class="pin-input" autocomplete="off" placeholder="••••">
+    <div class="pin-error" id="pinerror" style="display:none;"></div>
+    <button class="btn btn-gold" id="pinsubmit" style="width:100%; justify-content:center; margin-top:14px;">Unlock</button>
+    <div class="pin-hint" id="pinhint" style="display:none;">
+      Forgot your PIN? <button class="linklike" id="pinreset">Reset it</button> — this only clears the lock on this device, your saved data isn't affected.
+    </div>
   </div>
 </div>
 
@@ -602,6 +718,120 @@ function maybeShowDailyReminder(){
 }
 
 /* ============================================================
+   PIN lock — a device-local UI gate, not real authentication.
+   IMPORTANT: this only hides the app's interface behind a PIN
+   entered in this browser; it does NOT restrict who can read or
+   write your Supabase tables directly (that's controlled by your
+   Supabase Row Level Security policies, which currently allow
+   public access with just the anon key — the same as before this
+   feature). Anyone who has your Supabase URL + anon key could
+   still hit the API directly, PIN or no PIN. This is a soft privacy
+   screen for casual snooping on a shared device, not real security.
+   ============================================================ */
+function getSavedPin(){
+  try{ return localStorage.getItem("appPin"); }catch(e){ return null; }
+}
+function setSavedPin(pin){
+  try{ localStorage.setItem("appPin", pin); }catch(e){}
+}
+function clearSavedPin(){
+  try{ localStorage.removeItem("appPin"); }catch(e){}
+}
+function initPinLock(){
+  const overlay = document.getElementById("pinoverlay");
+  const input = document.getElementById("pininput");
+  const sub = document.getElementById("pinsub");
+  const errorEl = document.getElementById("pinerror");
+  const submitBtn = document.getElementById("pinsubmit");
+  const hint = document.getElementById("pinhint");
+  const resetBtn = document.getElementById("pinreset");
+  const topbarLockBtn = document.getElementById("lockbtn");
+
+  let mode = getSavedPin() ? "unlock" : "setup";
+  let firstPin = null;
+
+  function refreshTopbarLockBtn(){
+    if(topbarLockBtn) topbarLockBtn.style.display = getSavedPin() ? "flex" : "none";
+  }
+
+  function paint(){
+    errorEl.style.display = "none";
+    input.value = "";
+    hint.style.display = mode === "unlock" ? "block" : "none";
+    if(mode === "setup"){
+      sub.textContent = "Choose a 4-digit PIN to lock this app on this device.";
+      submitBtn.textContent = "Continue";
+    }else if(mode === "confirm"){
+      sub.textContent = "Enter the same PIN again to confirm.";
+      submitBtn.textContent = "Set PIN";
+    }else{
+      sub.textContent = "Enter your PIN to continue.";
+      submitBtn.textContent = "Unlock";
+    }
+    input.focus();
+  }
+
+  function showError(msg){
+    errorEl.textContent = msg;
+    errorEl.style.display = "block";
+    input.value = "";
+    input.focus();
+  }
+
+  function submit(){
+    const val = input.value.trim();
+    if(!/^\d{4}$/.test(val)){
+      showError("Enter a 4-digit PIN");
+      return;
+    }
+    if(mode === "setup"){
+      firstPin = val;
+      mode = "confirm";
+      paint();
+    }else if(mode === "confirm"){
+      if(val !== firstPin){
+        showError("PINs didn't match — starting over");
+        mode = "setup";
+        firstPin = null;
+        setTimeout(paint, 1000);
+        return;
+      }
+      setSavedPin(val);
+      overlay.style.display = "none";
+      refreshTopbarLockBtn();
+      showToast("PIN set for this device");
+    }else{
+      if(val === getSavedPin()){
+        overlay.style.display = "none";
+      }else{
+        showError("Incorrect PIN");
+      }
+    }
+  }
+
+  submitBtn.addEventListener("click", submit);
+  input.addEventListener("keydown", (e)=>{ if(e.key === "Enter") submit(); });
+  resetBtn.addEventListener("click", ()=>{
+    if(confirm("This clears the PIN saved on this device only — your Supabase data is untouched. Continue?")){
+      clearSavedPin();
+      mode = "setup";
+      firstPin = null;
+      paint();
+      refreshTopbarLockBtn();
+    }
+  });
+  topbarLockBtn?.addEventListener("click", ()=>{
+    mode = "unlock";
+    overlay.style.display = "flex";
+    paint();
+  });
+
+  refreshTopbarLockBtn();
+  overlay.style.display = "flex";
+  paint();
+}
+
+/* ============================================================
    CSV export — used by every "Export CSV" button across the app.
    Builds a CSV client-side and triggers a browser download; no
    server round-trip, no extra library needed.
@@ -620,6 +850,42 @@ function exportCSV(filename, headers, rows){
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+
+/* ============================================================
+   Full backup — every niche's logs/accounts/followers/post
+   performance, both competitor trackers, and the 100-day
+   challenge + earnings, as one downloadable JSON file. A safety
+   net independent of Supabase — keep a copy somewhere safe.
+   ============================================================ */
+function exportFullBackup(){
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    niches: {},
+    challenge: {
+      startDate: state.challenge.startDate,
+      entries: state.challenge.entries,
+      earnings: state.challenge.earnings
+    }
+  };
+  NICHES.forEach(n=>{
+    payload.niches[n.key] = {
+      logs: state[n.key].logs,
+      accounts: state[n.key].accounts,
+      followers: state[n.key].followers,
+      postPerformance: state[n.key].postPerf,
+      competitorAccounts: state[competitorKeyFor(n.key)].accounts
+    };
+  });
+  const json = JSON.stringify(payload, null, 2);
+  const blob = new Blob([json], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = `growth-ledger-backup-${todayISO()}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast("Backup downloaded");
+}
+document.getElementById("backupbtn")?.addEventListener("click", exportFullBackup);
 
 /* ============================================================
    CONFIG — Gemini calls now go through our own backend endpoint
@@ -729,7 +995,8 @@ const HASHTAG_SETS = {
 // just a simple upload -> AI caption + hashtags helper for anything.
 const RANDOM_TAB = { key:"random", label:"Random", emoji:"🎲" };
 const CHALLENGE_TAB = { key:"challenge", label:"100-Day", emoji:"🎯" };
-const TOPTABS = [...NICHES, RANDOM_TAB, CHALLENGE_TAB];
+const OVERVIEW_TAB = { key:"overview", label:"Overview", emoji:"🏠" };
+const TOPTABS = [OVERVIEW_TAB, ...NICHES, RANDOM_TAB, CHALLENGE_TAB];
 
 // Every account-tracker instance (a niche's own Account Tracker, and each
 // niche's Competitor Account Tracker) shares the same logic/markup. This
@@ -943,6 +1210,60 @@ function showToast(msg){
   clearTimeout(toastTimer);
   toastTimer = setTimeout(()=> el.setAttribute("data-show","false"), 1800);
 }
+
+/* ============================================================
+   Undo-delete toast — "X deleted, Undo" for 5 seconds. The row is
+   removed from the local array (and re-rendered) immediately; the
+   actual Supabase delete only fires if the 5s window passes without
+   the person clicking Undo.
+   ============================================================ */
+let undoTimer = null;
+function showUndoToast(message, onUndo){
+  const el = document.getElementById("undotoast");
+  const msgEl = document.getElementById("undotoast-msg");
+  const btn = document.getElementById("undotoast-btn");
+  if(!el) return;
+  msgEl.textContent = message;
+  el.setAttribute("data-show", "true");
+  clearTimeout(undoTimer);
+
+  const cleanup = ()=>{
+    el.setAttribute("data-show", "false");
+    btn.onclick = null;
+  };
+  btn.onclick = ()=>{
+    clearTimeout(undoTimer);
+    cleanup();
+    onUndo();
+  };
+  undoTimer = setTimeout(cleanup, 5000);
+}
+function softDeleteWithUndo(list, entry, renderFn, deleteFn, label){
+  const idx = list.indexOf(entry);
+  if(idx === -1) return;
+  list.splice(idx, 1);
+  renderFn();
+
+  let undone = false;
+  showUndoToast(`${label} deleted`, ()=>{
+    undone = true;
+    list.splice(idx, 0, entry);
+    renderFn();
+  });
+
+  setTimeout(async ()=>{
+    if(undone) return;
+    try{
+      await deleteFn();
+    }catch(e){
+      list.splice(idx, 0, entry);
+      renderFn();
+      showToast("Couldn't delete — restored");
+      console.error(e);
+    }
+  }, 5000);
+}
+
 async function copyText(text){
   try{
     await navigator.clipboard.writeText(text);
@@ -1064,7 +1385,14 @@ NICHES.forEach(n => {
     logDateFrom: null,
     logDateTo: null,
     batchQueue: [],                // multi-file upload: File objects waiting to be stepped through
-    batchPos: 0                    // 0-based index into batchQueue of the currently loaded file
+    batchPos: 0,                   // 0-based index into batchQueue of the currently loaded file
+    editingLogId: null,
+    editingAccountId: null,
+    editingFollowerId: null,
+    editingPerfId: null,
+    captionLibrary: [],
+    contentIdeas: [],
+    editingIdeaId: null
   };
 
   // Each niche also gets its own independent Competitor Account Tracker
@@ -1074,7 +1402,8 @@ NICHES.forEach(n => {
   state[compKey] = {
     accounts: [],
     acctSort: "date_desc",
-    acctFilterUsername: null
+    acctFilterUsername: null,
+    editingAccountId: null
   };
 });
 
@@ -1122,7 +1451,9 @@ state.challenge = {
   earnings: [],       // { id, date, amount, note } — toward the $1,000 goal
   loading: false,
   error: null,
-  lastAction: null
+  lastAction: null,
+  editingEntryId: null,
+  editingEarningId: null
 };
 
 /* ---------- Supabase-backed storage: daily logs ---------- */
@@ -1161,6 +1492,10 @@ async function deleteLogFromDB(id){
   const { error } = await db.from("logs").delete().eq("id", id);
   if(error) throw error;
 }
+async function updateLogInDB(id, date, note){
+  const { error } = await db.from("logs").update({ entry_date: date, note }).eq("id", id);
+  if(error) throw error;
+}
 
 /* ---------- Supabase-backed storage: account tracker (per niche + competitor lists) ---------- */
 function accountRowToEntry(row){
@@ -1190,6 +1525,10 @@ async function updateAccountDoneInDB(id, done){
 }
 async function deleteAccountFromDB(id){
   const { error } = await db.from("accounts").delete().eq("id", id);
+  if(error) throw error;
+}
+async function updateAccountInDB(id, date, link, username){
+  const { error } = await db.from("accounts").update({ entry_date: date, link, username }).eq("id", id);
   if(error) throw error;
 }
 
@@ -1241,6 +1580,13 @@ async function deleteChallengeEntryFromDB(id){
   const { error } = await db.from("challenge_entries").delete().eq("id", id);
   if(error) throw error;
 }
+async function updateChallengeEntryInDB(id, entry){
+  const { error } = await db.from("challenge_entries").update({
+    entry_date: entry.date, posts: entry.posts, reels: entry.reels,
+    stories: entry.stories, follows: entry.follows, unfollows: entry.unfollows
+  }).eq("id", id);
+  if(error) throw error;
+}
 
 /* ---------- Supabase-backed storage: earnings toward the $1,000 goal ----------
    Table: earnings (id, entry_date, amount, note)
@@ -1281,6 +1627,12 @@ async function addEarningToDB(entry){
 }
 async function deleteEarningFromDB(id){
   const { error } = await db.from("earnings").delete().eq("id", id);
+  if(error) throw error;
+}
+async function updateEarningInDB(id, entry){
+  const { error } = await db.from("earnings").update({
+    entry_date: entry.date, amount: entry.amount, note: entry.note || null
+  }).eq("id", id);
   if(error) throw error;
 }
 
@@ -1324,6 +1676,10 @@ async function addFollowerToDB(nicheKey, date, count){
 }
 async function deleteFollowerFromDB(id){
   const { error } = await db.from("followers").delete().eq("id", id);
+  if(error) throw error;
+}
+async function updateFollowerInDB(id, date, count){
+  const { error } = await db.from("followers").update({ entry_date: date, count }).eq("id", id);
   if(error) throw error;
 }
 
@@ -1388,25 +1744,127 @@ async function deletePostPerformanceFromDB(id){
   const { error } = await db.from("post_performance").delete().eq("id", id);
   if(error) throw error;
 }
+async function updatePostPerformanceInDB(id, entry){
+  const { error } = await db.from("post_performance").update({
+    entry_date: entry.date, hashtag_set: entry.hashtagSet, post_link: entry.link || null,
+    likes: entry.likes, comments: entry.comments, shares: entry.shares, reach: entry.reach
+  }).eq("id", id);
+  if(error) throw error;
+}
+
+/* ---------- Supabase-backed storage: caption library ----------
+   Table: caption_library (id, niche_key, platform, title, description, hashtags)
+   SQL to run once in the Supabase SQL editor:
+
+   create table caption_library (
+     id bigint generated always as identity primary key,
+     niche_key text not null,
+     platform text,
+     title text,
+     description text,
+     hashtags text,
+     created_at timestamptz not null default now()
+   );
+   alter table caption_library enable row level security;
+   create policy "public read" on caption_library for select using (true);
+   create policy "public write" on caption_library for insert with check (true);
+   create policy "public delete" on caption_library for delete using (true);
+------------------------------------------------------------------------- */
+function captionRowToEntry(row){
+  return { id:row.id, platform:row.platform || "", title:row.title || "", description:row.description || "", hashtags:row.hashtags || "" };
+}
+async function loadCaptionLibraryFromDB(nicheKey){
+  const { data, error } = await db
+    .from("caption_library")
+    .select("*")
+    .eq("niche_key", nicheKey)
+    .order("id", { ascending:false });
+  if(error){ reportDbError("loadCaptionLibraryFromDB", error); return []; }
+  return (data || []).map(captionRowToEntry);
+}
+async function addCaptionToDB(nicheKey, entry){
+  const { data, error } = await db
+    .from("caption_library")
+    .insert({ niche_key: nicheKey, platform: entry.platform, title: entry.title, description: entry.description, hashtags: entry.hashtags })
+    .select()
+    .single();
+  if(error) throw error;
+  return captionRowToEntry(data);
+}
+async function deleteCaptionFromDB(id){
+  const { error } = await db.from("caption_library").delete().eq("id", id);
+  if(error) throw error;
+}
+
+/* ---------- Supabase-backed storage: content idea bank ----------
+   Table: content_ideas (id, niche_key, idea)
+   SQL to run once in the Supabase SQL editor:
+
+   create table content_ideas (
+     id bigint generated always as identity primary key,
+     niche_key text not null,
+     idea text not null,
+     created_at timestamptz not null default now()
+   );
+   alter table content_ideas enable row level security;
+   create policy "public read" on content_ideas for select using (true);
+   create policy "public write" on content_ideas for insert with check (true);
+   create policy "public delete" on content_ideas for delete using (true);
+------------------------------------------------------------------------- */
+function ideaRowToEntry(row){
+  return { id:row.id, idea:row.idea || "" };
+}
+async function loadContentIdeasFromDB(nicheKey){
+  const { data, error } = await db
+    .from("content_ideas")
+    .select("*")
+    .eq("niche_key", nicheKey)
+    .order("id", { ascending:false });
+  if(error){ reportDbError("loadContentIdeasFromDB", error); return []; }
+  return (data || []).map(ideaRowToEntry);
+}
+async function addContentIdeaToDB(nicheKey, idea){
+  const { data, error } = await db
+    .from("content_ideas")
+    .insert({ niche_key: nicheKey, idea })
+    .select()
+    .single();
+  if(error) throw error;
+  return ideaRowToEntry(data);
+}
+async function deleteContentIdeaFromDB(id){
+  const { error } = await db.from("content_ideas").delete().eq("id", id);
+  if(error) throw error;
+}
+async function updateContentIdeaInDB(id, idea){
+  const { error } = await db.from("content_ideas").update({ idea }).eq("id", id);
+  if(error) throw error;
+}
 
 /* ---------- Hydrate everything from Supabase after first render ---------- */
 async function hydrateAllData(){
   for(const n of NICHES){
-    const [logs, accounts, followers, perf] = await Promise.all([
+    const [logs, accounts, followers, perf, captions, ideas] = await Promise.all([
       loadLogsFromDB(n.key),
       loadAccountsFromDB(n.key),
       loadFollowersFromDB(n.key),
-      loadPostPerformanceFromDB(n.key)
+      loadPostPerformanceFromDB(n.key),
+      loadCaptionLibraryFromDB(n.key),
+      loadContentIdeasFromDB(n.key)
     ]);
     state[n.key].logs = logs;
     state[n.key].accounts = accounts;
     state[n.key].followers = followers;
     state[n.key].postPerf = perf;
+    state[n.key].captionLibrary = captions;
+    state[n.key].contentIdeas = ideas;
     renderLogTable(n.key);
     renderAccountList(n.key);
     renderFollowerChart(n.key);
     renderFollowerTable(n.key);
     renderPostPerfAll(n.key);
+    renderCaptionLibrary(n.key);
+    renderContentIdeas(n.key);
 
     const compKey = competitorKeyFor(n.key);
     state[compKey].accounts = await loadAccountsFromDB(compKey);
@@ -1416,6 +1874,7 @@ async function hydrateAllData(){
   state.challenge.entries = await loadChallengeEntriesFromDB();
   state.challenge.earnings = await loadEarningsFromDB();
   renderChallengeAll();
+  renderOverview();
 }
 
 /* ============================================================
@@ -1445,11 +1904,13 @@ function renderTabstrip(){
    ============================================================ */
 function renderPanels(){
   const container = document.getElementById("panels");
-  container.innerHTML = NICHES.map(n => panelTemplate(n)).join("") + randomPanelTemplate() + challengePanelTemplate();
+  container.innerHTML = overviewPanelTemplate() + NICHES.map(n => panelTemplate(n)).join("") + randomPanelTemplate() + challengePanelTemplate();
+  wireOverviewPanel();
   NICHES.forEach(n => wirePanel(n));
   wireRandomPanel();
   wireChallengePanel();
   renderChallengeAll();
+  renderOverview();
 }
 
 /* ============================================================
@@ -1722,6 +2183,25 @@ function renderChallengeTable(){
 
   tbody.innerHTML = entries.map(e=>{
     const day = s.startDate ? dayNumberFor(e.date, s.startDate) : null;
+
+    if(s.editingEntryId === e.id){
+      return `
+        <tr>
+          <td class="no">${day ?? "—"}</td>
+          <td><input type="date" class="edit-input" id="editdate-chal-${e.id}" value="${e.date}"></td>
+          <td><input type="number" class="edit-input" id="editposts-chal-${e.id}" min="0" value="${e.posts}" style="width:55px;"></td>
+          <td><input type="number" class="edit-input" id="editreels-chal-${e.id}" min="0" value="${e.reels}" style="width:55px;"></td>
+          <td><input type="number" class="edit-input" id="editstories-chal-${e.id}" min="0" value="${e.stories}" style="width:55px;"></td>
+          <td><input type="number" class="edit-input" id="editfollows-chal-${e.id}" min="0" value="${e.follows}" style="width:55px;"></td>
+          <td><input type="number" class="edit-input" id="editunfollows-chal-${e.id}" min="0" value="${e.unfollows}" style="width:55px;"></td>
+          <td>—</td>
+          <td class="edit-actions">
+            <button class="btn btn-gold btn-sm" data-savechallenge="${e.id}" style="padding:4px 8px;" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-cancelchallenge="${e.id}" style="padding:4px 8px;" title="Cancel">✕</button>
+          </td>
+        </tr>`;
+    }
+
     const target = day ? challengeTargetForDay(day) : null;
     const met = target && e.posts>=target.posts && e.reels>=target.reels && e.stories>=target.stories;
     const targetPill = target
@@ -1737,22 +2217,56 @@ function renderChallengeTable(){
         <td>${e.follows}</td>
         <td>${e.unfollows}</td>
         <td>${targetPill}</td>
-        <td><button class="btn btn-ghost btn-sm" data-delchallenge="${e.id}" title="Delete" style="padding:4px 8px;">✕</button></td>
+        <td class="edit-actions">
+          <button class="btn btn-ghost btn-sm" data-editchallenge="${e.id}" style="padding:4px 8px;" title="Edit">✏️</button>
+          <button class="btn btn-ghost btn-sm" data-delchallenge="${e.id}" title="Delete" style="padding:4px 8px;">✕</button>
+        </td>
       </tr>`;
   }).join("");
 
-  tbody.querySelectorAll("[data-delchallenge]").forEach(btn=>{
+  tbody.querySelectorAll("[data-editchallenge]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingEntryId = parseInt(btn.getAttribute("data-editchallenge"), 10);
+      renderChallengeTable();
+    });
+  });
+  tbody.querySelectorAll("[data-cancelchallenge]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingEntryId = null;
+      renderChallengeTable();
+    });
+  });
+  tbody.querySelectorAll("[data-savechallenge]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
-      const id = parseInt(btn.getAttribute("data-delchallenge"), 10);
+      const id = parseInt(btn.getAttribute("data-savechallenge"), 10);
+      const updated = {
+        date: document.getElementById(`editdate-chal-${id}`).value,
+        posts: parseInt(document.getElementById(`editposts-chal-${id}`).value, 10) || 0,
+        reels: parseInt(document.getElementById(`editreels-chal-${id}`).value, 10) || 0,
+        stories: parseInt(document.getElementById(`editstories-chal-${id}`).value, 10) || 0,
+        follows: parseInt(document.getElementById(`editfollows-chal-${id}`).value, 10) || 0,
+        unfollows: parseInt(document.getElementById(`editunfollows-chal-${id}`).value, 10) || 0
+      };
+      btn.disabled = true;
       try{
-        await deleteChallengeEntryFromDB(id);
-        state.challenge.entries = state.challenge.entries.filter(x=>x.id!==id);
+        await updateChallengeEntryInDB(id, updated);
+        const entry = s.entries.find(x => x.id === id);
+        if(entry) Object.assign(entry, updated);
+        s.editingEntryId = null;
         renderChallengeAll();
-        showToast("Entry deleted");
+        showToast("Entry updated");
       }catch(e){
-        showToast("Couldn't delete entry");
-        console.error(e);
+        showToast("Couldn't save changes");
+        btn.disabled = false;
       }
+    });
+  });
+  tbody.querySelectorAll("[data-delchallenge]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = parseInt(btn.getAttribute("data-delchallenge"), 10);
+      const entry = s.entries.find(x => x.id === id);
+      if(!entry) return;
+      softDeleteWithUndo(s.entries, entry, ()=> renderChallengeAll(), ()=> deleteChallengeEntryFromDB(id), "Challenge entry");
     });
   });
 }
@@ -1787,7 +2301,8 @@ function renderEarningsTable(){
   const tbody = document.getElementById("earnings-tbody");
   const empty = document.getElementById("earnings-empty");
   if(!tbody) return;
-  const entries = [...state.challenge.earnings].sort((a,b)=> b.date.localeCompare(a.date) || b.id - a.id);
+  const s = state.challenge;
+  const entries = [...s.earnings].sort((a,b)=> b.date.localeCompare(a.date) || b.id - a.id);
 
   if(entries.length === 0){
     tbody.innerHTML = "";
@@ -1796,28 +2311,72 @@ function renderEarningsTable(){
   }
   if(empty) empty.style.display = "none";
 
-  tbody.innerHTML = entries.map(e => `
+  tbody.innerHTML = entries.map(e => {
+    if(s.editingEarningId === e.id){
+      return `
+        <tr>
+          <td><input type="date" class="edit-input" id="editdate-earn-${e.id}" value="${e.date}"></td>
+          <td><input type="number" class="edit-input" id="editamount-earn-${e.id}" min="0" step="0.01" value="${e.amount}" style="width:80px;"></td>
+          <td><input type="text" class="edit-input" id="editnote-earn-${e.id}" value="${escapeHtml(e.note)}"></td>
+          <td class="edit-actions">
+            <button class="btn btn-gold btn-sm" data-saveearning="${e.id}" style="padding:4px 8px;" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-cancelearning="${e.id}" style="padding:4px 8px;" title="Cancel">✕</button>
+          </td>
+        </tr>`;
+    }
+    return `
     <tr>
       <td class="date">${escapeHtml(formatDate(e.date))}</td>
       <td>${formatMoney(e.amount)}</td>
       <td>${escapeHtml(e.note || "—")}</td>
-      <td><button class="btn btn-ghost btn-sm" data-delearning="${e.id}" title="Delete" style="padding:4px 8px;">✕</button></td>
-    </tr>
-  `).join("");
+      <td class="edit-actions">
+        <button class="btn btn-ghost btn-sm" data-editearning="${e.id}" style="padding:4px 8px;" title="Edit">✏️</button>
+        <button class="btn btn-ghost btn-sm" data-delearning="${e.id}" title="Delete" style="padding:4px 8px;">✕</button>
+      </td>
+    </tr>`;
+  }).join("");
 
-  tbody.querySelectorAll("[data-delearning]").forEach(btn=>{
+  tbody.querySelectorAll("[data-editearning]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingEarningId = parseInt(btn.getAttribute("data-editearning"), 10);
+      renderEarningsTable();
+    });
+  });
+  tbody.querySelectorAll("[data-cancelearning]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingEarningId = null;
+      renderEarningsTable();
+    });
+  });
+  tbody.querySelectorAll("[data-saveearning]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
-      const id = parseInt(btn.getAttribute("data-delearning"), 10);
+      const id = parseInt(btn.getAttribute("data-saveearning"), 10);
+      const updated = {
+        date: document.getElementById(`editdate-earn-${id}`).value,
+        amount: parseFloat(document.getElementById(`editamount-earn-${id}`).value) || 0,
+        note: document.getElementById(`editnote-earn-${id}`).value.trim()
+      };
+      btn.disabled = true;
       try{
-        await deleteEarningFromDB(id);
-        state.challenge.earnings = state.challenge.earnings.filter(x=>x.id!==id);
+        await updateEarningInDB(id, updated);
+        const entry = s.earnings.find(x => x.id === id);
+        if(entry) Object.assign(entry, updated);
+        s.editingEarningId = null;
         renderEarningsSummary();
         renderEarningsTable();
-        showToast("Entry deleted");
+        showToast("Entry updated");
       }catch(e){
-        showToast("Couldn't delete entry");
-        console.error(e);
+        showToast("Couldn't save changes");
+        btn.disabled = false;
       }
+    });
+  });
+  tbody.querySelectorAll("[data-delearning]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = parseInt(btn.getAttribute("data-delearning"), 10);
+      const entry = s.earnings.find(x => x.id === id);
+      if(!entry) return;
+      softDeleteWithUndo(s.earnings, entry, ()=>{ renderEarningsSummary(); renderEarningsTable(); }, ()=> deleteEarningFromDB(id), "Earning");
     });
   });
 }
@@ -2019,6 +2578,191 @@ function wireChallengePanel(){
   });
 }
 
+/* ============================================================
+   Overview tab — a read-only, at-a-glance dashboard: this week's
+   recap, milestone badges, and a per-niche snapshot. Nothing here
+   is stored separately; it's all computed from data already
+   loaded for the other tabs.
+   ============================================================ */
+const MILESTONES = [
+  { id:"streak7",   emoji:"🔥", label:"7-Day Streak",        check:(stats)=> stats.streak >= 7 },
+  { id:"streak30",  emoji:"🔥", label:"30-Day Streak",       check:(stats)=> stats.streak >= 30 },
+  { id:"streak100", emoji:"🏁", label:"100 Days Complete",   check:(stats)=> stats.streak >= 100 },
+  { id:"earn100",   emoji:"💵", label:"$100 Earned",         check:(stats, earnTotal)=> earnTotal >= 100 },
+  { id:"earn500",   emoji:"💰", label:"$500 Earned",         check:(stats, earnTotal)=> earnTotal >= 500 },
+  { id:"earn1000",  emoji:"🏆", label:"$1,000 Goal!",        check:(stats, earnTotal)=> earnTotal >= 1000 }
+];
+function getUnlockedMilestones(){
+  try{ return JSON.parse(localStorage.getItem("unlockedMilestones") || "[]"); }catch(e){ return []; }
+}
+function setUnlockedMilestones(list){
+  try{ localStorage.setItem("unlockedMilestones", JSON.stringify(list)); }catch(e){}
+}
+function checkMilestones(){
+  const stats = computeChallengeStats();
+  const earnTotal = state.challenge.earnings.reduce((sum,e)=> sum + e.amount, 0);
+  const unlocked = getUnlockedMilestones();
+  let newlyUnlocked = null;
+  MILESTONES.forEach(m=>{
+    if(m.check(stats, earnTotal) && !unlocked.includes(m.id)){
+      unlocked.push(m.id);
+      newlyUnlocked = m;
+    }
+  });
+  if(newlyUnlocked){
+    setUnlockedMilestones(unlocked);
+    showToast(`${newlyUnlocked.emoji} Milestone unlocked: ${newlyUnlocked.label}!`);
+  }
+  return { stats, earnTotal, unlocked };
+}
+
+function computeWeeklyRecap(){
+  const today = todayISO();
+  const weekAgo = addDaysISO(today, -6);
+
+  const weekEntries = state.challenge.entries.filter(e => e.date >= weekAgo && e.date <= today);
+  const posts = weekEntries.reduce((s,e)=> s + e.posts, 0);
+  const reels = weekEntries.reduce((s,e)=> s + e.reels, 0);
+  const stories = weekEntries.reduce((s,e)=> s + e.stories, 0);
+  const follows = weekEntries.reduce((s,e)=> s + e.follows, 0);
+
+  const weekEarnings = state.challenge.earnings
+    .filter(e => e.date >= weekAgo && e.date <= today)
+    .reduce((s,e)=> s + e.amount, 0);
+
+  let followerDelta = 0;
+  NICHES.forEach(n=>{
+    const snaps = [...state[n.key].followers].sort((a,b)=> a.date.localeCompare(b.date));
+    const inWeek = snaps.filter(sn => sn.date >= weekAgo && sn.date <= today);
+    if(inWeek.length >= 2){
+      followerDelta += inWeek[inWeek.length-1].count - inWeek[0].count;
+    }else if(inWeek.length === 1){
+      const before = snaps.filter(sn => sn.date < weekAgo).pop();
+      if(before) followerDelta += inWeek[0].count - before.count;
+    }
+  });
+
+  return { posts, reels, stories, follows, earnings: weekEarnings, followerDelta };
+}
+
+function nicheOverviewStats(nicheKey){
+  const s = state[nicheKey];
+  const sortedFollowers = [...s.followers].sort((a,b)=> a.date.localeCompare(b.date));
+  const latestFollowers = sortedFollowers.length ? sortedFollowers[sortedFollowers.length-1].count : null;
+  const firstFollowers = sortedFollowers.length ? sortedFollowers[0].count : null;
+  const followerDelta = (latestFollowers !== null && firstFollowers !== null) ? latestFollowers - firstFollowers : null;
+
+  const bySet = {};
+  s.postPerf.forEach(e=>{
+    if(!e.hashtagSet) return;
+    if(!bySet[e.hashtagSet]) bySet[e.hashtagSet] = [];
+    bySet[e.hashtagSet].push(e);
+  });
+  let bestSet = null, bestScore = -1;
+  Object.keys(bySet).forEach(setNum=>{
+    const entries = bySet[setNum];
+    const avg = entries.reduce((sum,e)=> sum + engagementScore(e), 0) / entries.length;
+    if(avg > bestScore){ bestScore = avg; bestSet = setNum; }
+  });
+
+  return { logCount: s.logs.length, latestFollowers, followerDelta, postCount: s.postPerf.length, bestSet };
+}
+
+function renderOverviewRecap(){
+  const el = document.getElementById("overview-recap");
+  if(!el) return;
+  const r = computeWeeklyRecap();
+  el.innerHTML = `
+    <div class="challenge-badges">
+      <div class="challenge-badge"><div class="num">${r.posts}</div><div class="lbl">Posts</div></div>
+      <div class="challenge-badge"><div class="num">${r.reels}</div><div class="lbl">Reels</div></div>
+      <div class="challenge-badge"><div class="num">${r.stories}</div><div class="lbl">Stories</div></div>
+      <div class="challenge-badge"><div class="num">${r.follows}</div><div class="lbl">Follows</div></div>
+      <div class="challenge-badge"><div class="num">${r.followerDelta>=0?"+":""}${r.followerDelta}</div><div class="lbl">Follower change</div></div>
+      <div class="challenge-badge"><div class="num">${formatMoney(r.earnings)}</div><div class="lbl">Earned</div></div>
+    </div>
+  `;
+}
+function renderOverviewMilestones(){
+  const el = document.getElementById("overview-milestones");
+  if(!el) return;
+  const { unlocked } = checkMilestones();
+  el.innerHTML = MILESTONES.map(m=>{
+    const achieved = unlocked.includes(m.id);
+    return `<div class="milestone-chip ${achieved ? "achieved" : ""}">${m.emoji} ${escapeHtml(m.label)}</div>`;
+  }).join("");
+}
+function renderOverviewNiches(){
+  const el = document.getElementById("overview-niches");
+  if(!el) return;
+  el.innerHTML = NICHES.map(n=>{
+    const st = nicheOverviewStats(n.key);
+    const followerLine = st.latestFollowers !== null
+      ? `${st.latestFollowers.toLocaleString()}${st.followerDelta !== null ? ` (${st.followerDelta>=0?"+":""}${st.followerDelta})` : ""}`
+      : "—";
+    return `
+      <div class="overview-niche-card">
+        <div class="overview-niche-head">${n.emoji} ${escapeHtml(n.label)}</div>
+        <div class="overview-niche-stat"><span>Followers</span><strong>${followerLine}</strong></div>
+        <div class="overview-niche-stat"><span>Daily logs</span><strong>${st.logCount}</strong></div>
+        <div class="overview-niche-stat"><span>Posts tracked</span><strong>${st.postCount}</strong></div>
+        <div class="overview-niche-stat"><span>Best set</span><strong>${st.bestSet ? "Set " + st.bestSet : "—"}</strong></div>
+      </div>`;
+  }).join("");
+}
+function renderOverview(){
+  renderOverviewRecap();
+  renderOverviewMilestones();
+  renderOverviewNiches();
+}
+function wireOverviewPanel(){
+  // read-only summary — nothing to wire yet
+}
+function overviewPanelTemplate(){
+  const key = "overview";
+  const visible = activeNiche === key;
+  return `
+  <section class="niche-panel" id="panel-${key}" data-visible="${visible}" role="tabpanel" aria-labelledby="tab-${key}">
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="section-title"><span class="ledger-no">This Week</span> Recap</div>
+          <div class="section-sub">Last 7 days across everything you're tracking.</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding-top:0;">
+        <div id="overview-recap"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="section-title">🏆 Milestones</div>
+          <div class="section-sub">Unlocked automatically as you hit these — stay gold once earned.</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding-top:0;">
+        <div id="overview-milestones" class="milestone-row"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <div class="section-title">📊 Niche Snapshot</div>
+          <div class="section-sub">Fishing, Terrier, and Cows at a glance.</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding-top:0;">
+        <div id="overview-niches" class="overview-niche-grid"></div>
+      </div>
+    </div>
+
+  </section>`;
+}
+
 function panelTemplate(n){
   const s = state[n.key];
   const visible = n.key === activeNiche;
@@ -2121,6 +2865,36 @@ function panelTemplate(n){
           <button class="btn btn-ghost btn-sm" id="creditcopy-${n.key}">📋 Copy credit line</button>
         </div>
 
+      </div>
+    </div>
+
+    <!-- ===================== 2.3 CONTENT IDEA BANK ===================== -->
+    <div class="card">
+      <button class="helper-toggle" id="ideatoggle-${n.key}" aria-expanded="false" aria-controls="ideabody-${n.key}">
+        <div class="section-title">💡 Content Idea Bank</div>
+        <span class="chev">▶</span>
+      </button>
+      <div class="helper-body" id="ideabody-${n.key}" data-open="false">
+        <div class="section-sub" style="margin-bottom:14px;">Jot down post ideas here so you never have to stare at a blank screen wondering what to post.</div>
+        <div class="idea-form">
+          <input type="text" id="ideainput-${n.key}" placeholder="e.g. Behind-the-scenes of morning feed routine">
+          <button class="btn btn-gold" id="ideaadd-${n.key}">+ Add idea</button>
+        </div>
+        <div class="idea-list" id="idealist-${n.key}"></div>
+        <div id="ideaempty-${n.key}" class="log-empty" style="display:none;">No ideas saved yet.</div>
+      </div>
+    </div>
+
+    <!-- ===================== 2.4 CAPTION LIBRARY ===================== -->
+    <div class="card">
+      <button class="helper-toggle" id="captiontoggle-${n.key}" aria-expanded="false" aria-controls="captionbody-${n.key}">
+        <div class="section-title">📚 Caption Library</div>
+        <span class="chev">▶</span>
+      </button>
+      <div class="helper-body" id="captionbody-${n.key}" data-open="false">
+        <div class="section-sub" style="margin-bottom:14px;">Save your best captions here to reuse or adapt later — look for the 💾 Save button next to each platform's Copy button above.</div>
+        <div class="caption-list" id="captionlist-${n.key}"></div>
+        <div id="captionempty-${n.key}" class="log-empty" style="display:none;">Nothing saved yet — generate a caption above and hit 💾 Save to add it here.</div>
       </div>
     </div>
 
@@ -2374,6 +3148,47 @@ function wirePanel(n){
     exportCSV(`${key}-daily-log.csv`, ["Date","Note"], filtered.map(e=>[formatDate(e.date), e.note]));
   });
 
+  // ---- content idea bank ----
+  renderContentIdeas(key);
+  const ideaToggleBtn = document.getElementById(`ideatoggle-${key}`);
+  ideaToggleBtn.addEventListener("click", ()=>{
+    const body = document.getElementById(`ideabody-${key}`);
+    const open = body.getAttribute("data-open") === "true";
+    body.setAttribute("data-open", String(!open));
+    ideaToggleBtn.setAttribute("aria-expanded", String(!open));
+  });
+  document.getElementById(`ideaadd-${key}`).addEventListener("click", async ()=>{
+    const input = document.getElementById(`ideainput-${key}`);
+    const text = input.value.trim();
+    if(!text) return;
+    const btn = document.getElementById(`ideaadd-${key}`);
+    btn.disabled = true;
+    try{
+      const entry = await addContentIdeaToDB(key, text);
+      s.contentIdeas.unshift(entry);
+      input.value = "";
+      renderContentIdeas(key);
+    }catch(e){
+      showToast("Couldn't save idea");
+      console.error(e);
+    }finally{
+      btn.disabled = false;
+    }
+  });
+  document.getElementById(`ideainput-${key}`).addEventListener("keydown", (e)=>{
+    if(e.key === "Enter"){ e.preventDefault(); document.getElementById(`ideaadd-${key}`).click(); }
+  });
+
+  // ---- caption library ----
+  renderCaptionLibrary(key);
+  const captionToggleBtn = document.getElementById(`captiontoggle-${key}`);
+  captionToggleBtn.addEventListener("click", ()=>{
+    const body = document.getElementById(`captionbody-${key}`);
+    const open = body.getAttribute("data-open") === "true";
+    body.setAttribute("data-open", String(!open));
+    captionToggleBtn.setAttribute("aria-expanded", String(!open));
+  });
+
   // ---- account tracker ----
   wireAccountTracker(key);
 
@@ -2531,26 +3346,69 @@ function renderLogTable(nicheKey){
   }
   empty.style.display = "none";
   const total = filtered.length;
-  body.innerHTML = filtered.map((entry, idx) => `
-    <tr>
-      <td class="no">No. ${pad3(total - idx)}</td>
-      <td class="date">${escapeHtml(formatDate(entry.date))}</td>
-      <td>${escapeHtml(entry.note)}</td>
-      <td><button class="btn btn-ghost btn-sm" data-del="${entry.id}" aria-label="Delete entry" title="Delete">✕</button></td>
-    </tr>
-  `).join("");
-  body.querySelectorAll("[data-del]").forEach(btn=>{
+  body.innerHTML = filtered.map((entry, idx) => {
+    if(s.editingLogId === entry.id){
+      return `
+        <tr>
+          <td class="no">No. ${pad3(total - idx)}</td>
+          <td><input type="date" class="edit-input" id="editdate-log-${entry.id}" value="${entry.date}"></td>
+          <td><input type="text" class="edit-input" id="editnote-log-${entry.id}" value="${escapeHtml(entry.note)}"></td>
+          <td class="edit-actions">
+            <button class="btn btn-gold btn-sm" data-savelog="${entry.id}" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-canceledit="${entry.id}" title="Cancel">✕</button>
+          </td>
+        </tr>`;
+    }
+    return `
+      <tr>
+        <td class="no">No. ${pad3(total - idx)}</td>
+        <td class="date">${escapeHtml(formatDate(entry.date))}</td>
+        <td>${escapeHtml(entry.note)}</td>
+        <td class="edit-actions">
+          <button class="btn btn-ghost btn-sm" data-editlog="${entry.id}" aria-label="Edit entry" title="Edit">✏️</button>
+          <button class="btn btn-ghost btn-sm" data-del="${entry.id}" aria-label="Delete entry" title="Delete">✕</button>
+        </td>
+      </tr>`;
+  }).join("");
+
+  body.querySelectorAll("[data-editlog]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingLogId = Number(btn.getAttribute("data-editlog"));
+      renderLogTable(nicheKey);
+    });
+  });
+  body.querySelectorAll("[data-canceledit]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingLogId = null;
+      renderLogTable(nicheKey);
+    });
+  });
+  body.querySelectorAll("[data-savelog]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
-      const id = Number(btn.getAttribute("data-del"));
+      const id = Number(btn.getAttribute("data-savelog"));
+      const date = document.getElementById(`editdate-log-${id}`).value;
+      const note = document.getElementById(`editnote-log-${id}`).value.trim();
+      if(!note) return;
       btn.disabled = true;
       try{
-        await deleteLogFromDB(id);
-        s.logs = s.logs.filter(e => e.id !== id);
+        await updateLogInDB(id, date, note);
+        const entry = s.logs.find(e => e.id === id);
+        if(entry){ entry.date = date; entry.note = note; }
+        s.editingLogId = null;
         renderLogTable(nicheKey);
+        showToast("Entry updated");
       }catch(e){
-        showToast("ডিলিট করা যায়নি");
+        showToast("Couldn't save changes");
         btn.disabled = false;
       }
+    });
+  });
+  body.querySelectorAll("[data-del]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = Number(btn.getAttribute("data-del"));
+      const entry = s.logs.find(e => e.id === id);
+      if(!entry) return;
+      softDeleteWithUndo(s.logs, entry, ()=> renderLogTable(nicheKey), ()=> deleteLogFromDB(id), "Log entry");
     });
   });
 }
@@ -2573,29 +3431,88 @@ function renderPostPerfTable(nicheKey){
   }
   if(empty) empty.style.display = "none";
 
-  body.innerHTML = sorted.map(e => `
+  body.innerHTML = sorted.map(e => {
+    if(s.editingPerfId === e.id){
+      return `
+        <tr>
+          <td><input type="date" class="edit-input" id="editdate-perf-${e.id}" value="${e.date}"></td>
+          <td>
+            <select class="edit-input" id="editset-perf-${e.id}">
+              <option value="">—</option>
+              ${Array.from({length:16}, (_,i)=>i+1).map(n => `<option value="${n}" ${e.hashtagSet===n?"selected":""}>Set ${n}</option>`).join("")}
+            </select>
+          </td>
+          <td><input type="text" class="edit-input" id="editlink-perf-${e.id}" value="${escapeHtml(e.link)}"></td>
+          <td><input type="number" class="edit-input" id="editlikes-perf-${e.id}" min="0" value="${e.likes}" style="width:60px;"></td>
+          <td><input type="number" class="edit-input" id="editcomments-perf-${e.id}" min="0" value="${e.comments}" style="width:60px;"></td>
+          <td><input type="number" class="edit-input" id="editshares-perf-${e.id}" min="0" value="${e.shares}" style="width:60px;"></td>
+          <td><input type="number" class="edit-input" id="editreach-perf-${e.id}" min="0" value="${e.reach}" style="width:70px;"></td>
+          <td>—</td>
+          <td class="edit-actions">
+            <button class="btn btn-gold btn-sm" data-saveperf="${e.id}" style="padding:4px 8px;" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-cancelperf="${e.id}" style="padding:4px 8px;" title="Cancel">✕</button>
+          </td>
+        </tr>`;
+    }
+    return `
     <tr>
       <td class="date">${escapeHtml(formatDate(e.date))}</td>
       <td>${e.hashtagSet ? "Set " + e.hashtagSet : "—"}</td>
       <td style="max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(e.link)}">${escapeHtml(e.link) || "—"}</td>
       <td>${e.likes}</td><td>${e.comments}</td><td>${e.shares}</td><td>${e.reach}</td>
       <td><strong>${engagementScore(e)}</strong></td>
-      <td><button class="btn btn-ghost btn-sm" data-delperf="${e.id}" title="Delete" style="padding:4px 8px;">✕</button></td>
-    </tr>
-  `).join("");
+      <td class="edit-actions">
+        <button class="btn btn-ghost btn-sm" data-editperf="${e.id}" style="padding:4px 8px;" title="Edit">✏️</button>
+        <button class="btn btn-ghost btn-sm" data-delperf="${e.id}" title="Delete" style="padding:4px 8px;">✕</button>
+      </td>
+    </tr>`;
+  }).join("");
 
-  body.querySelectorAll("[data-delperf]").forEach(btn=>{
+  body.querySelectorAll("[data-editperf]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingPerfId = parseInt(btn.getAttribute("data-editperf"), 10);
+      renderPostPerfTable(nicheKey);
+    });
+  });
+  body.querySelectorAll("[data-cancelperf]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingPerfId = null;
+      renderPostPerfTable(nicheKey);
+    });
+  });
+  body.querySelectorAll("[data-saveperf]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
-      const id = parseInt(btn.getAttribute("data-delperf"), 10);
+      const id = parseInt(btn.getAttribute("data-saveperf"), 10);
+      const setVal = document.getElementById(`editset-perf-${id}`).value;
+      const updated = {
+        date: document.getElementById(`editdate-perf-${id}`).value,
+        hashtagSet: setVal ? parseInt(setVal, 10) : null,
+        link: document.getElementById(`editlink-perf-${id}`).value.trim(),
+        likes: parseInt(document.getElementById(`editlikes-perf-${id}`).value, 10) || 0,
+        comments: parseInt(document.getElementById(`editcomments-perf-${id}`).value, 10) || 0,
+        shares: parseInt(document.getElementById(`editshares-perf-${id}`).value, 10) || 0,
+        reach: parseInt(document.getElementById(`editreach-perf-${id}`).value, 10) || 0
+      };
+      btn.disabled = true;
       try{
-        await deletePostPerformanceFromDB(id);
-        s.postPerf = s.postPerf.filter(x=>x.id!==id);
+        await updatePostPerformanceInDB(id, updated);
+        const entry = s.postPerf.find(x => x.id === id);
+        if(entry) Object.assign(entry, updated);
+        s.editingPerfId = null;
         renderPostPerfAll(nicheKey);
-        showToast("Entry deleted");
+        showToast("Entry updated");
       }catch(e){
-        showToast("Couldn't delete entry");
-        console.error(e);
+        showToast("Couldn't save changes");
+        btn.disabled = false;
       }
+    });
+  });
+  body.querySelectorAll("[data-delperf]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = parseInt(btn.getAttribute("data-delperf"), 10);
+      const entry = s.postPerf.find(x => x.id === id);
+      if(!entry) return;
+      softDeleteWithUndo(s.postPerf, entry, ()=> renderPostPerfAll(nicheKey), ()=> deletePostPerformanceFromDB(id), "Post entry");
     });
   });
 }
@@ -2647,6 +3564,135 @@ function renderPostPerfSummary(nicheKey){
 function renderPostPerfAll(nicheKey){
   renderPostPerfTable(nicheKey);
   renderPostPerfSummary(nicheKey);
+}
+
+/* ============================================================
+   Content Idea Bank — a simple per-niche list of post ideas.
+   ============================================================ */
+function renderContentIdeas(nicheKey){
+  const s = state[nicheKey];
+  const listEl = document.getElementById(`idealist-${nicheKey}`);
+  const emptyEl = document.getElementById(`ideaempty-${nicheKey}`);
+  if(!listEl) return;
+
+  if(!s.contentIdeas.length){
+    listEl.innerHTML = "";
+    if(emptyEl) emptyEl.style.display = "block";
+    return;
+  }
+  if(emptyEl) emptyEl.style.display = "none";
+
+  listEl.innerHTML = s.contentIdeas.map(idea => {
+    if(s.editingIdeaId === idea.id){
+      return `
+        <div class="idea-row idea-row-editing">
+          <input type="text" class="edit-input" id="editidea-${idea.id}" value="${escapeHtml(idea.idea)}">
+          <div class="edit-actions">
+            <button class="btn btn-gold btn-sm" data-saveidea="${idea.id}" style="padding:4px 8px;" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-cancelidea="${idea.id}" style="padding:4px 8px;" title="Cancel">✕</button>
+          </div>
+        </div>`;
+    }
+    return `
+      <div class="idea-row">
+        <span class="idea-text">${escapeHtml(idea.idea)}</span>
+        <div class="edit-actions">
+          <button class="acct-icon-btn" data-editidea="${idea.id}" title="Edit">✏️</button>
+          <button class="acct-icon-btn" data-delidea="${idea.id}" title="Delete">✕</button>
+        </div>
+      </div>`;
+  }).join("");
+
+  listEl.querySelectorAll("[data-editidea]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingIdeaId = Number(btn.getAttribute("data-editidea"));
+      renderContentIdeas(nicheKey);
+    });
+  });
+  listEl.querySelectorAll("[data-cancelidea]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingIdeaId = null;
+      renderContentIdeas(nicheKey);
+    });
+  });
+  listEl.querySelectorAll("[data-saveidea]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = Number(btn.getAttribute("data-saveidea"));
+      const text = document.getElementById(`editidea-${id}`).value.trim();
+      if(!text) return;
+      btn.disabled = true;
+      try{
+        await updateContentIdeaInDB(id, text);
+        const entry = s.contentIdeas.find(x => x.id === id);
+        if(entry) entry.idea = text;
+        s.editingIdeaId = null;
+        renderContentIdeas(nicheKey);
+        showToast("Idea updated");
+      }catch(e){
+        showToast("Couldn't save changes");
+        btn.disabled = false;
+      }
+    });
+  });
+  listEl.querySelectorAll("[data-delidea]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = Number(btn.getAttribute("data-delidea"));
+      const entry = s.contentIdeas.find(x => x.id === id);
+      if(!entry) return;
+      softDeleteWithUndo(s.contentIdeas, entry, ()=> renderContentIdeas(nicheKey), ()=> deleteContentIdeaFromDB(id), "Idea");
+    });
+  });
+}
+
+/* ============================================================
+   Caption Library — saved captions per niche, ready to reuse.
+   ============================================================ */
+function renderCaptionLibrary(nicheKey){
+  const s = state[nicheKey];
+  const listEl = document.getElementById(`captionlist-${nicheKey}`);
+  const emptyEl = document.getElementById(`captionempty-${nicheKey}`);
+  if(!listEl) return;
+
+  if(!s.captionLibrary.length){
+    listEl.innerHTML = "";
+    if(emptyEl) emptyEl.style.display = "block";
+    return;
+  }
+  if(emptyEl) emptyEl.style.display = "none";
+
+  listEl.innerHTML = s.captionLibrary.map(c => `
+    <div class="caption-card">
+      <div class="caption-card-head">
+        <span class="caption-platform">${escapeHtml(c.platform)}</span>
+        <div class="edit-actions">
+          <button class="acct-icon-btn" data-copycaption="${c.id}" title="Copy">📋</button>
+          <button class="acct-icon-btn" data-delcaption="${c.id}" title="Delete">✕</button>
+        </div>
+      </div>
+      ${c.title ? `<div class="caption-title">${escapeHtml(c.title)}</div>` : ""}
+      ${c.description ? `<div class="caption-desc">${escapeHtml(c.description)}</div>` : ""}
+      ${c.hashtags ? `<div class="caption-tags">${escapeHtml(c.hashtags)}</div>` : ""}
+    </div>
+  `).join("");
+
+  listEl.querySelectorAll("[data-copycaption]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = Number(btn.getAttribute("data-copycaption"));
+      const c = s.captionLibrary.find(x => x.id === id);
+      if(!c) return;
+      const block = [c.title, c.description, c.hashtags].filter(Boolean).join("\n\n");
+      await copyText(block);
+      showToast("Caption copied");
+    });
+  });
+  listEl.querySelectorAll("[data-delcaption]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = Number(btn.getAttribute("data-delcaption"));
+      const entry = s.captionLibrary.find(x => x.id === id);
+      if(!entry) return;
+      softDeleteWithUndo(s.captionLibrary, entry, ()=> renderCaptionLibrary(nicheKey), ()=> deleteCaptionFromDB(id), "Saved caption");
+    });
+  });
 }
 
 
@@ -2717,27 +3763,67 @@ function renderFollowerTable(nicheKey){
   if(!tbody) return;
   const s = state[nicheKey];
   const sorted = [...s.followers].sort((a,b)=> b.date.localeCompare(a.date) || b.id - a.id);
-  tbody.innerHTML = sorted.map(e => `
+  tbody.innerHTML = sorted.map(e => {
+    if(s.editingFollowerId === e.id){
+      return `
+        <tr>
+          <td><input type="date" class="edit-input" id="editdate-foll-${e.id}" value="${e.date}"></td>
+          <td><input type="number" class="edit-input" id="editcount-foll-${e.id}" min="0" value="${e.count}"></td>
+          <td class="edit-actions">
+            <button class="btn btn-gold btn-sm" data-savefollower="${e.id}" style="padding:4px 8px;" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-cancelfollower="${e.id}" style="padding:4px 8px;" title="Cancel">✕</button>
+          </td>
+        </tr>`;
+    }
+    return `
     <tr>
       <td class="date">${escapeHtml(formatDate(e.date))}</td>
       <td>${e.count.toLocaleString()}</td>
-      <td><button class="btn btn-ghost btn-sm" data-delfollower="${e.id}" title="Delete" style="padding:4px 8px;">✕</button></td>
-    </tr>
-  `).join("");
+      <td class="edit-actions">
+        <button class="btn btn-ghost btn-sm" data-editfollower="${e.id}" style="padding:4px 8px;" title="Edit">✏️</button>
+        <button class="btn btn-ghost btn-sm" data-delfollower="${e.id}" title="Delete" style="padding:4px 8px;">✕</button>
+      </td>
+    </tr>`;
+  }).join("");
 
-  tbody.querySelectorAll("[data-delfollower]").forEach(btn=>{
+  tbody.querySelectorAll("[data-editfollower]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingFollowerId = parseInt(btn.getAttribute("data-editfollower"), 10);
+      renderFollowerTable(nicheKey);
+    });
+  });
+  tbody.querySelectorAll("[data-cancelfollower]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingFollowerId = null;
+      renderFollowerTable(nicheKey);
+    });
+  });
+  tbody.querySelectorAll("[data-savefollower]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
-      const id = parseInt(btn.getAttribute("data-delfollower"), 10);
+      const id = parseInt(btn.getAttribute("data-savefollower"), 10);
+      const date = document.getElementById(`editdate-foll-${id}`).value;
+      const count = parseInt(document.getElementById(`editcount-foll-${id}`).value, 10) || 0;
+      btn.disabled = true;
       try{
-        await deleteFollowerFromDB(id);
-        s.followers = s.followers.filter(x=>x.id!==id);
+        await updateFollowerInDB(id, date, count);
+        const entry = s.followers.find(x => x.id === id);
+        if(entry){ entry.date = date; entry.count = count; }
+        s.editingFollowerId = null;
         renderFollowerChart(nicheKey);
         renderFollowerTable(nicheKey);
-        showToast("Snapshot deleted");
+        showToast("Snapshot updated");
       }catch(e){
-        showToast("Couldn't delete snapshot");
-        console.error(e);
+        showToast("Couldn't save changes");
+        btn.disabled = false;
       }
+    });
+  });
+  tbody.querySelectorAll("[data-delfollower]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = parseInt(btn.getAttribute("data-delfollower"), 10);
+      const entry = s.followers.find(x => x.id === id);
+      if(!entry) return;
+      softDeleteWithUndo(s.followers, entry, ()=>{ renderFollowerChart(nicheKey); renderFollowerTable(nicheKey); }, ()=> deleteFollowerFromDB(id), "Snapshot");
     });
   });
 }
@@ -3003,7 +4089,22 @@ function renderAccountList(nicheKey){
   emptyEl.style.display = "none";
   emptyEl.textContent = `No entries saved yet — add one above.`;
 
-  listEl.innerHTML = sorted.map(a => `
+  listEl.innerHTML = sorted.map(a => {
+    if(s.editingAccountId === a.id){
+      return `
+        <div class="acct-row acct-row-editing" data-id="${a.id}">
+          <div class="acct-edit-form">
+            <input type="date" class="edit-input" id="editdate-acct-${a.id}" value="${a.date}">
+            <input type="text" class="edit-input" id="edituser-acct-${a.id}" value="${escapeHtml(a.username)}" placeholder="username">
+            <input type="url" class="edit-input" id="editlink-acct-${a.id}" value="${escapeHtml(a.link)}" placeholder="link (optional)">
+          </div>
+          <div class="acct-actions">
+            <button class="btn btn-gold btn-sm" data-saveacct="${a.id}" title="Save">✓ Save</button>
+            <button class="btn btn-ghost btn-sm" data-cancelacct="${a.id}" title="Cancel">✕ Cancel</button>
+          </div>
+        </div>`;
+    }
+    return `
     <div class="acct-row" data-done="${a.done}" data-id="${a.id}">
       <div class="acct-row-main">
         <div class="acct-row-top">
@@ -3018,10 +4119,12 @@ function renderAccountList(nicheKey){
         <button class="done-pill" data-toggle-done="${a.id}" data-done="${a.done}">
           ${a.done ? labels.done : labels.todo}
         </button>
+        <button class="acct-icon-btn" data-editacct="${a.id}" title="Edit" aria-label="Edit">✏️</button>
         <button class="acct-icon-btn" data-delete="${a.id}" title="Remove" aria-label="Remove">✕</button>
       </div>
     </div>
-  `).join("");
+  `;
+  }).join("");
 
   listEl.querySelectorAll("[data-copy-username]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
@@ -3056,18 +4159,46 @@ function renderAccountList(nicheKey){
       }
     });
   });
-  listEl.querySelectorAll("[data-delete]").forEach(btn=>{
+  listEl.querySelectorAll("[data-editacct]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingAccountId = Number(btn.getAttribute("data-editacct"));
+      renderAccountList(nicheKey);
+    });
+  });
+  listEl.querySelectorAll("[data-cancelacct]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      s.editingAccountId = null;
+      renderAccountList(nicheKey);
+    });
+  });
+  listEl.querySelectorAll("[data-saveacct]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
-      const id = Number(btn.getAttribute("data-delete"));
+      const id = Number(btn.getAttribute("data-saveacct"));
+      const date = document.getElementById(`editdate-acct-${id}`).value;
+      const usernameRaw = document.getElementById(`edituser-acct-${id}`).value.trim();
+      const link = document.getElementById(`editlink-acct-${id}`).value.trim();
+      const username = usernameRaw.replace(/^@/, "");
+      if(!username){ showToast("Username can't be empty"); return; }
       btn.disabled = true;
       try{
-        await deleteAccountFromDB(id);
-        s.accounts = s.accounts.filter(a => a.id !== id);
+        await updateAccountInDB(id, date, link, username);
+        const acc = s.accounts.find(a => a.id === id);
+        if(acc){ acc.date = date; acc.link = link; acc.username = username; }
+        s.editingAccountId = null;
         renderAccountList(nicheKey);
+        showToast("Entry updated");
       }catch(e){
-        showToast("ডিলিট করা যায়নি");
+        showToast("Couldn't save changes");
         btn.disabled = false;
       }
+    });
+  });
+  listEl.querySelectorAll("[data-delete]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = Number(btn.getAttribute("data-delete"));
+      const acc = s.accounts.find(a => a.id === id);
+      if(!acc) return;
+      softDeleteWithUndo(s.accounts, acc, ()=> renderAccountList(nicheKey), ()=> deleteAccountFromDB(id), "Account");
     });
   });
 }
@@ -3390,6 +4521,7 @@ function platformPanelTemplate(nicheKey, p){
 
     <div class="copy-row">
       <button class="btn btn-gold btn-sm" data-copyall="${p.key}">📋 Copy all for ${escapeHtml(p.label)}</button>
+      <button class="btn btn-ghost btn-sm" data-savecaption="${p.key}">💾 Save to library</button>
     </div>
   </div>`;
 }
@@ -3432,6 +4564,28 @@ function wirePlatformPanel(nicheKey, p){
         renderResults(nicheKey); // refresh the "used Nx" counts shown in the dropdown
       }
       showToast(`${p.label} caption copied`);
+    });
+  }
+
+  const saveBtn = document.querySelector(`#platformpanels-${nicheKey} [data-savecaption="${p.key}"]`);
+  if(saveBtn){
+    saveBtn.addEventListener("click", async ()=>{
+      const title = document.getElementById(`title-${nicheKey}-${p.key}`).value.trim();
+      const description = document.getElementById(`desc-${nicheKey}-${p.key}`).value.trim();
+      const hashtags = document.getElementById(`tags-${nicheKey}-${p.key}`).value.trim();
+      if(!title && !description){ showToast("Nothing to save yet"); return; }
+      saveBtn.disabled = true;
+      try{
+        const entry = await addCaptionToDB(nicheKey, { platform:p.label, title, description, hashtags });
+        state[nicheKey].captionLibrary.unshift(entry);
+        renderCaptionLibrary(nicheKey);
+        showToast("Saved to caption library");
+      }catch(e){
+        showToast("Couldn't save — check Supabase table setup");
+        console.error(e);
+      }finally{
+        saveBtn.disabled = false;
+      }
     });
   }
 
@@ -3480,6 +4634,7 @@ function renderCreditLine(nicheKey){
 /* ============================================================
    Init
    ============================================================ */
+initPinLock();
 renderTabstrip();
 renderPanels();
 hydrateAllData().then(()=> maybeShowDailyReminder());

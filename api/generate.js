@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Only POST allowed" });
   }
 
-  const { base64Data, mimeType, prompt, responseSchema } = req.body;
+  const { base64Data, mimeType, prompt, responseSchema, tools } = req.body;
 
   // 5টা key env variable থেকে নেবে (Vercel দেখুন → Project → Settings → Environment Variables)
   const keys = [
@@ -23,23 +23,37 @@ export default async function handler(req, res) {
   // একটা key দিয়ে চেষ্টা করবে, rate-limit/fail হলে পরের key try করবে
   for (const key of keys) {
     try {
+      // image/video ছাড়াও (text-only) call করা যায় এখন — base64Data/mimeType
+      // না থাকলে শুধু text part পাঠানো হবে (Trending Ideas, Shadowban Checker,
+      // Story Ideas, Weather-based Ideas — এসবের জন্য কোনো ছবি লাগে না)
+      const parts = [{ text: prompt }];
+      if (base64Data && mimeType) {
+        parts.push({ inline_data: { mime_type: mimeType, data: base64Data } });
+      }
+
+      const body = { contents: [{ parts }] };
+
+      // structured JSON output চাইলে schema পাঠানো হয় (আগের মতোই)
+      if (responseSchema) {
+        body.generationConfig = {
+          responseMimeType: "application/json",
+          responseSchema: responseSchema
+        };
+      }
+
+      // Google Search grounding চাইলে (Trending Ideas feature) — এটা আর
+      // responseSchema একসাথে ব্যবহার করা যায় না (Gemini API-র সীমাবদ্ধতা),
+      // তাই client-side থেকে এই দুটোর মধ্যে যেকোনো একটাই পাঠানো হবে।
+      if (tools) {
+        body.tools = tools;
+      }
+
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{
-              parts: [
-                { text: prompt },
-                { inline_data: { mime_type: mimeType, data: base64Data } }
-              ]
-            }],
-            generationConfig: {
-              responseMimeType: "application/json",
-              responseSchema: responseSchema
-            }
-          })
+          body: JSON.stringify(body)
         }
       );
 

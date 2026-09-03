@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
 <style>
 /* ============================================================
    GROWTH LEDGER — design tokens
@@ -277,85 +276,12 @@ textarea{ resize:vertical; min-height:56px; font-family:var(--font-body); line-h
 .log-table td.date{ font-family:var(--font-mono); color:var(--ink-dim); white-space:nowrap; }
 .log-empty{ padding:18px 4px; color:var(--ink-faint); font-size:13px; font-style:italic; }
 
-/* ---------- responsive table -> card conversion on narrow screens ----------
-   Every .log-table row gets a data-label on each <td> (set by the render
-   functions); below the breakpoint we stack it into a labeled card instead
-   of a horizontally-scrolling row, so nothing gets cut off on mobile. */
-@media (max-width:640px){
-  .log-table.responsive-cards thead{ display:none; }
-  .log-table.responsive-cards, .log-table.responsive-cards tbody{ display:block; width:100%; }
-  .log-table.responsive-cards tr{
-    display:block; width:100%; margin-bottom:12px;
-    background:var(--bg-2); border:1px solid var(--border-soft); border-radius:var(--radius-md);
-    padding:6px 14px;
-  }
-  .log-table.responsive-cards tr:last-child{ margin-bottom:0; }
-  .log-table.responsive-cards td{
-    display:flex; align-items:center; justify-content:space-between; gap:10px;
-    padding:8px 0; border-bottom:1px dashed var(--border-soft); text-align:right;
-  }
-  .log-table.responsive-cards td:last-child{ border-bottom:none; }
-  .log-table.responsive-cards td::before{
-    content:attr(data-label);
-    font-family:var(--font-mono); font-size:10px; letter-spacing:.05em; text-transform:uppercase;
-    color:var(--ink-faint); text-align:left; flex-shrink:0;
-  }
-  .log-table.responsive-cards td:empty::before{ content:none; }
-  .log-table.responsive-cards td[data-label=""]{ justify-content:flex-end; padding-top:10px; }
-  .log-table.responsive-cards .edit-input{ max-width:160px; }
-}
-
 .edit-input{
   width:100%; min-width:70px; padding:5px 7px; font-size:12.5px;
   background:var(--bg-3); border:1px solid var(--gold-dim); border-radius:var(--radius-sm);
   color:var(--ink); margin-bottom:0;
 }
 .edit-actions{ white-space:nowrap; display:flex; gap:4px; }
-
-.idea-ai-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
-.idea-ai-results{
-  margin-bottom:16px; display:flex; flex-direction:column; gap:8px;
-}
-.idea-suggestion{
-  display:flex; align-items:center; justify-content:space-between; gap:10px;
-  background:rgba(232,201,101,.08); border:1px solid var(--gold-dim); border-radius:var(--radius-sm);
-  padding:10px 12px; font-size:13px;
-}
-.idea-suggestion span{ flex:1; color:var(--ink); }
-
-.tone-results{ display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
-.tone-card{
-  background:var(--bg-2); border:1px solid var(--border-soft); border-radius:var(--radius-md); padding:12px 14px;
-}
-.tone-card-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
-.tone-label{
-  font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
-  color:var(--gold-dim); font-weight:700;
-}
-.tone-title{ font-weight:600; font-size:13.5px; color:var(--ink); margin-bottom:3px; }
-.tone-desc{ font-size:12.5px; color:var(--ink-dim); white-space:pre-wrap; }
-
-.shadow-results{ margin-bottom:14px; }
-.shadow-card{
-  background:var(--bg-2); border:1px solid var(--border-soft); border-radius:var(--radius-md); padding:14px;
-}
-.risk-pill{
-  display:inline-flex; align-items:center; padding:4px 11px; border-radius:999px;
-  font-family:var(--font-mono); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em;
-  margin-bottom:10px;
-}
-.risk-pill.low{ background:rgba(124,154,93,.16); color:var(--success); }
-.risk-pill.medium{ background:rgba(232,201,101,.16); color:var(--gold-bright); }
-.risk-pill.high{ background:rgba(193,88,74,.16); color:var(--danger); }
-.shadow-issues{ margin:0 0 10px; padding-left:18px; font-size:12.5px; color:var(--ink-dim); }
-.shadow-issues li{ margin-bottom:4px; }
-.shadow-suggestion{ font-size:12.5px; color:var(--ink); border-top:1px solid var(--border-soft); padding-top:10px; }
-
-.besttime-box{
-  margin-top:16px; padding:14px 16px; background:rgba(232,201,101,.08);
-  border:1px solid var(--gold-dim); border-radius:var(--radius-md);
-}
-.besttime-box .section-title{ color:var(--ink); }
 
 .idea-form{ display:flex; gap:10px; margin-bottom:14px; }
 .idea-form input{ flex:1; margin-bottom:0; }
@@ -614,29 +540,6 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
   resize:vertical; white-space:pre-wrap;
 }
 
-.swipe-modal-box{ max-width:380px; }
-.swipe-review-swiper{
-  width:100%; height:340px; border-radius:var(--radius-md); overflow:hidden;
-  background:var(--bg-3); border:1px solid var(--border-soft);
-}
-.swipe-review-swiper .swiper-slide{
-  display:flex; align-items:center; justify-content:center; position:relative;
-}
-.swipe-review-swiper .swiper-slide img{
-  width:100%; height:100%; object-fit:cover; display:block;
-}
-.swipe-review-swiper .swiper-slide.discarded img{ opacity:.3; filter:grayscale(1); }
-.swipe-review-swiper .swiper-slide.discarded::after{
-  content:"DISCARDED"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-  font-family:var(--font-mono); font-size:13px; font-weight:700; letter-spacing:.08em; color:var(--danger);
-  background:rgba(0,0,0,.25);
-}
-.swipe-review-swiper .swiper-pagination-bullet{ background:var(--gold-bright); opacity:.5; }
-.swipe-review-swiper .swiper-pagination-bullet-active{ opacity:1; }
-.swipe-decision-row{ display:flex; gap:10px; margin-top:14px; }
-.swipe-decision-row .btn{ flex:1; justify-content:center; }
-.swipe-summary{ text-align:center; font-size:12px; color:var(--ink-faint); margin-top:10px; font-family:var(--font-mono); }
-
 .pin-overlay{
   position:fixed; inset:0; background:var(--bg); z-index:300;
   display:flex; align-items:center; justify-content:center; padding:20px;
@@ -675,9 +578,9 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
       <span class="sub">100-Day &amp; $1,000</span>
     </div>
     <div class="topbar-actions">
-      <button class="icon-btn" id="lockbtn" title="Lock app" aria-label="Lock app" style="display:none;"><i data-lucide="lock" style="width:16px;height:16px;"></i></button>
-      <button class="btn btn-ghost btn-sm" id="backupbtn"><i data-lucide="download" style="width:14px;height:14px;"></i> Backup</button>
-      <button class="btn btn-ghost btn-sm" id="installbtn" style="display:none;"><i data-lucide="smartphone" style="width:14px;height:14px;"></i> Install App</button>
+      <button class="icon-btn" id="lockbtn" title="Lock app" aria-label="Lock app" style="display:none;">🔒</button>
+      <button class="btn btn-ghost btn-sm" id="backupbtn">💾 Backup</button>
+      <button class="btn btn-ghost btn-sm" id="installbtn" style="display:none;">⬇ Install App</button>
       <button class="icon-btn" id="themetoggle" title="Toggle light/dark theme" aria-label="Toggle theme">🌙</button>
     </div>
   </div>
@@ -705,25 +608,6 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
   </div>
 </div>
 
-<div class="modal-overlay" id="swipereview-overlay" style="display:none;">
-  <div class="modal-box swipe-modal-box">
-    <div class="modal-head">
-      <div class="modal-title">📸 Review your photos</div>
-      <button class="icon-btn" id="swipereview-close" aria-label="Close">✕</button>
-    </div>
-    <div class="swiper swipe-review-swiper" id="swipereview-swiper">
-      <div class="swiper-wrapper" id="swipereview-wrapper"></div>
-      <div class="swiper-pagination"></div>
-    </div>
-    <div class="swipe-decision-row">
-      <button class="btn btn-danger" id="swipereview-discard"><i data-lucide="x" style="width:16px;height:16px;"></i> Discard</button>
-      <button class="btn btn-gold" id="swipereview-keep"><i data-lucide="check" style="width:16px;height:16px;"></i> Keep</button>
-    </div>
-    <div class="swipe-summary" id="swipereview-summary"></div>
-    <button class="btn btn-gold" id="swipereview-done" style="width:100%; justify-content:center; margin-top:12px;">Start captioning →</button>
-  </div>
-</div>
-
 <div class="pin-overlay" id="pinoverlay" style="display:none;">
   <div class="pin-box">
     <div class="pin-title">🔒 Growth Ledger</div>
@@ -740,8 +624,6 @@ hr.divider{ border:none; border-top:1px solid var(--border-soft); margin:22px 0;
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-<script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
 <script>
 (function(){
 "use strict";
@@ -760,24 +642,6 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 /* ============================================================
    Light/dark theme toggle — persisted per device via localStorage.
    ============================================================ */
-/* ============================================================
-   Lucide icons — small inline SVG icons for the topbar and the
-   most-repeated action buttons (edit/delete/save/copy/chevron).
-   Falls back to nothing extra if the CDN didn't load; buttons still
-   have their text/aria-label, so nothing becomes unusable.
-   ============================================================ */
-function iconHTML(name, size){
-  size = size || 16;
-  return `<i data-lucide="${name}" style="width:${size}px;height:${size}px;display:inline-block;vertical-align:-3px;"></i>`;
-}
-function renderIcons(){
-  if(window.lucide && typeof lucide.createIcons === "function") lucide.createIcons();
-}
-// Auto-convert any new data-lucide placeholders as soon as they're
-// inserted, so individual render functions never need to remember
-// to call renderIcons() themselves.
-const panelsIconObserver = new MutationObserver(renderIcons);
-
 function getTheme(){
   try{ return localStorage.getItem("theme") || "dark"; }catch(e){ return "dark"; }
 }
@@ -785,10 +649,7 @@ function applyTheme(t){
   document.documentElement.setAttribute("data-theme", t);
   try{ localStorage.setItem("theme", t); }catch(e){}
   const btn = document.getElementById("themetoggle");
-  if(btn){
-    btn.innerHTML = iconHTML(t === "light" ? "sun" : "moon", 18);
-    renderIcons();
-  }
+  if(btn) btn.textContent = t === "light" ? "☀️" : "🌙";
 }
 applyTheme(getTheme());
 document.getElementById("themetoggle")?.addEventListener("click", ()=>{
@@ -1267,51 +1128,6 @@ async function callGeminiForCaption(base64Data, mimeType, nicheStyleName){
     if(!Array.isArray(parsed[p.key].hashtags)) parsed[p.key].hashtags = [];
   });
   return parsed;
-}
-
-/* ============================================================
-   Shared helper for the newer, lighter-weight Gemini features
-   (Trending Ideas, Caption Tone Variants, Shadowban Checker, Story
-   Ideas, Weather-based Ideas) — all reuse the same /api/generate
-   endpoint, just with different prompts/schemas, and some skip the
-   image entirely (text-only) or use Google Search grounding instead
-   of a structured schema (the two can't be combined in one call).
-   ============================================================ */
-async function callGeminiFlexible({ prompt, base64Data, mimeType, responseSchema, useSearch }){
-  const body = { prompt };
-  if(base64Data && mimeType){ body.base64Data = base64Data; body.mimeType = mimeType; }
-  if(responseSchema) body.responseSchema = responseSchema;
-  if(useSearch) body.tools = [{ google_search: {} }];
-
-  const response = await fetch("/api/generate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body)
-  });
-  if(!response.ok){
-    const j = await response.json().catch(()=>({}));
-    throw new Error(j?.error || `Server error (${response.status})`);
-  }
-  const data = await response.json();
-  const text = (data?.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("\n").trim();
-  if(!text) throw new Error("Gemini returned an empty response.");
-  return text;
-}
-/* Pulls the first JSON array or object out of a freeform text blob —
-   needed for search-grounded responses, which can't use a strict
-   responseSchema, so the model is just prompt-instructed to reply
-   with JSON and may wrap it in prose or a markdown fence. */
-function extractJSON(text){
-  const cleaned = text.replace(/```json/gi, "").replace(/```/g, "").trim();
-  const firstArr = cleaned.indexOf("[");
-  const firstObj = cleaned.indexOf("{");
-  let start = -1, endChar = "]";
-  if(firstArr !== -1 && (firstObj === -1 || firstArr < firstObj)){ start = firstArr; endChar = "]"; }
-  else if(firstObj !== -1){ start = firstObj; endChar = "}"; }
-  if(start === -1) throw new Error("No JSON found in response");
-  const end = cleaned.lastIndexOf(endChar);
-  if(end === -1 || end < start) throw new Error("No JSON found in response");
-  return JSON.parse(cleaned.slice(start, end + 1));
 }
 
 /* ============================================================
@@ -2166,7 +1982,7 @@ function randomPanelTemplate(){
         <label class="upload-zone" id="dropzone-${key}" for="fileinput-${key}">
           <div class="up-icon">⬆</div>
           <div class="up-text">Click or drop an image or video</div>
-          <div class="up-sub">JPG, PNG, MP4, MOV — a still frame is used for video. Select multiple to step through them one by one, or paste an image (Ctrl+V).</div>
+          <div class="up-sub">JPG, PNG, MP4, MOV — a still frame is used for video. Select multiple to step through them one by one.</div>
           <input type="file" id="fileinput-${key}" accept="image/*,video/*" multiple>
         </label>
 
@@ -2418,17 +2234,17 @@ function renderChallengeTable(){
     if(s.editingEntryId === e.id){
       return `
         <tr>
-          <td class="no" data-label="Day">${day ?? "—"}</td>
-          <td data-label="Date"><input type="date" class="edit-input" id="editdate-chal-${e.id}" value="${e.date}"></td>
-          <td data-label="Posts"><input type="number" class="edit-input" id="editposts-chal-${e.id}" min="0" value="${e.posts}" style="width:55px;"></td>
-          <td data-label="Reels"><input type="number" class="edit-input" id="editreels-chal-${e.id}" min="0" value="${e.reels}" style="width:55px;"></td>
-          <td data-label="Stories"><input type="number" class="edit-input" id="editstories-chal-${e.id}" min="0" value="${e.stories}" style="width:55px;"></td>
-          <td data-label="Follows"><input type="number" class="edit-input" id="editfollows-chal-${e.id}" min="0" value="${e.follows}" style="width:55px;"></td>
-          <td data-label="Unfollows"><input type="number" class="edit-input" id="editunfollows-chal-${e.id}" min="0" value="${e.unfollows}" style="width:55px;"></td>
-          <td data-label="Target">—</td>
-          <td class="edit-actions" data-label="">
-            <button class="btn btn-gold btn-sm" data-savechallenge="${e.id}" style="padding:4px 8px;" title="Save"><i data-lucide="check" style="width:14px;height:14px;"></i></button>
-            <button class="btn btn-ghost btn-sm" data-cancelchallenge="${e.id}" style="padding:4px 8px;" title="Cancel"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+          <td class="no">${day ?? "—"}</td>
+          <td><input type="date" class="edit-input" id="editdate-chal-${e.id}" value="${e.date}"></td>
+          <td><input type="number" class="edit-input" id="editposts-chal-${e.id}" min="0" value="${e.posts}" style="width:55px;"></td>
+          <td><input type="number" class="edit-input" id="editreels-chal-${e.id}" min="0" value="${e.reels}" style="width:55px;"></td>
+          <td><input type="number" class="edit-input" id="editstories-chal-${e.id}" min="0" value="${e.stories}" style="width:55px;"></td>
+          <td><input type="number" class="edit-input" id="editfollows-chal-${e.id}" min="0" value="${e.follows}" style="width:55px;"></td>
+          <td><input type="number" class="edit-input" id="editunfollows-chal-${e.id}" min="0" value="${e.unfollows}" style="width:55px;"></td>
+          <td>—</td>
+          <td class="edit-actions">
+            <button class="btn btn-gold btn-sm" data-savechallenge="${e.id}" style="padding:4px 8px;" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-cancelchallenge="${e.id}" style="padding:4px 8px;" title="Cancel">✕</button>
           </td>
         </tr>`;
     }
@@ -2440,17 +2256,17 @@ function renderChallengeTable(){
       : `<span style="color:var(--ink-faint); font-size:11.5px;">—</span>`;
     return `
       <tr>
-        <td class="no" data-label="Day">${day ?? "—"}</td>
-        <td class="date" data-label="Date">${escapeHtml(formatDate(e.date))}</td>
-        <td data-label="Posts">${e.posts}</td>
-        <td data-label="Reels">${e.reels}</td>
-        <td data-label="Stories">${e.stories}</td>
-        <td data-label="Follows">${e.follows}</td>
-        <td data-label="Unfollows">${e.unfollows}</td>
-        <td data-label="Target">${targetPill}</td>
-        <td class="edit-actions" data-label="">
-          <button class="btn btn-ghost btn-sm" data-editchallenge="${e.id}" style="padding:4px 8px;" title="Edit"><i data-lucide="pencil" style="width:14px;height:14px;"></i></button>
-          <button class="btn btn-ghost btn-sm" data-delchallenge="${e.id}" title="Delete" style="padding:4px 8px;"><i data-lucide="trash-2" style="width:13px;height:13px;"></i></button>
+        <td class="no">${day ?? "—"}</td>
+        <td class="date">${escapeHtml(formatDate(e.date))}</td>
+        <td>${e.posts}</td>
+        <td>${e.reels}</td>
+        <td>${e.stories}</td>
+        <td>${e.follows}</td>
+        <td>${e.unfollows}</td>
+        <td>${targetPill}</td>
+        <td class="edit-actions">
+          <button class="btn btn-ghost btn-sm" data-editchallenge="${e.id}" style="padding:4px 8px;" title="Edit">✏️</button>
+          <button class="btn btn-ghost btn-sm" data-delchallenge="${e.id}" title="Delete" style="padding:4px 8px;">✕</button>
         </td>
       </tr>`;
   }).join("");
@@ -2514,46 +2330,18 @@ const GOAL_AMOUNT = 1000;
 function formatMoney(n){
   return "$" + (Math.round(n * 100) / 100).toLocaleString(undefined, { minimumFractionDigits:0, maximumFractionDigits:2 });
 }
-/* $1,000 ETA — a simple projection: total earned so far divided by
-   days since your first logged earning gives a daily rate; extend
-   that rate forward to see roughly when you'd cross $1,000. This is
-   just linear extrapolation of your own past pace, not a forecast. */
-function computeEarningsETA(){
-  const earnings = state.challenge.earnings;
-  if(!earnings.length) return null;
-  const total = earnings.reduce((sum, e) => sum + e.amount, 0);
-  const remaining = GOAL_AMOUNT - total;
-  if(remaining <= 0) return { done:true };
-
-  const firstDate = [...earnings].map(e => e.date).sort()[0];
-  const daysSinceFirst = Math.max(1, Math.round((new Date(todayISO()+"T00:00:00") - new Date(firstDate+"T00:00:00")) / 86400000) + 1);
-  const dailyRate = total / daysSinceFirst;
-  if(dailyRate <= 0) return { rate:0 };
-
-  const daysNeeded = Math.ceil(remaining / dailyRate);
-  const etaDate = addDaysISO(todayISO(), daysNeeded);
-  return { rate:dailyRate, daysNeeded, etaDate };
-}
 function renderEarningsSummary(){
   const el = document.getElementById("earnings-summary");
   if(!el) return;
   const total = state.challenge.earnings.reduce((sum, e)=> sum + e.amount, 0);
   const pct = Math.max(0, Math.min(100, Math.round((total / GOAL_AMOUNT) * 100)));
   const remaining = Math.max(0, GOAL_AMOUNT - total);
-
-  const eta = computeEarningsETA();
-  let etaLine = "";
-  if(eta && !eta.done && eta.rate > 0){
-    etaLine = `<div class="section-sub" style="margin-top:8px;">At your current pace (~${formatMoney(eta.rate)}/day), you're projected to hit $1,000 around <strong style="color:var(--ink);">${escapeHtml(formatDate(eta.etaDate))}</strong> (~${eta.daysNeeded} day${eta.daysNeeded===1?"":"s"} away).</div>`;
-  }
-
   el.innerHTML = `
     <div class="section-sub" style="margin-top:2px; color:var(--ink);">
       <strong>${formatMoney(total)}</strong> earned of your <strong>${formatMoney(GOAL_AMOUNT)}</strong> goal
       ${remaining > 0 ? ` — ${formatMoney(remaining)} to go` : " — 🎉 goal reached!"}
     </div>
     <div class="progress-track"><div class="progress-fill" style="width:${pct}%;"></div></div>
-    ${etaLine}
   `;
 }
 function renderEarningsTable(){
@@ -2574,23 +2362,23 @@ function renderEarningsTable(){
     if(s.editingEarningId === e.id){
       return `
         <tr>
-          <td data-label="Date"><input type="date" class="edit-input" id="editdate-earn-${e.id}" value="${e.date}"></td>
-          <td data-label="Amount"><input type="number" class="edit-input" id="editamount-earn-${e.id}" min="0" step="0.01" value="${e.amount}" style="width:80px;"></td>
-          <td data-label="Note"><input type="text" class="edit-input" id="editnote-earn-${e.id}" value="${escapeHtml(e.note)}"></td>
-          <td class="edit-actions" data-label="">
-            <button class="btn btn-gold btn-sm" data-saveearning="${e.id}" style="padding:4px 8px;" title="Save"><i data-lucide="check" style="width:14px;height:14px;"></i></button>
-            <button class="btn btn-ghost btn-sm" data-cancelearning="${e.id}" style="padding:4px 8px;" title="Cancel"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+          <td><input type="date" class="edit-input" id="editdate-earn-${e.id}" value="${e.date}"></td>
+          <td><input type="number" class="edit-input" id="editamount-earn-${e.id}" min="0" step="0.01" value="${e.amount}" style="width:80px;"></td>
+          <td><input type="text" class="edit-input" id="editnote-earn-${e.id}" value="${escapeHtml(e.note)}"></td>
+          <td class="edit-actions">
+            <button class="btn btn-gold btn-sm" data-saveearning="${e.id}" style="padding:4px 8px;" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-cancelearning="${e.id}" style="padding:4px 8px;" title="Cancel">✕</button>
           </td>
         </tr>`;
     }
     return `
     <tr>
-      <td class="date" data-label="Date">${escapeHtml(formatDate(e.date))}</td>
-      <td data-label="Amount">${formatMoney(e.amount)}</td>
-      <td data-label="Note">${escapeHtml(e.note || "—")}</td>
-      <td class="edit-actions" data-label="">
-        <button class="btn btn-ghost btn-sm" data-editearning="${e.id}" style="padding:4px 8px;" title="Edit"><i data-lucide="pencil" style="width:14px;height:14px;"></i></button>
-        <button class="btn btn-ghost btn-sm" data-delearning="${e.id}" title="Delete" style="padding:4px 8px;"><i data-lucide="trash-2" style="width:13px;height:13px;"></i></button>
+      <td class="date">${escapeHtml(formatDate(e.date))}</td>
+      <td>${formatMoney(e.amount)}</td>
+      <td>${escapeHtml(e.note || "—")}</td>
+      <td class="edit-actions">
+        <button class="btn btn-ghost btn-sm" data-editearning="${e.id}" style="padding:4px 8px;" title="Edit">✏️</button>
+        <button class="btn btn-ghost btn-sm" data-delearning="${e.id}" title="Delete" style="padding:4px 8px;">✕</button>
       </td>
     </tr>`;
   }).join("");
@@ -2695,7 +2483,7 @@ function challengePanelTemplate(){
         <div class="filter-row" style="margin:14px 0 0;">
           <button class="btn btn-ghost btn-sm" id="challenge-export" style="margin-left:auto;">⬇ Export CSV</button>
         </div>
-        <table class="log-table responsive-cards" style="margin-top:8px;">
+        <table class="log-table" style="margin-top:8px;">
           <thead><tr>
             <th style="width:46px;">Day</th><th style="width:96px;">Date</th>
             <th>Posts</th><th>Reels</th><th>Stories</th><th>Follows</th><th>Unfollows</th>
@@ -2729,7 +2517,7 @@ function challengePanelTemplate(){
         <div class="filter-row" style="margin:14px 0 0;">
           <button class="btn btn-ghost btn-sm" id="earnings-export" style="margin-left:auto;">⬇ Export CSV</button>
         </div>
-        <table class="log-table responsive-cards" style="margin-top:8px;">
+        <table class="log-table" style="margin-top:8px;">
           <thead><tr><th style="width:96px;">Date</th><th style="width:90px;">Amount</th><th>Note</th><th style="width:30px;"></th></tr></thead>
           <tbody id="earnings-tbody"></tbody>
         </table>
@@ -3060,7 +2848,7 @@ function panelTemplate(n){
           <button class="btn btn-ghost btn-sm" id="logexport-${n.key}" style="margin-left:auto;">⬇ Export CSV</button>
         </div>
 
-        <table class="log-table responsive-cards">
+        <table class="log-table">
           <thead><tr><th style="width:56px;">No.</th><th style="width:110px;">Date</th><th>Note</th><th style="width:40px;"></th></tr></thead>
           <tbody id="logbody-${n.key}"></tbody>
         </table>
@@ -3072,7 +2860,7 @@ function panelTemplate(n){
     <div class="card">
       <button class="helper-toggle" id="helpertoggle-${n.key}" aria-expanded="false" aria-controls="helperbody-${n.key}">
         <div class="section-title">📸 AI Post Helper</div>
-        <span class="chev"><i data-lucide="chevron-right" style="width:15px;height:15px;"></i></span>
+        <span class="chev">▶</span>
       </button>
       <div class="helper-body" id="helperbody-${n.key}" data-open="false">
 
@@ -3083,7 +2871,7 @@ function panelTemplate(n){
         <label class="upload-zone" id="dropzone-${n.key}" for="fileinput-${n.key}">
           <div class="up-icon">⬆</div>
           <div class="up-text">Click or drop an image or video</div>
-          <div class="up-sub">JPG, PNG, MP4, MOV — a still frame is used for video. Select multiple to step through them one by one, or paste an image (Ctrl+V).</div>
+          <div class="up-sub">JPG, PNG, MP4, MOV — a still frame is used for video. Select multiple to step through them one by one.</div>
           <input type="file" id="fileinput-${n.key}" accept="image/*,video/*" multiple>
         </label>
 
@@ -3131,18 +2919,10 @@ function panelTemplate(n){
     <div class="card">
       <button class="helper-toggle" id="ideatoggle-${n.key}" aria-expanded="false" aria-controls="ideabody-${n.key}">
         <div class="section-title">💡 Content Idea Bank</div>
-        <span class="chev"><i data-lucide="chevron-right" style="width:15px;height:15px;"></i></span>
+        <span class="chev">▶</span>
       </button>
       <div class="helper-body" id="ideabody-${n.key}" data-open="false">
         <div class="section-sub" style="margin-bottom:14px;">Jot down post ideas here so you never have to stare at a blank screen wondering what to post.</div>
-
-        <div class="idea-ai-row">
-          <button class="btn btn-ghost btn-sm" id="ideatrending-${n.key}"><i data-lucide="flame" style="width:14px;height:14px;"></i> What's trending</button>
-          <button class="btn btn-ghost btn-sm" id="ideastory-${n.key}"><i data-lucide="circle-play" style="width:14px;height:14px;"></i> Story ideas</button>
-          ${n.key === "fishing" ? `<button class="btn btn-ghost btn-sm" id="ideaweather-${n.key}"><i data-lucide="cloud-sun" style="width:14px;height:14px;"></i> Weather idea</button>` : ""}
-        </div>
-        <div id="ideaairesults-${n.key}" class="idea-ai-results" style="display:none;"></div>
-
         <div class="idea-form">
           <input type="text" id="ideainput-${n.key}" placeholder="e.g. Behind-the-scenes of morning feed routine">
           <button class="btn btn-gold" id="ideaadd-${n.key}">+ Add idea</button>
@@ -3156,7 +2936,7 @@ function panelTemplate(n){
     <div class="card">
       <button class="helper-toggle" id="captiontoggle-${n.key}" aria-expanded="false" aria-controls="captionbody-${n.key}">
         <div class="section-title">📚 Caption Library</div>
-        <span class="chev"><i data-lucide="chevron-right" style="width:15px;height:15px;"></i></span>
+        <span class="chev">▶</span>
       </button>
       <div class="helper-body" id="captionbody-${n.key}" data-open="false">
         <div class="section-sub" style="margin-bottom:14px;">Save your best captions here to reuse or adapt later — look for the 💾 Save button next to each platform's Copy button above.</div>
@@ -3169,7 +2949,7 @@ function panelTemplate(n){
     <div class="card">
       <button class="helper-toggle" id="followertoggle-${n.key}" aria-expanded="false" aria-controls="followerbody-${n.key}">
         <div class="section-title">📈 Follower Growth</div>
-        <span class="chev"><i data-lucide="chevron-right" style="width:15px;height:15px;"></i></span>
+        <span class="chev">▶</span>
       </button>
       <div class="helper-body" id="followerbody-${n.key}" data-open="false">
         <div class="section-sub" style="margin-bottom:14px;">
@@ -3181,8 +2961,6 @@ function panelTemplate(n){
           <div id="followerchart-empty-${n.key}" class="log-empty" style="display:none;">Add a couple of snapshots to see your growth chart.</div>
         </div>
 
-        <div id="followerprojection-${n.key}" class="besttime-box" style="display:none;"></div>
-
         <div class="challenge-entryform" style="grid-template-columns:150px 150px; margin-top:16px;">
           <div><label for="followerdate-${n.key}">Date</label><input type="date" id="followerdate-${n.key}" value="${todayISO()}"></div>
           <div><label for="followercount-${n.key}">Followers</label><input type="number" id="followercount-${n.key}" min="0" placeholder="e.g. 1240"></div>
@@ -3191,7 +2969,7 @@ function panelTemplate(n){
           <button class="btn btn-gold" id="followeradd-${n.key}">+ Add snapshot</button>
         </div>
 
-        <table class="log-table responsive-cards" style="margin-top:16px;">
+        <table class="log-table" style="margin-top:16px;">
           <thead><tr><th style="width:110px;">Date</th><th>Followers</th><th style="width:30px;"></th></tr></thead>
           <tbody id="followertbody-${n.key}"></tbody>
         </table>
@@ -3205,7 +2983,7 @@ function panelTemplate(n){
     <div class="card">
       <button class="helper-toggle" id="perftoggle-${n.key}" aria-expanded="false" aria-controls="perfbody-${n.key}">
         <div class="section-title">📊 Set Performance Tracker</div>
-        <span class="chev"><i data-lucide="chevron-right" style="width:15px;height:15px;"></i></span>
+        <span class="chev">▶</span>
       </button>
       <div class="helper-body" id="perfbody-${n.key}" data-open="false">
         <div class="section-sub" style="margin-bottom:14px;">
@@ -3237,7 +3015,7 @@ function panelTemplate(n){
           <div class="section-title" style="font-size:14px; margin-bottom:0;">Posting log</div>
           <button class="btn btn-ghost btn-sm" id="perfexport-${n.key}" style="margin-left:auto;">⬇ Export CSV</button>
         </div>
-        <table class="log-table responsive-cards" style="margin-top:8px;">
+        <table class="log-table" style="margin-top:8px;">
           <thead><tr>
             <th style="width:96px;">Date</th><th style="width:56px;">Set</th><th>Link/Caption</th>
             <th>Likes</th><th>Comm.</th><th>Shares</th><th>Reach</th><th>Score</th><th style="width:30px;"></th>
@@ -3250,7 +3028,7 @@ function panelTemplate(n){
 
         <div class="section-title" style="font-size:14px; margin-bottom:10px;">Set Performance Summary</div>
         <div style="overflow-x:auto;">
-          <table class="log-table responsive-cards" id="perfsummary-${n.key}" style="min-width:600px;">
+          <table class="log-table" id="perfsummary-${n.key}" style="min-width:600px;">
             <thead><tr>
               <th>Set</th><th>Times used</th><th>Avg likes</th><th>Avg comm.</th><th>Avg shares</th><th>Avg reach</th><th>Avg score</th><th style="width:50px;">Rank</th>
             </tr></thead>
@@ -3258,8 +3036,6 @@ function panelTemplate(n){
           </table>
         </div>
         <div id="perfsummaryempty-${n.key}" class="log-empty" style="display:none;">Log a few posts above to see which set performs best.</div>
-
-        <div id="besttime-${n.key}" class="besttime-box" style="display:none;"></div>
       </div>
     </div>
 
@@ -3267,7 +3043,7 @@ function panelTemplate(n){
     <div class="card">
       <button class="helper-toggle" id="acctoggle-${n.key}" aria-expanded="false" aria-controls="acctbody-${n.key}">
         <div class="section-title">📇 Account Tracker</div>
-        <span class="chev"><i data-lucide="chevron-right" style="width:15px;height:15px;"></i></span>
+        <span class="chev">▶</span>
       </button>
       <div class="helper-body" id="acctbody-${n.key}" data-open="false">
         <div class="section-sub" style="margin-bottom:14px;">
@@ -3281,7 +3057,7 @@ function panelTemplate(n){
     <div class="card">
       <button class="helper-toggle" id="acctoggle-${compKey}" aria-expanded="false" aria-controls="acctbody-${compKey}">
         <div class="section-title">🎯 Competitor Account Tracker</div>
-        <span class="chev"><i data-lucide="chevron-right" style="width:15px;height:15px;"></i></span>
+        <span class="chev">▶</span>
       </button>
       <div class="helper-body" id="acctbody-${compKey}" data-open="false">
         <div class="section-sub" style="margin-bottom:14px;">
@@ -3449,9 +3225,6 @@ function wirePanel(n){
   document.getElementById(`ideainput-${key}`).addEventListener("keydown", (e)=>{
     if(e.key === "Enter"){ e.preventDefault(); document.getElementById(`ideaadd-${key}`).click(); }
   });
-  document.getElementById(`ideatrending-${key}`)?.addEventListener("click", ()=> fetchAIIdeas(key, "trending"));
-  document.getElementById(`ideastory-${key}`)?.addEventListener("click", ()=> fetchAIIdeas(key, "story"));
-  document.getElementById(`ideaweather-${key}`)?.addEventListener("click", ()=> fetchAIIdeas(key, "weather"));
 
   // ---- caption library ----
   renderCaptionLibrary(key);
@@ -3624,23 +3397,23 @@ function renderLogTable(nicheKey){
     if(s.editingLogId === entry.id){
       return `
         <tr>
-          <td class="no" data-label="No.">No. ${pad3(total - idx)}</td>
-          <td data-label="Date"><input type="date" class="edit-input" id="editdate-log-${entry.id}" value="${entry.date}"></td>
-          <td data-label="Note"><input type="text" class="edit-input" id="editnote-log-${entry.id}" value="${escapeHtml(entry.note)}"></td>
-          <td class="edit-actions" data-label="">
-            <button class="btn btn-gold btn-sm" data-savelog="${entry.id}" title="Save"><i data-lucide="check" style="width:14px;height:14px;"></i></button>
-            <button class="btn btn-ghost btn-sm" data-canceledit="${entry.id}" title="Cancel"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+          <td class="no">No. ${pad3(total - idx)}</td>
+          <td><input type="date" class="edit-input" id="editdate-log-${entry.id}" value="${entry.date}"></td>
+          <td><input type="text" class="edit-input" id="editnote-log-${entry.id}" value="${escapeHtml(entry.note)}"></td>
+          <td class="edit-actions">
+            <button class="btn btn-gold btn-sm" data-savelog="${entry.id}" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-canceledit="${entry.id}" title="Cancel">✕</button>
           </td>
         </tr>`;
     }
     return `
       <tr>
-        <td class="no" data-label="No.">No. ${pad3(total - idx)}</td>
-        <td class="date" data-label="Date">${escapeHtml(formatDate(entry.date))}</td>
-        <td data-label="Note">${escapeHtml(entry.note)}</td>
-        <td class="edit-actions" data-label="">
-          <button class="btn btn-ghost btn-sm" data-editlog="${entry.id}" aria-label="Edit entry" title="Edit"><i data-lucide="pencil" style="width:14px;height:14px;"></i></button>
-          <button class="btn btn-ghost btn-sm" data-del="${entry.id}" aria-label="Delete entry" title="Delete"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
+        <td class="no">No. ${pad3(total - idx)}</td>
+        <td class="date">${escapeHtml(formatDate(entry.date))}</td>
+        <td>${escapeHtml(entry.note)}</td>
+        <td class="edit-actions">
+          <button class="btn btn-ghost btn-sm" data-editlog="${entry.id}" aria-label="Edit entry" title="Edit">✏️</button>
+          <button class="btn btn-ghost btn-sm" data-del="${entry.id}" aria-label="Delete entry" title="Delete">✕</button>
         </td>
       </tr>`;
   }).join("");
@@ -3709,35 +3482,35 @@ function renderPostPerfTable(nicheKey){
     if(s.editingPerfId === e.id){
       return `
         <tr>
-          <td data-label="Date"><input type="date" class="edit-input" id="editdate-perf-${e.id}" value="${e.date}"></td>
-          <td data-label="Set">
+          <td><input type="date" class="edit-input" id="editdate-perf-${e.id}" value="${e.date}"></td>
+          <td>
             <select class="edit-input" id="editset-perf-${e.id}">
               <option value="">—</option>
               ${Array.from({length:16}, (_,i)=>i+1).map(n => `<option value="${n}" ${e.hashtagSet===n?"selected":""}>Set ${n}</option>`).join("")}
             </select>
           </td>
-          <td data-label="Link"><input type="text" class="edit-input" id="editlink-perf-${e.id}" value="${escapeHtml(e.link)}"></td>
-          <td data-label="Likes"><input type="number" class="edit-input" id="editlikes-perf-${e.id}" min="0" value="${e.likes}" style="width:60px;"></td>
-          <td data-label="Comments"><input type="number" class="edit-input" id="editcomments-perf-${e.id}" min="0" value="${e.comments}" style="width:60px;"></td>
-          <td data-label="Shares"><input type="number" class="edit-input" id="editshares-perf-${e.id}" min="0" value="${e.shares}" style="width:60px;"></td>
-          <td data-label="Reach"><input type="number" class="edit-input" id="editreach-perf-${e.id}" min="0" value="${e.reach}" style="width:70px;"></td>
-          <td data-label="Score">—</td>
-          <td class="edit-actions" data-label="">
-            <button class="btn btn-gold btn-sm" data-saveperf="${e.id}" style="padding:4px 8px;" title="Save"><i data-lucide="check" style="width:14px;height:14px;"></i></button>
-            <button class="btn btn-ghost btn-sm" data-cancelperf="${e.id}" style="padding:4px 8px;" title="Cancel"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+          <td><input type="text" class="edit-input" id="editlink-perf-${e.id}" value="${escapeHtml(e.link)}"></td>
+          <td><input type="number" class="edit-input" id="editlikes-perf-${e.id}" min="0" value="${e.likes}" style="width:60px;"></td>
+          <td><input type="number" class="edit-input" id="editcomments-perf-${e.id}" min="0" value="${e.comments}" style="width:60px;"></td>
+          <td><input type="number" class="edit-input" id="editshares-perf-${e.id}" min="0" value="${e.shares}" style="width:60px;"></td>
+          <td><input type="number" class="edit-input" id="editreach-perf-${e.id}" min="0" value="${e.reach}" style="width:70px;"></td>
+          <td>—</td>
+          <td class="edit-actions">
+            <button class="btn btn-gold btn-sm" data-saveperf="${e.id}" style="padding:4px 8px;" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-cancelperf="${e.id}" style="padding:4px 8px;" title="Cancel">✕</button>
           </td>
         </tr>`;
     }
     return `
     <tr>
-      <td class="date" data-label="Date">${escapeHtml(formatDate(e.date))}</td>
-      <td data-label="Set">${e.hashtagSet ? "Set " + e.hashtagSet : "—"}</td>
-      <td data-label="Link" style="max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(e.link)}">${escapeHtml(e.link) || "—"}</td>
-      <td data-label="Likes">${e.likes}</td><td data-label="Comments">${e.comments}</td><td data-label="Shares">${e.shares}</td><td data-label="Reach">${e.reach}</td>
-      <td data-label="Score"><strong>${engagementScore(e)}</strong></td>
-      <td class="edit-actions" data-label="">
-        <button class="btn btn-ghost btn-sm" data-editperf="${e.id}" style="padding:4px 8px;" title="Edit"><i data-lucide="pencil" style="width:14px;height:14px;"></i></button>
-        <button class="btn btn-ghost btn-sm" data-delperf="${e.id}" title="Delete" style="padding:4px 8px;"><i data-lucide="trash-2" style="width:13px;height:13px;"></i></button>
+      <td class="date">${escapeHtml(formatDate(e.date))}</td>
+      <td>${e.hashtagSet ? "Set " + e.hashtagSet : "—"}</td>
+      <td style="max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(e.link)}">${escapeHtml(e.link) || "—"}</td>
+      <td>${e.likes}</td><td>${e.comments}</td><td>${e.shares}</td><td>${e.reach}</td>
+      <td><strong>${engagementScore(e)}</strong></td>
+      <td class="edit-actions">
+        <button class="btn btn-ghost btn-sm" data-editperf="${e.id}" style="padding:4px 8px;" title="Edit">✏️</button>
+        <button class="btn btn-ghost btn-sm" data-delperf="${e.id}" title="Delete" style="padding:4px 8px;">✕</button>
       </td>
     </tr>`;
   }).join("");
@@ -3824,165 +3597,20 @@ function renderPostPerfSummary(nicheKey){
 
   body.innerHTML = rows.map((r, idx) => `
     <tr ${idx===0 ? 'style="color:var(--gold-bright);"' : ''}>
-      <td data-label="Set">Set ${r.set}</td>
-      <td data-label="Times used">${r.timesUsed}</td>
-      <td data-label="Avg likes">${r.avgLikes.toFixed(1)}</td>
-      <td data-label="Avg comments">${r.avgComments.toFixed(1)}</td>
-      <td data-label="Avg shares">${r.avgShares.toFixed(1)}</td>
-      <td data-label="Avg reach">${r.avgReach.toFixed(1)}</td>
-      <td data-label="Avg score"><strong>${r.avgScore.toFixed(1)}</strong></td>
-      <td data-label="Rank">${idx===0 ? "🏆 #1" : "#"+(idx+1)}</td>
+      <td>Set ${r.set}</td>
+      <td>${r.timesUsed}</td>
+      <td>${r.avgLikes.toFixed(1)}</td>
+      <td>${r.avgComments.toFixed(1)}</td>
+      <td>${r.avgShares.toFixed(1)}</td>
+      <td>${r.avgReach.toFixed(1)}</td>
+      <td><strong>${r.avgScore.toFixed(1)}</strong></td>
+      <td>${idx===0 ? "🏆 #1" : "#"+(idx+1)}</td>
     </tr>
   `).join("");
-}
-/* Best Time to Post — since we only track a post's date (not the
-   exact hour), this looks at day-of-week: which weekday your posts
-   tend to score best on average, based on Set Performance data. */
-function renderBestTimeToPost(nicheKey){
-  const box = document.getElementById(`besttime-${nicheKey}`);
-  if(!box) return;
-  const s = state[nicheKey];
-
-  const byDay = {}; // 0=Sun .. 6=Sat
-  s.postPerf.forEach(e=>{
-    const d = new Date(e.date + "T00:00:00");
-    if(isNaN(d)) return;
-    const dow = d.getDay();
-    if(!byDay[dow]) byDay[dow] = [];
-    byDay[dow].push(engagementScore(e));
-  });
-
-  const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  const stats = Object.keys(byDay).map(dow=>{
-    const scores = byDay[dow];
-    const avg = scores.reduce((a,b)=>a+b,0) / scores.length;
-    return { dow: parseInt(dow,10), avg, count: scores.length };
-  });
-
-  if(stats.length < 2){
-    box.style.display = "none";
-    return;
-  }
-  stats.sort((a,b)=> b.avg - a.avg);
-  const best = stats[0];
-  const worst = stats[stats.length - 1];
-
-  box.style.display = "block";
-  box.innerHTML = `
-    <div class="section-title" style="font-size:14px; margin-bottom:8px;"><i data-lucide="clock" style="width:15px;height:15px;"></i> Best Day to Post</div>
-    <div class="section-sub">
-      Your <strong style="color:var(--gold-bright);">${dayNames[best.dow]}</strong> posts average the highest engagement (${best.avg.toFixed(1)} pts across ${best.count} post${best.count===1?"":"s"})${
-        worst.dow !== best.dow ? ` — <strong>${dayNames[worst.dow]}</strong> tends to be your lowest (${worst.avg.toFixed(1)} pts).` : "."
-      }
-      Based on date logged, not exact time — log a few more posts on different days for a clearer picture.
-    </div>
-  `;
 }
 function renderPostPerfAll(nicheKey){
   renderPostPerfTable(nicheKey);
   renderPostPerfSummary(nicheKey);
-  renderBestTimeToPost(nicheKey);
-}
-
-/* ============================================================
-   AI-assisted idea generation — Trending (Google Search grounded),
-   Story ideas, and Weather-based fishing ideas (Open-Meteo, free,
-   no API key). All feed straight into the Content Idea Bank below.
-   ============================================================ */
-function getSavedLocation(){
-  try{ const raw = localStorage.getItem("fishingLocation"); return raw ? JSON.parse(raw) : null; }catch(e){ return null; }
-}
-function setSavedLocation(loc){
-  try{ localStorage.setItem("fishingLocation", JSON.stringify(loc)); }catch(e){}
-}
-function getUserLocation(){
-  const saved = getSavedLocation();
-  if(saved) return Promise.resolve(saved);
-  return new Promise((resolve, reject)=>{
-    if(!navigator.geolocation){ reject(new Error("Location isn't supported in this browser")); return; }
-    navigator.geolocation.getCurrentPosition(
-      (pos)=>{
-        const loc = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-        setSavedLocation(loc);
-        resolve(loc);
-      },
-      ()=> reject(new Error("Location permission was denied — allow it to get a weather-based idea")),
-      { timeout: 10000 }
-    );
-  });
-}
-const WEATHER_CODE_DESC = {
-  0:"clear sky", 1:"mostly clear", 2:"partly cloudy", 3:"overcast",
-  45:"fog", 48:"freezing fog", 51:"light drizzle", 53:"drizzle", 55:"heavy drizzle",
-  61:"light rain", 63:"rain", 65:"heavy rain", 71:"light snow", 73:"snow", 75:"heavy snow",
-  80:"rain showers", 81:"rain showers", 82:"violent rain showers", 95:"thunderstorm"
-};
-async function getFishingWeatherSummary(){
-  const loc = await getUserLocation();
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,weather_code,wind_speed_10m,precipitation&temperature_unit=fahrenheit&wind_speed_unit=mph`;
-  const res = await fetch(url);
-  if(!res.ok) throw new Error("Couldn't fetch today's weather");
-  const data = await res.json();
-  const c = data.current;
-  const desc = WEATHER_CODE_DESC[c.weather_code] || "changing conditions";
-  return `${desc}, ${Math.round(c.temperature_2m)}°F, wind ${Math.round(c.wind_speed_10m)} mph${c.precipitation > 0 ? ", currently precipitating" : ""}`;
-}
-
-async function fetchAIIdeas(nicheKey, mode){
-  const n = NICHES.find(x => x.key === nicheKey);
-  const resultsEl = document.getElementById(`ideaairesults-${nicheKey}`);
-  const btnIds = { trending:`ideatrending-${nicheKey}`, story:`ideastory-${nicheKey}`, weather:`ideaweather-${nicheKey}` };
-  const btn = document.getElementById(btnIds[mode]);
-  if(btn) btn.disabled = true;
-  resultsEl.style.display = "block";
-  resultsEl.innerHTML = `<div class="state-box"><div class="spinner"></div> ${mode === "weather" ? "Checking the weather…" : "Thinking…"}</div>`;
-
-  try{
-    let ideas;
-    if(mode === "trending"){
-      const prompt = `You're a social media strategist for a small ${n.styleName} Instagram account with a US audience. Search for what's currently trending or timely right now (recent news, seasonal moments, viral angles) relevant to this niche. Return exactly 5 concrete, specific content ideas a small account could post about this week — concrete post concepts, not generic advice. Respond ONLY with a JSON array of 5 short strings, nothing else, no markdown fences.`;
-      const text = await callGeminiFlexible({ prompt, useSearch:true });
-      ideas = extractJSON(text);
-    }else if(mode === "story"){
-      const prompt = `Suggest 5 quick, easy Instagram Story ideas (not feed posts) for a ${n.styleName} account. Stories should be short, casual, postable in under a minute — polls, this-or-that, quick clips, questions, countdowns. Respond ONLY with a JSON array of 5 short strings, nothing else, no markdown fences.`;
-      const text = await callGeminiFlexible({ prompt });
-      ideas = extractJSON(text);
-    }else if(mode === "weather"){
-      const weather = await getFishingWeatherSummary();
-      const prompt = `You're a content strategist for a fishing Instagram account. Today's weather where the angler is: ${weather}. Suggest 3 specific fishing content ideas that make sense given this weather (what to target, a technique angle, or a post about conditions). Respond ONLY with a JSON array of 3 short strings, nothing else, no markdown fences.`;
-      const text = await callGeminiFlexible({ prompt });
-      ideas = extractJSON(text);
-    }
-    if(!Array.isArray(ideas) || !ideas.length) throw new Error("No ideas came back — try again");
-
-    resultsEl.innerHTML = ideas.map((idea, i) => `
-      <div class="idea-suggestion">
-        <span>${escapeHtml(String(idea))}</span>
-        <button class="btn btn-ghost btn-sm" data-addidea="${i}">+ Add</button>
-      </div>
-    `).join("");
-    resultsEl.querySelectorAll("[data-addidea]").forEach(addBtn=>{
-      addBtn.addEventListener("click", async ()=>{
-        const idx = parseInt(addBtn.getAttribute("data-addidea"), 10);
-        const ideaText = String(ideas[idx]);
-        addBtn.disabled = true;
-        try{
-          const entry = await addContentIdeaToDB(nicheKey, ideaText);
-          state[nicheKey].contentIdeas.unshift(entry);
-          renderContentIdeas(nicheKey);
-          addBtn.textContent = "Added ✓";
-        }catch(e){
-          showToast("Couldn't save idea");
-          addBtn.disabled = false;
-        }
-      });
-    });
-  }catch(e){
-    resultsEl.innerHTML = `<div class="state-box error">⚠ ${escapeHtml(e.message)}</div>`;
-    console.error(e);
-  }finally{
-    if(btn) btn.disabled = false;
-  }
 }
 
 /* ============================================================
@@ -4007,8 +3635,8 @@ function renderContentIdeas(nicheKey){
         <div class="idea-row idea-row-editing">
           <input type="text" class="edit-input" id="editidea-${idea.id}" value="${escapeHtml(idea.idea)}">
           <div class="edit-actions">
-            <button class="btn btn-gold btn-sm" data-saveidea="${idea.id}" style="padding:4px 8px;" title="Save"><i data-lucide="check" style="width:14px;height:14px;"></i></button>
-            <button class="btn btn-ghost btn-sm" data-cancelidea="${idea.id}" style="padding:4px 8px;" title="Cancel"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+            <button class="btn btn-gold btn-sm" data-saveidea="${idea.id}" style="padding:4px 8px;" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-cancelidea="${idea.id}" style="padding:4px 8px;" title="Cancel">✕</button>
           </div>
         </div>`;
     }
@@ -4016,8 +3644,8 @@ function renderContentIdeas(nicheKey){
       <div class="idea-row">
         <span class="idea-text">${escapeHtml(idea.idea)}</span>
         <div class="edit-actions">
-          <button class="acct-icon-btn" data-editidea="${idea.id}" title="Edit"><i data-lucide="pencil" style="width:14px;height:14px;"></i></button>
-          <button class="acct-icon-btn" data-delidea="${idea.id}" title="Delete"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
+          <button class="acct-icon-btn" data-editidea="${idea.id}" title="Edit">✏️</button>
+          <button class="acct-icon-btn" data-delidea="${idea.id}" title="Delete">✕</button>
         </div>
       </div>`;
   }).join("");
@@ -4084,8 +3712,8 @@ function renderCaptionLibrary(nicheKey){
       <div class="caption-card-head">
         <span class="caption-platform">${escapeHtml(c.platform)}</span>
         <div class="edit-actions">
-          <button class="acct-icon-btn" data-copycaption="${c.id}" title="Copy"><i data-lucide="copy" style="width:14px;height:14px;"></i></button>
-          <button class="acct-icon-btn" data-delcaption="${c.id}" title="Delete"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
+          <button class="acct-icon-btn" data-copycaption="${c.id}" title="Copy">📋</button>
+          <button class="acct-icon-btn" data-delcaption="${c.id}" title="Delete">✕</button>
         </div>
       </div>
       ${c.title ? `<div class="caption-title">${escapeHtml(c.title)}</div>` : ""}
@@ -4124,59 +3752,12 @@ function hexColor(num){
   return "#" + num.toString(16).padStart(6, "0");
 }
 const followerCharts = {};
-/* Follower Growth Projection — linear extrapolation from your first
-   to most recent snapshot: at that daily growth rate, roughly when
-   would you reach the next round follower milestone (next multiple
-   of 500 above where you are now)? */
-function renderFollowerProjection(nicheKey){
-  const box = document.getElementById(`followerprojection-${nicheKey}`);
-  if(!box) return;
-  const s = state[nicheKey];
-  const sorted = [...s.followers].sort((a,b)=> a.date.localeCompare(b.date));
-
-  if(sorted.length < 2){
-    box.style.display = "none";
-    return;
-  }
-
-  const first = sorted[0];
-  const last = sorted[sorted.length - 1];
-  const daysBetween = Math.round((new Date(last.date+"T00:00:00") - new Date(first.date+"T00:00:00")) / 86400000);
-  const growth = last.count - first.count;
-
-  if(daysBetween <= 0 || growth <= 0){
-    box.style.display = "block";
-    box.innerHTML = `
-      <div class="section-title" style="font-size:14px; margin-bottom:8px;"><i data-lucide="trending-up" style="width:15px;height:15px;"></i> Follower Projection</div>
-      <div class="section-sub">Not enough upward movement yet to project a growth rate — keep logging snapshots.</div>
-    `;
-    return;
-  }
-
-  const dailyRate = growth / daysBetween;
-  const nextMilestone = (Math.floor(last.count / 500) + 1) * 500;
-  const remaining = nextMilestone - last.count;
-  const daysNeeded = Math.ceil(remaining / dailyRate);
-  const etaDate = addDaysISO(todayISO(), daysNeeded);
-
-  box.style.display = "block";
-  box.innerHTML = `
-    <div class="section-title" style="font-size:14px; margin-bottom:8px;"><i data-lucide="trending-up" style="width:15px;height:15px;"></i> Follower Projection</div>
-    <div class="section-sub">
-      Gaining about <strong style="color:var(--gold-bright);">${dailyRate.toFixed(1)}/day</strong> lately — at that pace you'd hit
-      <strong style="color:var(--ink);">${nextMilestone.toLocaleString()}</strong> followers around
-      <strong style="color:var(--ink);">${escapeHtml(formatDate(etaDate))}</strong> (~${daysNeeded} day${daysNeeded===1?"":"s"} away).
-      Simple straight-line estimate from your first to most recent snapshot — not a guarantee.
-    </div>
-  `;
-}
 function renderFollowerChart(nicheKey){
   const canvas = document.getElementById(`followerchart-${nicheKey}`);
   const emptyEl = document.getElementById(`followerchart-empty-${nicheKey}`);
   if(!canvas) return;
   const s = state[nicheKey];
   const sorted = [...s.followers].sort((a,b)=> a.date.localeCompare(b.date));
-  renderFollowerProjection(nicheKey);
 
   if(followerCharts[nicheKey]){
     try{ followerCharts[nicheKey].destroy(); }catch(e){}
@@ -4233,21 +3814,21 @@ function renderFollowerTable(nicheKey){
     if(s.editingFollowerId === e.id){
       return `
         <tr>
-          <td data-label="Date"><input type="date" class="edit-input" id="editdate-foll-${e.id}" value="${e.date}"></td>
-          <td data-label="Followers"><input type="number" class="edit-input" id="editcount-foll-${e.id}" min="0" value="${e.count}"></td>
-          <td class="edit-actions" data-label="">
-            <button class="btn btn-gold btn-sm" data-savefollower="${e.id}" style="padding:4px 8px;" title="Save"><i data-lucide="check" style="width:14px;height:14px;"></i></button>
-            <button class="btn btn-ghost btn-sm" data-cancelfollower="${e.id}" style="padding:4px 8px;" title="Cancel"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+          <td><input type="date" class="edit-input" id="editdate-foll-${e.id}" value="${e.date}"></td>
+          <td><input type="number" class="edit-input" id="editcount-foll-${e.id}" min="0" value="${e.count}"></td>
+          <td class="edit-actions">
+            <button class="btn btn-gold btn-sm" data-savefollower="${e.id}" style="padding:4px 8px;" title="Save">✓</button>
+            <button class="btn btn-ghost btn-sm" data-cancelfollower="${e.id}" style="padding:4px 8px;" title="Cancel">✕</button>
           </td>
         </tr>`;
     }
     return `
     <tr>
-      <td class="date" data-label="Date">${escapeHtml(formatDate(e.date))}</td>
-      <td data-label="Followers">${e.count.toLocaleString()}</td>
-      <td class="edit-actions" data-label="">
-        <button class="btn btn-ghost btn-sm" data-editfollower="${e.id}" style="padding:4px 8px;" title="Edit"><i data-lucide="pencil" style="width:14px;height:14px;"></i></button>
-        <button class="btn btn-ghost btn-sm" data-delfollower="${e.id}" title="Delete" style="padding:4px 8px;"><i data-lucide="trash-2" style="width:13px;height:13px;"></i></button>
+      <td class="date">${escapeHtml(formatDate(e.date))}</td>
+      <td>${e.count.toLocaleString()}</td>
+      <td class="edit-actions">
+        <button class="btn btn-ghost btn-sm" data-editfollower="${e.id}" style="padding:4px 8px;" title="Edit">✏️</button>
+        <button class="btn btn-ghost btn-sm" data-delfollower="${e.id}" title="Delete" style="padding:4px 8px;">✕</button>
       </td>
     </tr>`;
   }).join("");
@@ -4494,7 +4075,7 @@ function renderUsernameList(nicheKey){
       <button class="uname-pill-main" data-select-username="${escapeHtml(u.username)}">
         @${escapeHtml(u.username)} <span class="uname-pill-count">${u.count}</span>
       </button>
-      <button class="uname-pill-copy" data-copy-uname="${escapeHtml(u.username)}" title="Copy username" aria-label="Copy @${escapeHtml(u.username)}"><i data-lucide="copy" style="width:13px;height:13px;"></i></button>
+      <button class="uname-pill-copy" data-copy-uname="${escapeHtml(u.username)}" title="Copy username" aria-label="Copy @${escapeHtml(u.username)}">📋</button>
     </div>
   `).join("");
 
@@ -4565,8 +4146,8 @@ function renderAccountList(nicheKey){
             <input type="url" class="edit-input" id="editlink-acct-${a.id}" value="${escapeHtml(a.link)}" placeholder="link (optional)">
           </div>
           <div class="acct-actions">
-            <button class="btn btn-gold btn-sm" data-saveacct="${a.id}" title="Save"><i data-lucide="check" style="width:14px;height:14px;"></i> Save</button>
-            <button class="btn btn-ghost btn-sm" data-cancelacct="${a.id}" title="Cancel"><i data-lucide="x" style="width:14px;height:14px;"></i> Cancel</button>
+            <button class="btn btn-gold btn-sm" data-saveacct="${a.id}" title="Save">✓ Save</button>
+            <button class="btn btn-ghost btn-sm" data-cancelacct="${a.id}" title="Cancel">✕ Cancel</button>
           </div>
         </div>`;
     }
@@ -4580,13 +4161,13 @@ function renderAccountList(nicheKey){
         ${a.link ? `<span class="acct-link">${escapeHtml(a.link)}</span>` : ""}
       </div>
       <div class="acct-actions">
-        <button class="acct-icon-btn" data-copy-username="${a.id}" title="Copy username" aria-label="Copy username"><i data-lucide="at-sign" style="width:14px;height:14px;"></i></button>
-        ${a.link ? `<button class="acct-icon-btn" data-copy-link="${a.id}" title="Copy link" aria-label="Copy link"><i data-lucide="link" style="width:14px;height:14px;"></i></button>` : ""}
+        <button class="acct-icon-btn" data-copy-username="${a.id}" title="Copy username" aria-label="Copy username">@</button>
+        ${a.link ? `<button class="acct-icon-btn" data-copy-link="${a.id}" title="Copy link" aria-label="Copy link">🔗</button>` : ""}
         <button class="done-pill" data-toggle-done="${a.id}" data-done="${a.done}">
           ${a.done ? labels.done : labels.todo}
         </button>
-        <button class="acct-icon-btn" data-editacct="${a.id}" title="Edit" aria-label="Edit"><i data-lucide="pencil" style="width:14px;height:14px;"></i></button>
-        <button class="acct-icon-btn" data-delete="${a.id}" title="Remove" aria-label="Remove"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
+        <button class="acct-icon-btn" data-editacct="${a.id}" title="Edit" aria-label="Edit">✏️</button>
+        <button class="acct-icon-btn" data-delete="${a.id}" title="Remove" aria-label="Remove">✕</button>
       </div>
     </div>
   `;
@@ -4682,13 +4263,9 @@ function renderAccountList(nicheKey){
 function handleFileSelection(key, fileList){
   const files = Array.from(fileList || []);
   if(!files.length) return;
-  if(files.length === 1){
-    state[key].batchQueue = files;
-    state[key].batchPos = 0;
-    loadBatchItem(key, 0);
-    return;
-  }
-  openSwipeReview(key, files);
+  state[key].batchQueue = files;
+  state[key].batchPos = 0;
+  loadBatchItem(key, 0);
 }
 function loadBatchItem(key, idx){
   const s = state[key];
@@ -4715,107 +4292,6 @@ function wireBatchNav(key){
   document.getElementById(`batchprev-${key}`)?.addEventListener("click", ()=> loadBatchItem(key, state[key].batchPos - 1));
   document.getElementById(`batchnext-${key}`)?.addEventListener("click", ()=> loadBatchItem(key, state[key].batchPos + 1));
 }
-
-/* ============================================================
-   Swipe Review — when multiple files are selected at once, review
-   them Tinder-style (swipe/tap through, Keep or Discard each) before
-   any of them enter the actual generate flow. Only the kept photos
-   become the batch queue; discarded ones are simply never uploaded.
-   ============================================================ */
-let swipeReviewSwiper = null;
-let swipeReviewFiles = [];
-let swipeReviewDecisions = [];
-let swipeReviewObjectUrls = [];
-let swipeReviewKey = null;
-
-function openSwipeReview(key, files){
-  swipeReviewKey = key;
-  swipeReviewFiles = files;
-  swipeReviewDecisions = files.map(()=> "keep");
-  swipeReviewObjectUrls.forEach(u => URL.revokeObjectURL(u));
-  swipeReviewObjectUrls = files.map(f => URL.createObjectURL(f));
-
-  const wrapper = document.getElementById("swipereview-wrapper");
-  wrapper.innerHTML = swipeReviewObjectUrls.map((url, i) => `
-    <div class="swiper-slide"><img src="${url}" alt="Photo ${i+1} of ${files.length}"></div>
-  `).join("");
-
-  document.getElementById("swipereview-overlay").style.display = "flex";
-  updateSwipeSummary();
-
-  if(swipeReviewSwiper){ swipeReviewSwiper.destroy(true, true); swipeReviewSwiper = null; }
-  if(window.Swiper){
-    swipeReviewSwiper = new Swiper("#swipereview-swiper", {
-      pagination: { el: ".swiper-pagination", clickable: true },
-      spaceBetween: 10
-    });
-  }
-}
-function updateSwipeSummary(){
-  const kept = swipeReviewDecisions.filter(d => d === "keep").length;
-  const summaryEl = document.getElementById("swipereview-summary");
-  const doneBtn = document.getElementById("swipereview-done");
-  if(summaryEl) summaryEl.textContent = `${kept} of ${swipeReviewFiles.length} kept`;
-  if(doneBtn){
-    doneBtn.disabled = kept === 0;
-    doneBtn.textContent = `Start captioning (${kept}) →`;
-  }
-}
-function setCurrentSwipeDecision(decision){
-  if(!swipeReviewSwiper) return;
-  const idx = swipeReviewSwiper.activeIndex;
-  swipeReviewDecisions[idx] = decision;
-  const slide = swipeReviewSwiper.slides[idx];
-  if(slide) slide.classList.toggle("discarded", decision === "discard");
-  updateSwipeSummary();
-  if(idx < swipeReviewFiles.length - 1) swipeReviewSwiper.slideNext();
-}
-function closeSwipeReview(){
-  document.getElementById("swipereview-overlay").style.display = "none";
-  swipeReviewObjectUrls.forEach(u => URL.revokeObjectURL(u));
-  swipeReviewObjectUrls = [];
-  if(swipeReviewSwiper){ swipeReviewSwiper.destroy(true, true); swipeReviewSwiper = null; }
-}
-document.getElementById("swipereview-keep")?.addEventListener("click", ()=> setCurrentSwipeDecision("keep"));
-document.getElementById("swipereview-discard")?.addEventListener("click", ()=> setCurrentSwipeDecision("discard"));
-document.getElementById("swipereview-close")?.addEventListener("click", closeSwipeReview);
-document.getElementById("swipereview-done")?.addEventListener("click", ()=>{
-  const kept = swipeReviewFiles.filter((f, i) => swipeReviewDecisions[i] === "keep");
-  const key = swipeReviewKey;
-  closeSwipeReview();
-  if(!kept.length || !key) return;
-  state[key].batchQueue = kept;
-  state[key].batchPos = 0;
-  loadBatchItem(key, 0);
-});
-
-/* ============================================================
-   Paste-to-upload — Ctrl+V an image (a screenshot, or a copied
-   photo) straight into whichever niche/Random tab is active. Only
-   intercepts the paste when the clipboard actually contains an
-   image, so normal text pasting into any field is untouched.
-   ============================================================ */
-document.addEventListener("paste", (e)=>{
-  const items = e.clipboardData && e.clipboardData.items;
-  if(!items) return;
-  let imageFile = null;
-  for(const item of items){
-    if(item.type && item.type.startsWith("image/")){
-      imageFile = item.getAsFile();
-      break;
-    }
-  }
-  if(!imageFile) return; // no image on the clipboard — let normal text paste proceed
-
-  const uploadableKeys = [...NICHES.map(n => n.key), "random"];
-  if(!uploadableKeys.includes(activeNiche)){
-    showToast("Switch to a niche or Random tab to paste an image");
-    return;
-  }
-  e.preventDefault();
-  handleFileSelection(activeNiche, [imageFile]);
-  showToast("Image pasted");
-});
 
 async function handleFile(nicheKey, file){
   const s = state[nicheKey];
@@ -5083,22 +4559,12 @@ function platformPanelTemplate(nicheKey, p){
       <textarea id="desc-${nicheKey}-${p.key}" rows="3">${escapeHtml(data.description)}</textarea>
     </div>
 
-    <div class="copy-row" style="margin:2px 0 14px;">
-      <button class="btn btn-ghost btn-sm" data-tonevariants="${p.key}"><i data-lucide="drama" style="width:14px;height:14px;"></i> Try different tones</button>
-    </div>
-    <div id="toneresults-${nicheKey}-${p.key}" class="tone-results" style="display:none;"></div>
-
     ${hashtagSetPicker}
 
     <div class="field">
       <label for="tags-${nicheKey}-${p.key}">Hashtags</label>
       <textarea id="tags-${nicheKey}-${p.key}" rows="2">${escapeHtml(hashtagText)}</textarea>
     </div>
-
-    <div class="copy-row" style="margin-bottom:14px;">
-      <button class="btn btn-ghost btn-sm" data-shadowcheck="${p.key}"><i data-lucide="shield-alert" style="width:14px;height:14px;"></i> Shadowban risk check</button>
-    </div>
-    <div id="shadowresults-${nicheKey}-${p.key}" class="shadow-results" style="display:none;"></div>
 
     <div class="copy-row">
       <button class="btn btn-gold btn-sm" data-copyall="${p.key}">📋 Copy all for ${escapeHtml(p.label)}</button>
@@ -5131,122 +4597,6 @@ function buildPlatformCopyBlock(nicheKey, p){
     "",
     tags
   ].join("\n");
-}
-
-/* ============================================================
-   Caption Tone Variants — 3 alternate takes (funny / heartfelt /
-   minimal) on the same photo for the given platform, so you don't
-   have to regenerate the whole thing to try a different angle.
-   ============================================================ */
-const TONE_SCHEMA = {
-  type: "OBJECT",
-  properties: {
-    funny: { type:"OBJECT", properties:{ title:{type:"STRING"}, description:{type:"STRING"} }, required:["title","description"] },
-    heartfelt: { type:"OBJECT", properties:{ title:{type:"STRING"}, description:{type:"STRING"} }, required:["title","description"] },
-    minimal: { type:"OBJECT", properties:{ title:{type:"STRING"}, description:{type:"STRING"} }, required:["title","description"] }
-  },
-  required: ["funny","heartfelt","minimal"]
-};
-async function fetchToneVariants(nicheKey, p){
-  const s = state[nicheKey];
-  const n = NICHES.find(x => x.key === nicheKey);
-  const resultsEl = document.getElementById(`toneresults-${nicheKey}-${p.key}`);
-  const btn = document.querySelector(`#platformpanels-${nicheKey} [data-tonevariants="${p.key}"]`);
-  if(!s.media){ showToast("Upload a photo first"); return; }
-
-  if(btn) btn.disabled = true;
-  resultsEl.style.display = "flex";
-  resultsEl.innerHTML = `<div class="state-box"><div class="spinner"></div> Writing 3 versions…</div>`;
-
-  try{
-    const prompt = `Write 3 alternate Instagram captions for this photo, for a ${n.styleName} account posting on ${p.label}. Each needs a short title and a 1-3 sentence description, matching a distinct tone:
-- "funny": playful, a bit cheeky
-- "heartfelt": warm, sincere, emotional
-- "minimal": short, clean, understated — a few words at most
-Respond as JSON matching the schema exactly.`;
-    const text = await callGeminiFlexible({ prompt, base64Data:s.media.base64, mimeType:s.media.mimeType, responseSchema:TONE_SCHEMA });
-    const variants = JSON.parse(text);
-
-    const toneMeta = { funny:"😄 Funny", heartfelt:"💛 Heartfelt", minimal:"✂️ Minimal" };
-    resultsEl.innerHTML = Object.keys(toneMeta).map(key=>{
-      const v = variants[key] || { title:"", description:"" };
-      return `
-        <div class="tone-card">
-          <div class="tone-card-head">
-            <span class="tone-label">${toneMeta[key]}</span>
-            <button class="btn btn-gold btn-sm" data-usetone="${key}" style="padding:4px 10px;">Use this</button>
-          </div>
-          <div class="tone-title">${escapeHtml(v.title)}</div>
-          <div class="tone-desc">${escapeHtml(v.description)}</div>
-        </div>`;
-    }).join("");
-
-    resultsEl.querySelectorAll("[data-usetone]").forEach(useBtn=>{
-      useBtn.addEventListener("click", ()=>{
-        const key = useBtn.getAttribute("data-usetone");
-        const v = variants[key];
-        if(!v) return;
-        document.getElementById(`title-${nicheKey}-${p.key}`).value = v.title || "";
-        document.getElementById(`desc-${nicheKey}-${p.key}`).value = v.description || "";
-        showToast("Applied — review before copying");
-      });
-    });
-  }catch(e){
-    resultsEl.innerHTML = `<div class="state-box error">⚠ ${escapeHtml(e.message)}</div>`;
-    console.error(e);
-  }finally{
-    if(btn) btn.disabled = false;
-  }
-}
-
-/* ============================================================
-   Shadowban Risk Checker — a quick Gemini read on the current
-   caption + hashtags for spammy/flagged patterns. Advisory only;
-   Instagram never confirms shadowbans, so treat this as a sanity
-   check, not a guarantee.
-   ============================================================ */
-const SHADOWBAN_SCHEMA = {
-  type: "OBJECT",
-  properties: {
-    risk: { type:"STRING", enum:["low","medium","high"] },
-    issues: { type:"ARRAY", items:{ type:"STRING" } },
-    suggestion: { type:"STRING" }
-  },
-  required: ["risk","issues","suggestion"]
-};
-async function checkShadowbanRisk(nicheKey, p){
-  const resultsEl = document.getElementById(`shadowresults-${nicheKey}-${p.key}`);
-  const btn = document.querySelector(`#platformpanels-${nicheKey} [data-shadowcheck="${p.key}"]`);
-  const desc = document.getElementById(`desc-${nicheKey}-${p.key}`).value.trim();
-  const tags = document.getElementById(`tags-${nicheKey}-${p.key}`).value.trim();
-  if(!desc && !tags){ showToast("Nothing to check yet"); return; }
-
-  if(btn) btn.disabled = true;
-  resultsEl.style.display = "block";
-  resultsEl.innerHTML = `<div class="state-box"><div class="spinner"></div> Checking…</div>`;
-
-  try{
-    const prompt = `Review this Instagram caption and hashtag list for shadowban/spam-flag risk signals — banned or flagged hashtags, excessive repetition, engagement-bait phrasing, or spammy patterns. This is advisory only (Instagram never confirms shadowbans), so be honest and specific rather than alarmist.
-
-Caption: """${desc}"""
-Hashtags: """${tags}"""
-
-Respond as JSON matching the schema: risk is "low", "medium", or "high"; issues is an array of short specific findings (empty array if none); suggestion is one short actionable sentence.`;
-    const text = await callGeminiFlexible({ prompt, responseSchema:SHADOWBAN_SCHEMA });
-    const result = JSON.parse(text);
-
-    resultsEl.innerHTML = `
-      <div class="shadow-card">
-        <span class="risk-pill ${escapeHtml(result.risk)}">${escapeHtml(result.risk)} risk</span>
-        ${result.issues && result.issues.length ? `<ul class="shadow-issues">${result.issues.map(i=>`<li>${escapeHtml(i)}</li>`).join("")}</ul>` : `<div class="shadow-issues" style="padding-left:0; list-style:none;">Nothing flagged.</div>`}
-        <div class="shadow-suggestion">${escapeHtml(result.suggestion)}</div>
-      </div>`;
-  }catch(e){
-    resultsEl.innerHTML = `<div class="state-box error">⚠ ${escapeHtml(e.message)}</div>`;
-    console.error(e);
-  }finally{
-    if(btn) btn.disabled = false;
-  }
 }
 
 function wirePlatformPanel(nicheKey, p){
@@ -5285,12 +4635,6 @@ function wirePlatformPanel(nicheKey, p){
       }
     });
   }
-
-  const toneBtn = document.querySelector(`#platformpanels-${nicheKey} [data-tonevariants="${p.key}"]`);
-  toneBtn?.addEventListener("click", ()=> fetchToneVariants(nicheKey, p));
-
-  const shadowBtn = document.querySelector(`#platformpanels-${nicheKey} [data-shadowcheck="${p.key}"]`);
-  shadowBtn?.addEventListener("click", ()=> checkShadowbanRisk(nicheKey, p));
 
   if(p.key === "instagram"){
     const sel = document.getElementById(`hashtagset-${nicheKey}`);
@@ -5341,8 +4685,6 @@ initPinLock();
 renderTabstrip();
 renderPanels();
 hydrateAllData().then(()=> maybeShowDailyReminder());
-panelsIconObserver.observe(document.getElementById("panels"), { childList:true, subtree:true });
-renderIcons();
 
 })();
 </script>
